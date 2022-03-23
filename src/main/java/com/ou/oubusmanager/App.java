@@ -1,6 +1,9 @@
 package com.ou.oubusmanager;
 
+import com.ou.pojo.Trip;
+import com.ou.services.TripService;
 import java.sql.SQLException;
+import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +22,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStageObj = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("com/ou/oubusmanager/Enter.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("com/ou/oubusmanager/TripManage.fxml"));
         primaryStage.setTitle("OU Bus");
         primaryStage.getIcons()
                 .add(new Image(getClass().getClassLoader().getResource("com/images/logo.png").toString()));
@@ -31,7 +34,7 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {      
         launch(args);
     }
 
