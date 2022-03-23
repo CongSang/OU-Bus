@@ -6,6 +6,7 @@ package com.ou.oubusmanager;
 
 import com.ou.pojo.Trip;
 import com.ou.services.TripService;
+import com.ou.pojo.Admin;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -85,6 +86,12 @@ public class TripManageController implements Initializable {
 
     @FXML
     private TextField txtTo;
+
+    private Admin admin;
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
     
     /**
      * Initializes the controller class.
