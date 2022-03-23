@@ -1,14 +1,22 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package com.ou.oubusmanager;
 
 import com.ou.pojo.Admin;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -18,22 +26,22 @@ import javafx.scene.input.MouseEvent;
 public class TripManageController implements Initializable {
     
     @FXML
-    private Button btnBookTicket;
+    private Button btnAdd;
 
     @FXML
-    private ImageView btnLogout;
+    private Button btnReset;
 
     @FXML
-    private DatePicker dpDateDeparture;
+    private Button btnUpdate;
 
     @FXML
-    private DatePicker dpSearchDate;
+    private ComboBox<?> cbBus;
 
     @FXML
-    private TextField dpTimeDeparture;
+    private DatePicker dpDate;
 
     @FXML
-    private Label lblCustomerName;
+    private ImageView ivLogout;
 
     @FXML
     private ListView<?> lvTrip;
@@ -42,24 +50,14 @@ public class TripManageController implements Initializable {
     private TextField txtFrom;
 
     @FXML
-    private TextField txtSearchFrom;
+    private TextField txtSearch;
 
     @FXML
-    private TextField txtSearchTo;
+    private TextField txtTime;
 
     @FXML
     private TextField txtTo;
     private Admin admin;
-
-    @FXML
-    void btnBookTicketClick(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnLogoutClick(MouseEvent event) {
-
-    }
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
@@ -71,6 +69,25 @@ public class TripManageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    } 
     
+    @FXML
+    void btnAdd_click(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void btnUpdate_click(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void btnReset_click(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void ivLogout_click(ActionEvent event) {
+        
+    }
 }
