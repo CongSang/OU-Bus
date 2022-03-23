@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="390.0" prefWidth="400.0" stylesheets="@../../styles/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17">
+   <children>
+      <Label layoutX="93.0" layoutY="14.0" text="THẺ LÊN XE/ BOARDING PASS" textAlignment="JUSTIFY" textFill="#da3535">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="93.0" layoutY="37.0" prefHeight="17.0" prefWidth="214.0" style="-fx-alignment: center;" text="label" />
+      <Label layoutX="183.0" layoutY="63.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="93.0" styleClass="discrip" text="NƠI ĐI/ FROM:" />
+      <Label layoutX="14.0" layoutY="121.0" styleClass="discrip" text="NƠI ĐẾN/ TO:" />
+      <Label layoutX="14.0" layoutY="149.0" styleClass="discrip" text="KHỞI HÀNH/ DEPARTURETIME:" />
+      <Label layoutX="14.0" layoutY="181.0" styleClass="discrip" text="GHẾ/ SEAT:" />
+      <Label layoutX="14.0" layoutY="210.0" styleClass="discrip" text="HỌ TÊN/ NAME:" />
+      <Label layoutX="14.0" layoutY="239.0" styleClass="discrip" text="ĐIỆN THOẠI/ TEL:" />
+      <Label layoutX="171.0" layoutY="181.0" styleClass="discrip" text="GIÁ VÉ/ PRICE:" />
+      <Label layoutX="287.0" layoutY="93.0" styleClass="discrip" text="MÃ VÉ/ CODE:" />
+      <HBox layoutX="6.0" layoutY="263.0" prefHeight="40.0" prefWidth="385.0" styleClass="note-place">
+         <children>
+            <VBox prefHeight="53.0" prefWidth="192.0" style="-fx-padding: 10;">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="note" text="Hành khách có mặt tại văn phòng" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="note" text="To be present at this office" />
+               </children>
+            </VBox>
+            <VBox prefHeight="61.0" prefWidth="175.0" style="-fx-padding: 10;">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="note" text="trước giờ khởi hành" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="note" text="before departure time" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label layoutX="12.0" layoutY="328.0" styleClass="discrip" text="NHÂN VIÊN/ EMPLOYEE:" />
+      <Label layoutX="12.0" layoutY="355.0" styleClass="discrip" text="NGÀY IN/ PRINTED DATE:" />
+      <Label layoutX="108.0" layoutY="93.0" styleClass="content" text="Label" />
+      <Label layoutX="108.0" layoutY="121.0" styleClass="content" text="Label" />
+      <Label layoutX="196.0" layoutY="149.0" styleClass="content" text="Label" />
+      <Label layoutX="287.0" layoutY="113.0" styleClass="content" text="Label" />
+      <Label layoutX="87.0" layoutY="181.0" styleClass="content" text="Label" />
+      <Label layoutX="265.0" layoutY="181.0" text="Label" />
+      <Label layoutX="115.0" layoutY="210.0" styleClass="content" text="Label" />
+      <Label layoutX="122.0" layoutY="239.0" styleClass="content" text="Label" />
+      <Label layoutX="206.0" layoutY="248.0" styleClass="content" text="Lên xe:" />
+      <Label layoutX="170.0" layoutY="328.0" styleClass="content" text="Label" />
+      <Label layoutX="170.0" layoutY="355.0" styleClass="content" text="Label" />
+   </children>
+</AnchorPane>

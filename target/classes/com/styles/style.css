@@ -1,0 +1,106 @@
+.head-title {
+    -fx-font-size: 22px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.btn-add {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+}
+
+.btn:hover {
+    -fx-opacity: 0.8;
+}
+
+.btn-update {
+    -fx-background-color: #d1c300;
+    -fx-text-fill: white;
+}
+
+.btn-delete {
+    -fx-background-color: #d10000;
+    -fx-text-fill: white;
+}
+
+
+/*---------------Sign in/Sign up style-----------------*/
+
+/*color1: #0598ff: lighblue
+color2: #005792: darkblue */
+
+.title {
+    -fx-font-size: 20px;
+    -fx-fill: #005792;
+    -fx-font-weight: bold;
+}
+
+.input_text {
+    -fx-background-color: transparent;
+/*    -fx-border-color: #0598ff;
+    -fx-border-width: 0px 0px 2px 0px;*/
+}
+
+
+
+.lbforgot {
+    -fx-text-fill: gray;
+}
+
+.lbforgot:hover {
+    -fx-text-fill: black;
+}
+
+.button1 {
+    -fx-background-color: #005792;
+    -fx-text-fill: white;
+}
+
+.button1:hover {
+    -fx-background-color: #0598ff;
+}
+
+.back {
+    -fx-opacity: 0.5;
+}
+
+.back:hover {
+    -fx-opacity: 1;
+}
+
+/*---------------Manage trip style-----------------*/
+
+.enterfield {
+    -fx-border-style: solid ;
+    -fx-border-color: #888888;
+    -fx-background-color: white;
+}
+
+.lbl {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+
+
+/*---------------Ticket Form style-----------------*/
+
+.content {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.discrip {
+    -fx-text-fill: #005792;
+    -fx-font-size: 11px;
+}
+
+.note {
+    -fx-font-size: 11px;
+    -fx-fill: red;
+}
+
+.note-place {
+    -fx-border-style: dashed;
+    -fx-border-color: red;
+}

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="640.0" prefWidth="960.0" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ou.oubusmanager.TripManageController">
+   <children>
+      <BorderPane prefHeight="640.0" prefWidth="960.0">
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ListView layoutX="-1.0" layoutY="65.0" prefHeight="500.0" prefWidth="575.0" />
+                  <TextField layoutX="-1.0" layoutY="20.0" prefHeight="35.0" prefWidth="575.0" promptText="Search" />
+               </children>
+            </AnchorPane>
+         </center>
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="960.0" style="-fx-background-color: #005792; -fx-padding: 8;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/bus-white.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label styleClass="head-title" text="Manage Trip">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="28.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                     <image>
+                        <Image url="@../../images/logout.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="710.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </top>
+         <left>
+            <AnchorPane prefHeight="587.0" prefWidth="370.0" style="-fx-padding: 8;" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane layoutX="18.0" layoutY="23.0" prefHeight="540.0" prefWidth="336.0" styleClass="enterfield">
+                     <children>
+                        <Button layoutX="14.0" layoutY="496.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="147.0" text="+ Add new trip">
+                           <styleClass>
+                              <String fx:value="btn-add" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="173.0" layoutY="496.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" text="Update">
+                           <styleClass>
+                              <String fx:value="btn-update" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <VBox layoutX="18.0" layoutY="50.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="From:" />
+                              <TextField prefHeight="35.0" promptText="Enter start place" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="120.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="To:" />
+                              <TextField prefHeight="35.0" promptText="Enter end place" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="190.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Departure day:" />
+                              <DatePicker prefHeight="33.0" prefWidth="307.0" promptText="Enter day start" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="260.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Time of departure:" />
+                              <TextField prefHeight="35.0" promptText="Enter time start" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="330.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Bus:" />
+                              <ComboBox prefHeight="33.0" prefWidth="307.0" />
+                           </children>
+                        </VBox>
+                        <Button layoutX="134.0" layoutY="399.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="69.0" text="Reset">
+                           <styleClass>
+                              <String fx:value="button1" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>
