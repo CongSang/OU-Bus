@@ -1,5 +1,6 @@
 package com.ou.oubusmanager;
 
+import com.ou.pojo.Admin;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -48,6 +49,7 @@ public class TripManageController implements Initializable {
 
     @FXML
     private TextField txtTo;
+    private Admin admin;
 
     @FXML
     void btnBookTicketClick(ActionEvent event) {
@@ -57,6 +59,10 @@ public class TripManageController implements Initializable {
     @FXML
     void btnLogoutClick(MouseEvent event) {
 
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
     
     /**
