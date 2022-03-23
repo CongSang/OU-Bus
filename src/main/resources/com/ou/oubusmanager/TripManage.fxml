@@ -7,7 +7,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -24,8 +25,17 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="lvTrip" layoutX="-1.0" layoutY="65.0" prefHeight="500.0" prefWidth="575.0" />
                   <TextField fx:id="txtSearch" layoutX="-1.0" layoutY="20.0" prefHeight="35.0" prefWidth="575.0" promptText="Tìm kiếm id, tên chuyến" />
+                  <TableView fx:id="tvTrip" layoutX="-1.0" layoutY="69.0" prefHeight="496.0" prefWidth="575.0">
+                     <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="69.60003507137299" text="Mã chuyến" />
+                        <TableColumn fx:id="fromColumn" prefWidth="115.20001983642578" text="Từ" />
+                        <TableColumn fx:id="toColumn" prefWidth="103.99993896484375" text="Đến" />
+                        <TableColumn fx:id="dateColumn" prefWidth="110.39990234375" text="Thời gian" />
+                        <TableColumn fx:id="busIdColumn" prefWidth="81.60009765625" text="Mã xe" />
+                        <TableColumn fx:id="completeColumn" prefWidth="104.80001831054688" text="Hoàn thành" />
+                     </columns>
+                  </TableView>
                </children>
             </AnchorPane>
          </center>
@@ -64,19 +74,7 @@
                <children>
                   <Pane layoutX="18.0" layoutY="23.0" prefHeight="540.0" prefWidth="336.0" styleClass="enterfield">
                      <children>
-                        <Button fx:id="btnAdd" layoutX="14.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnAdd_click" prefHeight="35.0" prefWidth="147.0" text="+ Thêm chuyến">
-                           <styleClass>
-                              <String fx:value="btn-add" />
-                              <String fx:value="btn" />
-                           </styleClass>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button fx:id="btnUpdate" layoutX="177.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnUpdate_click" prefHeight="35.0" prefWidth="145.0" text="Cập nhật">
+                        <Button fx:id="btnUpdate" disable="true" layoutX="14.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnUpdate_click" prefHeight="35.0" prefWidth="308.0" text="Cập nhật">
                            <styleClass>
                               <String fx:value="btn-update" />
                               <String fx:value="btn" />
@@ -121,6 +119,18 @@
                         <Button fx:id="btnReset" layoutX="134.0" layoutY="399.0" mnemonicParsing="false" onAction="#btnReset_click" prefHeight="35.0" prefWidth="69.0" text="Nhập lại">
                            <styleClass>
                               <String fx:value="button1" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btnAdd" layoutX="14.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnAdd_click" prefHeight="35.0" prefWidth="308.0" text="+ Thêm chuyến">
+                           <styleClass>
+                              <String fx:value="btn-add" />
                               <String fx:value="btn" />
                            </styleClass>
                            <font>
