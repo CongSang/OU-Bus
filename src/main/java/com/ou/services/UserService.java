@@ -19,7 +19,7 @@ import java.sql.SQLException;
  * @author CÔNG SANG
  */
 public class UserService {
-    public static Account getUser(String username, String password) throws SQLException {
+    public static Account getUserLogin(String username, String password) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
             stm.setString(1, username);
@@ -48,6 +48,22 @@ public class UserService {
                 }
             }      
             return u;
+        }     
+    }
+    
+    public static int addUserSignUp(String fullName, String phone, String age
+            , String username, String password, String user_role) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("INSERT INTO user (name, phone, age, username, password, user_role)"
+                        + "VALUES (?,?,?,?,?,?)");    
+            stm.setString(1, fullName);
+            stm.setString(2, phone);
+            stm.setString(3, age);
+            stm.setString(4, username);
+            stm.setString(5, password);
+            stm.setString(6, user_role);           
+            
+            return stm.executeUpdate(); 
         }     
     }
 }

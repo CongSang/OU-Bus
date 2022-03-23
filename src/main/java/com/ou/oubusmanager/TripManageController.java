@@ -4,6 +4,7 @@
  */
 package com.ou.oubusmanager;
 
+import com.ou.pojo.Admin;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -56,8 +57,11 @@ public class TripManageController implements Initializable {
 
     @FXML
     private TextField txtTo;
+    private Admin admin;
 
-    
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
     
     /**
      * Initializes the controller class.
