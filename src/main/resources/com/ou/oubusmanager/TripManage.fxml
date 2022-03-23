@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -23,8 +24,8 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <ListView layoutX="-1.0" layoutY="65.0" prefHeight="500.0" prefWidth="575.0" />
-                  <TextField layoutX="-1.0" layoutY="20.0" prefHeight="35.0" prefWidth="575.0" promptText="Search" />
+                  <ListView fx:id="lvTrip" layoutX="-1.0" layoutY="65.0" prefHeight="500.0" prefWidth="575.0" />
+                  <TextField fx:id="txtSearch" layoutX="-1.0" layoutY="20.0" prefHeight="35.0" prefWidth="575.0" promptText="Tìm kiếm id, tên chuyến" />
                </children>
             </AnchorPane>
          </center>
@@ -39,18 +40,21 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label styleClass="head-title" text="Manage Trip">
+                  <Label styleClass="head-title" text="Quản lý chuyến đi">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                   </Label>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="28.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                  <ImageView fx:id="ivLogout" fitHeight="30.0" fitWidth="30.0" layoutX="28.0" layoutY="18.0" onMouseClicked="#ivLogout_click" pickOnBounds="true" preserveRatio="true" styleClass="btn">
                      <image>
                         <Image url="@../../images/logout.png" />
                      </image>
                      <HBox.margin>
-                        <Insets left="710.0" />
+                        <Insets left="650.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
             </HBox>
@@ -60,7 +64,7 @@
                <children>
                   <Pane layoutX="18.0" layoutY="23.0" prefHeight="540.0" prefWidth="336.0" styleClass="enterfield">
                      <children>
-                        <Button layoutX="14.0" layoutY="496.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="147.0" text="+ Add new trip">
+                        <Button fx:id="btnAdd" layoutX="14.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnAdd_click" prefHeight="35.0" prefWidth="147.0" text="+ Thêm chuyến">
                            <styleClass>
                               <String fx:value="btn-add" />
                               <String fx:value="btn" />
@@ -68,8 +72,11 @@
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
-                        <Button layoutX="173.0" layoutY="496.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" text="Update">
+                        <Button fx:id="btnUpdate" layoutX="177.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnUpdate_click" prefHeight="35.0" prefWidth="145.0" text="Cập nhật">
                            <styleClass>
                               <String fx:value="btn-update" />
                               <String fx:value="btn" />
@@ -77,38 +84,41 @@
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <VBox layoutX="18.0" layoutY="50.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
-                              <Label styleClass="lbl" text="From:" />
-                              <TextField prefHeight="35.0" promptText="Enter start place" styleClass="textfield" />
+                              <Label styleClass="lbl" text="Từ:" />
+                              <TextField fx:id="txtFrom" editable="false" prefHeight="35.0" promptText="Nhập nơi khởi hành" styleClass="textfield" />
                            </children>
                         </VBox>
                         <VBox layoutX="18.0" layoutY="120.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
-                              <Label styleClass="lbl" text="To:" />
-                              <TextField prefHeight="35.0" promptText="Enter end place" styleClass="textfield" />
+                              <Label styleClass="lbl" text="Đến:" />
+                              <TextField fx:id="txtTo" prefHeight="35.0" promptText="Nhập nơi đến" styleClass="textfield" />
                            </children>
                         </VBox>
                         <VBox layoutX="18.0" layoutY="190.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
-                              <Label styleClass="lbl" text="Departure day:" />
-                              <DatePicker prefHeight="33.0" prefWidth="307.0" promptText="Enter day start" styleClass="textfield" />
+                              <Label styleClass="lbl" text="Ngày khởi hành:" />
+                              <DatePicker fx:id="dpDate" prefHeight="33.0" prefWidth="307.0" promptText="Chọn ngày khởi hành" styleClass="textfield" />
                            </children>
                         </VBox>
                         <VBox layoutX="18.0" layoutY="260.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
-                              <Label styleClass="lbl" text="Time of departure:" />
-                              <TextField prefHeight="35.0" promptText="Enter time start" styleClass="textfield" />
+                              <Label styleClass="lbl" text="Thời gian khởi hành:" />
+                              <TextField fx:id="txtTime" prefHeight="35.0" promptText="Nhập giờ:phút" styleClass="textfield" />
                            </children>
                         </VBox>
                         <VBox layoutX="18.0" layoutY="330.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
-                              <Label styleClass="lbl" text="Bus:" />
-                              <ComboBox prefHeight="33.0" prefWidth="307.0" />
+                              <Label styleClass="lbl" text="Xe:" />
+                              <ComboBox fx:id="cbBus" prefHeight="33.0" prefWidth="307.0" promptText="Chọn xe" />
                            </children>
                         </VBox>
-                        <Button layoutX="134.0" layoutY="399.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="69.0" text="Reset">
+                        <Button fx:id="btnReset" layoutX="134.0" layoutY="399.0" mnemonicParsing="false" onAction="#btnReset_click" prefHeight="35.0" prefWidth="69.0" text="Nhập lại">
                            <styleClass>
                               <String fx:value="button1" />
                               <String fx:value="btn" />
@@ -116,6 +126,9 @@
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                      </children>
                   </Pane>
