@@ -2,7 +2,6 @@ module com.ou.oubusmanager {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.base;
-    requires com.jfoenix;
     requires AnimateFX;
     requires java.sql;
     requires java.base;

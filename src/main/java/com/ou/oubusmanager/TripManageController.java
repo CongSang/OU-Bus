@@ -1,12 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.ou.oubusmanager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -14,7 +15,50 @@ import javafx.fxml.Initializable;
  * @author CÔNG SANG
  */
 public class TripManageController implements Initializable {
+    
+    @FXML
+    private Button btnBookTicket;
 
+    @FXML
+    private ImageView btnLogout;
+
+    @FXML
+    private DatePicker dpDateDeparture;
+
+    @FXML
+    private DatePicker dpSearchDate;
+
+    @FXML
+    private TextField dpTimeDeparture;
+
+    @FXML
+    private Label lblCustomerName;
+
+    @FXML
+    private ListView<?> lvTrip;
+
+    @FXML
+    private TextField txtFrom;
+
+    @FXML
+    private TextField txtSearchFrom;
+
+    @FXML
+    private TextField txtSearchTo;
+
+    @FXML
+    private TextField txtTo;
+
+    @FXML
+    void btnBookTicketClick(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnLogoutClick(MouseEvent event) {
+
+    }
+    
     /**
      * Initializes the controller class.
      */
