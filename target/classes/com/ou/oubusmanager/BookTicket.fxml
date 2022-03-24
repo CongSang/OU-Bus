@@ -43,8 +43,10 @@
                   </Label>
                   <TableView fx:id="tvTrip" layoutY="177.0" prefHeight="388.0" prefWidth="575.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="188.0" text="Điểm đi" />
+                      <TableColumn prefWidth="176.0" text="Điểm đến" />
+                        <TableColumn prefWidth="111.0" text="Ngày đi" />
+                        <TableColumn prefWidth="99.0" text="Ngày đi" />
                     </columns>
                   </TableView>
                </children>
