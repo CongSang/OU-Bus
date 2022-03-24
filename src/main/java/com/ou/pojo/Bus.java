@@ -47,5 +47,12 @@ public class Bus {
     public void setBusSerial(String busSerial) {
         this.busSerial = busSerial;
     }
+
+    @Override
+    public String toString() {
+        return this.busSerial; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+    
+    
     
 }

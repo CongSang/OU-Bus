@@ -4,6 +4,7 @@
  */
 package com.ou.services;
 
+import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.utils.Jdbc;
 import java.sql.Connection;
@@ -28,8 +29,9 @@ public class TripService {
     static String date = "date_start";
     static String busId = "bus_id";
     static String complete = "complete";
+    static String busSerial = "bus_serial";
     
-    public static List<Trip> getTrip(String kw) throws SQLException, ParseException {
+    public static List<Trip> getTrips(String kw) throws SQLException, ParseException {
         List<Trip> trips = new ArrayList<>();
             try (Connection conn = Jdbc.getConn()) {
                 PreparedStatement stm = conn.prepareStatement("SELECT * FROM "
@@ -58,5 +60,40 @@ public class TripService {
    
         
         return trips;
+    }
+    
+    public static List<Bus> getBuses() throws SQLException {
+        List<Bus> list = new ArrayList<>();
+        try(Connection conn = Jdbc.getConn()) {
+            Statement stm = conn.createStatement();
+            
+            ResultSet rs = stm.executeQuery("Select * from bus");
+            
+            while(rs.next()) {
+                Bus b = new Bus(rs.getInt(id), rs.getString(busSerial));
+                
+                list.add(b);
+            }
+        }
+        
+        return list;
+    }
+    
+    public static int addTrip(Trip t) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("INSERT INTO "
+                    + "trip(trip.from, trip.to, date_start, bus_id, complete)"
+                    + "VALUES(?,?,?,?,?)");
+            
+            stm.setString(1, t.getFrom());
+            stm.setString(2, t.getTo());
+            stm.setString(3, t.getDate());
+            stm.setInt(4, t.getBusId());
+            stm.setBoolean(5, t.isComplete());
+            
+            return stm.executeUpdate();
+
+        }
+        
     }
 }
