@@ -13,7 +13,7 @@ import java.util.List;
 public class Bus {
     private int id;
     private String busSerial;
-    private String seatNumber;
+    private int seatNumber;
     private List<Seat> seats;
 
     public Bus() {
@@ -24,13 +24,19 @@ public class Bus {
         this.busSerial = busSerial;
     } 
     
-    public Bus(int id, String busSerial, String seatNumber) {
+    public Bus(int id, String busSerial, int seatNumber) {
         this.id = id;
         this.busSerial = busSerial;
         this.seatNumber = seatNumber;
     }
-    
-    
+
+    // For Create Bus's seat if list<seat> < seats 
+    public Bus(int id, String busSerial, int seatNumber, List<Seat> seats) {
+        this.id = id;
+        this.busSerial = busSerial;
+        this.seatNumber = seatNumber;
+        this.seats = seats;
+    }
     
     /**
      * @return the id
@@ -68,14 +74,14 @@ public class Bus {
     /**
      * @return the seatNumber
      */
-    public String getSeatNumber() {
+    public int getSeatNumber() {
         return seatNumber;
     }
 
     /**
      * @param seatNumber the seatNumber to set
      */
-    public void setSeatNumber(String seatNumber) {
+    public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
 

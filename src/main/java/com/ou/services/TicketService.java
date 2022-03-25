@@ -12,6 +12,8 @@ import java.util.Random;
  * @author CÔNG SANG
  */
 public class TicketService {
+    
+    // Create when app run
     public static int createNewTicket() throws SQLException {
         final int MAX = 1000000;
         String status = "FREE";
@@ -19,7 +21,7 @@ public class TicketService {
         try (Connection conn = Jdbc.getConn()) {
             
             List<Seat> seats = SeatService.getAllSeatNoTicket();
-            System.out.println(seats.size());
+            System.out.println("Create Ticket:" + seats.size());
             if (seats != null) {
                 for(Seat s : seats) {
                     PreparedStatement stm = conn.prepareStatement("INSERT INTO ticket (id, trip_id"
@@ -38,9 +40,9 @@ public class TicketService {
     }
     
     // Khach hang dat ve va chuyen trang thai BOOKED
-    public static int createTicketBooked(int tripId, int seatId
+    public static int createTicketBooking(int tripId, int seatId
             , int customerId, String dateBook) throws SQLException {
-        String status = "BOOKED";
+        String status = "BOOKING";
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"

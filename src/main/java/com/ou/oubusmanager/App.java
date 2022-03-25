@@ -1,5 +1,6 @@
 package com.ou.oubusmanager;
 
+import com.ou.services.SeatService;
 import com.ou.services.TicketService;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -34,9 +35,13 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
+        //Tu dong tao seats va ticket's seats neu chua co
         try {
-            // Tao ve cho ghe chua co ve
+            // Tao ghe
+            SeatService.createSeatOfBus();
+            
+            // Tao ve
             TicketService.createNewTicket();
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
