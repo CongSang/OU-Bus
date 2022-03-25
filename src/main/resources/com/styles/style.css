@@ -23,7 +23,16 @@
     -fx-text-fill: white;
 }
 
+.delete-icon {
+    -fx-cursor: hand;
+    -glyph-size: 20px;
+    -fx-opacity: 0.7;
+    -fx-fill: #ff0000;
+}
 
+.delete-icon:hover {
+    -fx-opacity: 1;
+}
 /*---------------Sign in/Sign up style-----------------*/
 
 /*color1: #0598ff: lighblue
@@ -127,7 +136,7 @@ color2: #005792: darkblue */
     
 .table-view .column-header .label {
         -fx-text-fill: #000000;
-        -fx-alignment: CENTER_LEFT;
+        -fx-alignment: CENTER;
 }
 
 .table-view .cell {
