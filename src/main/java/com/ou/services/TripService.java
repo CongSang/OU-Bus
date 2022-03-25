@@ -127,4 +127,26 @@ public class TripService {
         }
         
     }
+    
+    public static int deleteTrip(int id) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("DELETE FROM trip WHERE id = ?");
+            
+            stm.setInt(1, id);
+            
+            return stm.executeUpdate();
+        }
+    }
+    
+    public static String getBusSerial(int id) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT bus_serial FROM bus WHERE id = ?");
+            stm.setInt(1, id);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next())
+                return rs.getString("bus_serial");
+            return null;
+        }
+    }
 }
