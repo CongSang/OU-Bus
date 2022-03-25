@@ -8,6 +8,8 @@ import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.services.TripService;
 import com.ou.pojo.Admin;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -27,6 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,6 +45,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 /**
@@ -91,7 +95,7 @@ public class TripManageController implements Initializable {
     private TableColumn<Trip, Boolean> completeColumn;
     
     @FXML
-    private TableColumn<Trip, Void> btnColumn;
+    private TableColumn<Trip, String> btnColumn;
 
     @FXML
     private TextField txtFrom;
@@ -158,45 +162,53 @@ public class TripManageController implements Initializable {
     
     private void addButtonToTable() {
 
-        Callback<TableColumn<Trip, Void>, TableCell<Trip, Void>> cellFactory = new Callback<TableColumn<Trip, Void>, TableCell<Trip, Void>>() {
-            @Override
-            public TableCell<Trip, Void> call(final TableColumn<Trip, Void> param) {
-                final TableCell<Trip, Void> cell = new TableCell<Trip, Void>() {
+        Callback<TableColumn<Trip, String>, TableCell<Trip, String>> cellFactory = (TableColumn<Trip, String> param) -> {
+            
+            final TableCell<Trip, String> cell = new TableCell<Trip, String>() {
                     
-                    Image img = new Image("com/images/trashbin.png");
-                    ImageView view = new ImageView(img);
+//                    Image img = new Image("com/images/trashbin.png");
+//                    ImageView view = new ImageView(img);
                     
-                    
-                    Button btn = new Button();
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                            Trip data = getTableView().getItems().get(getIndex());
-                            System.out.println("selectedData: " + data);
+//                    Button btn = new Button();
+//                    {
+//                        btn.setOnAction((ActionEvent event) -> {
+//                            Trip data = getTableView().getItems().get(getIndex());
+//                            System.out.println("selectedData: " + data);
+//                        });
+//                        
+//                        view.setFitHeight(15);
+//                        view.setPreserveRatio(true);
+//                        btn.setPrefSize(5, 5);
+//                        btn.setGraphic(view);
+//                        btn.setCursor(Cursor.HAND);
+//                    }
+
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                        
+                        deleteIcon.setStyleClass("delete-icon");
+                        
+                        deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+                            EnterController.showErrorDialog("test");
                         });
                         
-                        view.setFitHeight(15);
-                        view.setPreserveRatio(true);
-                        btn.setPrefSize(5, 5);
-                        btn.setGraphic(view);
-                        btn.setCursor(Cursor.HAND);
+                        HBox managebtn = new HBox(deleteIcon);
+                        managebtn.setStyle("-fx-alignment:center");
+                        HBox.setMargin(deleteIcon, new Insets(2, 2, 2, 1));
+                        setGraphic(managebtn);
+                        setText(null);
                     }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
+                }
+            };
+            return cell;
         };
-
         btnColumn.setCellFactory(cellFactory);
-
     }
     
     @FXML

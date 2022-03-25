@@ -5,6 +5,7 @@ module com.ou.oubusmanager {
     requires AnimateFX;
     requires java.sql;
     requires java.base;
+    requires de.jensd.fx.glyphs.fontawesome;
     
     opens com.ou.pojo to javafx.base;
     opens com.ou.oubusmanager to javafx.fxml;

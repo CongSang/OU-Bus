@@ -34,7 +34,7 @@
                         <TableColumn fx:id="dateColumn" prefWidth="110.0" text="Thời gian" />
                         <TableColumn fx:id="busIdColumn" minWidth="0.0" prefWidth="45.0" text="Mã xe" />
                         <TableColumn fx:id="completeColumn" prefWidth="73.0" text="Hoàn thành" />
-                        <TableColumn fx:id="btnColumn" prefWidth="40.0" text="Xóa" />
+                        <TableColumn fx:id="btnColumn" prefWidth="43.4" text="Xóa" />
                      </columns>
                   </TableView>
                </children>
