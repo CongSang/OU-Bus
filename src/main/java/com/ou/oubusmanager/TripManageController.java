@@ -8,13 +8,16 @@ import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.services.TripService;
 import com.ou.pojo.Admin;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -23,7 +26,10 @@ import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -35,8 +41,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Callback;
-
 /**
  * FXML Controller class
  *
@@ -194,15 +201,11 @@ public class TripManageController implements Initializable {
     
     @FXML
     void btnAdd_click(ActionEvent event){
-        LocalDate d = LocalDate.now();
+//        LocalDate d = LocalDate.now();
         if (dpDate.getValue() == null || txtFrom.getText().isEmpty()||
                 txtTo.getText().isEmpty() || txtTime.getText().isEmpty() ||
                 cbBus.getValue() == null) {
-             Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setTitle("LOI");
-            a.setContentText("Vul long nhap day du thong tin!!");
-
-            a.showAndWait();
+            EnterController.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
         }
         else {
         
@@ -211,36 +214,24 @@ public class TripManageController implements Initializable {
             if (txtTime.getText() != null) {
                 try {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    dtCheck = LocalDateTime.parse(d.toString() + " " + txtTime.getText(), dtf);
+                    dtCheck = LocalDateTime.parse(dpDate.getValue() + " " + txtTime.getText(), dtf);
 
-                    String datetime = d.toString() + " " + txtTime.getText();                
+//                    String datetime = d.toString() + " " + txtTime.getText();                
                     Trip t = new Trip (txtFrom.getText(), txtTo.getText(),
-                    datetime, cbBus.getValue().getId(), false);
+                    dtf.format(dtCheck), cbBus.getValue().getId(), false);
                     
                     if (TripService.addTrip(t) != -1) {
-                        Alert a = new Alert(Alert.AlertType.INFORMATION);
-                        a.setTitle("LOI");
-                        a.setContentText("Them thanh cong!!");
-
-                        a.showAndWait();
+                        EnterController.showSuccessDialog("Thêm chuyến xe thành công.");
                         
                         loadData(null);
                         reset();
                     }
                     else {
-                        Alert a = new Alert(Alert.AlertType.ERROR);
-                        a.setTitle("LOI");
-                        a.setContentText("Khong the them!!");
-
-                        a.showAndWait();
+                        EnterController.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
                     }
                         
                 } catch (Exception e) {
-                    Alert a = new Alert(Alert.AlertType.ERROR);
-                    a.setTitle("LOI");
-                    a.setContentText(e.getMessage());
-
-                    a.showAndWait();
+                    EnterController.showErrorDialog(e.getMessage());
                 }
             }
         }            
@@ -257,8 +248,17 @@ public class TripManageController implements Initializable {
     }
     
     @FXML
-    void ivLogout_click(ActionEvent event) {
-        
+    void ivLogout_click(MouseEvent event) throws IOException {
+        Stage stage = App.getPrimaryStage();
+        Parent root = FXMLLoader.load(this.getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/Enter.fxml"));
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        this.admin = null;
+        stage.show();
     }
     
     void reset() {

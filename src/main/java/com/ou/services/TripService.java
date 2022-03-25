@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ou.services;
 
 import com.ou.pojo.Bus;
@@ -57,8 +53,43 @@ public class TripService {
                     trips.add(t);
                 }
             }
-   
-        
+        return trips;
+    }
+    
+    // for table view customer
+    public static List<Trip> getTripForCustomerSearch(String fromSearch
+            , String toSearch) throws SQLException, ParseException {
+        List<Trip> trips = new ArrayList<>();
+            try (Connection conn = Jdbc.getConn()) {
+                PreparedStatement stm = conn.prepareStatement("SELECT t.*, b.seats as number"
+                        + " FROM trip t, bus b"
+                        + " WHERE t.bus_id = b.id AND t.from like concat('%', ?, '%')"
+                        + " AND t.to like concat('%', ?, '%') AND complete = ?");
+
+                if (fromSearch == null)
+                    fromSearch = "";
+                if (toSearch == null)
+                    toSearch = "";
+             
+                stm.setString(1, fromSearch);
+                stm.setString(2, toSearch);
+                stm.setInt(3, 0);
+                ResultSet rs = stm.executeQuery();
+
+                while(rs.next()) {
+                    Date d = new Date(rs.getTimestamp("date_start").getTime());           
+                    String strDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(d);
+                    
+                    String dateStart = strDate.split(" ")[0];
+                    String timeStart = strDate.split(" ")[1];
+
+                    Trip t = new Trip(rs.getInt(id), rs.getString(from)
+                            , rs.getString(to), dateStart, timeStart, rs.getInt("number")
+                            , rs.getInt(busId), rs.getBoolean(complete));
+
+                    trips.add(t);
+                }
+            }
         return trips;
     }
     

@@ -19,12 +19,14 @@ import com.ou.pojo.Employee;
 import com.ou.services.UserService;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -204,7 +206,7 @@ public class EnterController implements Initializable {
         primaryStage.show();
     } 
     
-    public void showErrorDialog(String message) {
+    public static void showErrorDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Cảnh báo");
         alert.setHeaderText(message);
@@ -212,12 +214,21 @@ public class EnterController implements Initializable {
         alert.showAndWait();
     }
     
-    public void showSuccessDialog(String message) {
+    public static void showSuccessDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông tin");
         alert.setHeaderText(message);
         alert.setContentText("THÀNH CÔNG");
         alert.showAndWait();
+    }
+    
+    public static Optional<ButtonType> showConfirmDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Xác nhận");
+        alert.setHeaderText(message);
+        alert.setContentText("Nhấn OK để hoàn thành");
+        Optional<ButtonType> option = alert.showAndWait();
+        return option;
     }
     
     public void reset() {

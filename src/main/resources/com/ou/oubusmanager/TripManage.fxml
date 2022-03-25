@@ -28,13 +28,13 @@
                   <TextField fx:id="txtSearch" layoutX="-1.0" layoutY="20.0" prefHeight="35.0" prefWidth="575.0" promptText="Tìm kiếm id, tên chuyến" />
                   <TableView fx:id="tvTrip" layoutX="-1.0" layoutY="69.0" prefHeight="496.0" prefWidth="575.0">
                      <columns>
-                        <TableColumn fx:id="idColumn" prefWidth="69.60003507137299" text="Mã chuyến" />
-                        <TableColumn fx:id="fromColumn" prefWidth="85.59998321533203" text="Từ" />
-                        <TableColumn fx:id="toColumn" prefWidth="87.99993896484375" text="Đến" />
-                        <TableColumn fx:id="dateColumn" prefWidth="120.79998779296875" text="Thời gian" />
-                        <TableColumn fx:id="busIdColumn" minWidth="0.0" prefWidth="92.79998779296875" text="Mã xe" />
-                        <TableColumn fx:id="completeColumn" prefWidth="81.59994506835938" text="Hoàn thành" />
-                        <TableColumn fx:id="btnColumn" prefWidth="35.2000732421875" text="Xóa" />
+                        <TableColumn fx:id="idColumn" prefWidth="70.0" text="Mã chuyến" />
+                        <TableColumn fx:id="fromColumn" prefWidth="115.0" text="Từ" />
+                        <TableColumn fx:id="toColumn" prefWidth="115.0" text="Đến" />
+                        <TableColumn fx:id="dateColumn" prefWidth="110.0" text="Thời gian" />
+                        <TableColumn fx:id="busIdColumn" minWidth="0.0" prefWidth="45.0" text="Mã xe" />
+                        <TableColumn fx:id="completeColumn" prefWidth="73.0" text="Hoàn thành" />
+                        <TableColumn fx:id="btnColumn" prefWidth="40.0" text="Xóa" />
                      </columns>
                   </TableView>
                </children>

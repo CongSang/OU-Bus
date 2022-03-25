@@ -1,11 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ou.pojo;
 
-import java.util.Date;
-import javafx.beans.property.IntegerProperty;
 
 /**
  *
@@ -16,19 +10,35 @@ public class Trip {
     private String from;
     private String to;
     private String date;
+    private String time;
+    private int number;
     private int busId;
     private boolean complete;
 
     public Trip() {
     }
 
-    public Trip(int id, String from, String to, String date, int busId, boolean complete) {
+    public Trip(int id, String from, String to, String date
+            , int busId, boolean complete) {
         this.id = id;
         this.from = from;
         this.to = to;
         this.busId = busId;
         this.complete = complete;
         this.date = date;
+    }
+
+    //    Create for customer
+    public Trip(int id, String from, String to, String date
+            , String time, int number, int busId, boolean complete) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.date = date;
+        this.time = time;
+        this.number = number;
+        this.busId = busId;
+        this.complete = complete;
     }
     
     public Trip(String from, String to, String date, int busId, boolean complete) {
@@ -126,6 +136,34 @@ public class Trip {
      */
     public void setBusId(int busId) {
         this.busId = busId;
+    }
+
+    /**
+     * @return the time
+     */
+    public String getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    /**
+     * @return the number
+     */
+    public int getNumber() {
+        return number;
+    }
+
+    /**
+     * @param number the number to set
+     */
+    public void setNumber(int number) {
+        this.number = number;
     }
     
     

@@ -4,6 +4,8 @@
  */
 package com.ou.pojo;
 
+import java.util.List;
+
 /**
  *
  * @author Admin
@@ -11,6 +13,8 @@ package com.ou.pojo;
 public class Bus {
     private int id;
     private String busSerial;
+    private String seatNumber;
+    private List<Seat> seats;
 
     public Bus() {
     }
@@ -19,6 +23,14 @@ public class Bus {
         this.id = id;
         this.busSerial = busSerial;
     } 
+    
+    public Bus(int id, String busSerial, String seatNumber) {
+        this.id = id;
+        this.busSerial = busSerial;
+        this.seatNumber = seatNumber;
+    }
+    
+    
     
     /**
      * @return the id
@@ -50,9 +62,35 @@ public class Bus {
 
     @Override
     public String toString() {
-        return this.busSerial; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return this.getBusSerial();
+    }   
+
+    /**
+     * @return the seatNumber
+     */
+    public String getSeatNumber() {
+        return seatNumber;
     }
-    
-    
-    
+
+    /**
+     * @param seatNumber the seatNumber to set
+     */
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    /**
+     * @return the seats
+     */
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    /**
+     * @param seats the seats to set
+     */
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+
 }
