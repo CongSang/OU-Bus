@@ -92,4 +92,5 @@ public class Bus {
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
     }
+
 }

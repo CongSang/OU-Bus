@@ -41,6 +41,14 @@ public class Trip {
         this.complete = complete;
     }
     
+    public Trip(String from, String to, String date, int busId, boolean complete) {
+        this.from = from;
+        this.to = to;
+        this.busId = busId;
+        this.complete = complete;
+        this.date = date;
+    }
+    
     /**
      * @return the id
      */

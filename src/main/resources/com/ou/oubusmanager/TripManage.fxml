@@ -28,12 +28,13 @@
                   <TextField fx:id="txtSearch" layoutX="-1.0" layoutY="20.0" prefHeight="35.0" prefWidth="575.0" promptText="Tìm kiếm id, tên chuyến" />
                   <TableView fx:id="tvTrip" layoutX="-1.0" layoutY="69.0" prefHeight="496.0" prefWidth="575.0">
                      <columns>
-                        <TableColumn fx:id="idColumn" prefWidth="69.60003507137299" text="Mã chuyến" />
-                        <TableColumn fx:id="fromColumn" prefWidth="115.20001983642578" text="Từ" />
-                        <TableColumn fx:id="toColumn" prefWidth="103.99993896484375" text="Đến" />
-                        <TableColumn fx:id="dateColumn" prefWidth="110.39990234375" text="Thời gian" />
-                        <TableColumn fx:id="busIdColumn" prefWidth="81.60009765625" text="Mã xe" />
-                        <TableColumn fx:id="completeColumn" prefWidth="104.80001831054688" text="Hoàn thành" />
+                        <TableColumn fx:id="idColumn" prefWidth="70.0" text="Mã chuyến" />
+                        <TableColumn fx:id="fromColumn" prefWidth="115.0" text="Từ" />
+                        <TableColumn fx:id="toColumn" prefWidth="115.0" text="Đến" />
+                        <TableColumn fx:id="dateColumn" prefWidth="110.0" text="Thời gian" />
+                        <TableColumn fx:id="busIdColumn" minWidth="0.0" prefWidth="45.0" text="Mã xe" />
+                        <TableColumn fx:id="completeColumn" prefWidth="73.0" text="Hoàn thành" />
+                        <TableColumn fx:id="btnColumn" prefWidth="40.0" text="Xóa" />
                      </columns>
                   </TableView>
                </children>
@@ -89,7 +90,7 @@
                         <VBox layoutX="18.0" layoutY="50.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Từ:" />
-                              <TextField fx:id="txtFrom" editable="false" prefHeight="35.0" promptText="Nhập nơi khởi hành" styleClass="textfield" />
+                              <TextField fx:id="txtFrom" prefHeight="35.0" promptText="Nhập nơi khởi hành" styleClass="textfield" />
                            </children>
                         </VBox>
                         <VBox layoutX="18.0" layoutY="120.0" prefHeight="50.0" prefWidth="300.0">
@@ -112,8 +113,8 @@
                         </VBox>
                         <VBox layoutX="18.0" layoutY="330.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
-                              <Label styleClass="lbl" text="Xe:" />
-                              <ComboBox fx:id="cbBus" prefHeight="33.0" prefWidth="307.0" promptText="Chọn xe" />
+                              <Label styleClass="lbl" text="Chọn Xe:" />
+                              <ComboBox fx:id="cbBus" prefHeight="33.0" prefWidth="307.0" />
                            </children>
                         </VBox>
                         <Button fx:id="btnReset" layoutX="134.0" layoutY="399.0" mnemonicParsing="false" onAction="#btnReset_click" prefHeight="35.0" prefWidth="69.0" text="Nhập lại">

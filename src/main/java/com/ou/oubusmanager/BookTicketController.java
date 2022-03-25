@@ -108,8 +108,6 @@ public class BookTicketController implements Initializable {
 
     @FXML
     void btnBookTicketClick(ActionEvent event) {
-        
-        
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
         
         if(selected != null) {
@@ -131,7 +129,7 @@ public class BookTicketController implements Initializable {
                         EnterController.showSuccessDialog("Đặt vé thành công");
                     } catch (SQLException ex) {
                         Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-                        EnterController.showErrorDialog("Đặt vé thất bại");
+                        EnterController.showErrorDialog(ex.getMessage());
                     }
                 }
                 else
@@ -147,7 +145,8 @@ public class BookTicketController implements Initializable {
     @FXML
     void btnLogoutClick(MouseEvent event) throws IOException {
         Stage stage = App.getPrimaryStage();
-        Parent root = FXMLLoader.load(this.getClass().getClassLoader().getResource("com/ou/oubusmanager/Enter.fxml"));
+        Parent root = FXMLLoader.load(this.getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/Enter.fxml"));
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -212,12 +211,12 @@ public class BookTicketController implements Initializable {
         
         // Su kien click 1 dong trong bang
         tvTrip.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-        if (newSelection != null) {
-            try {
-                selectRowTable();
-            } catch (SQLException ex) {
-                Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            if (newSelection != null) {
+                try {
+                    selectRowTable();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     } 
