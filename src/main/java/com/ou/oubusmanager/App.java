@@ -1,6 +1,9 @@
 package com.ou.oubusmanager;
 
+import com.ou.services.TicketService;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,7 +34,13 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) { 
+        try {
+            // Tao ve cho ghe chua co ve
+            TicketService.createNewTicket();
+        } catch (SQLException ex) {
+            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         launch(args);
     }
 

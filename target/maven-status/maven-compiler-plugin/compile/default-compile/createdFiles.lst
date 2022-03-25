@@ -3,5 +3,6 @@ com\ou\oubusmanager\EnterController.class
 module-info.class
 com\ou\oubusmanager\BookTicketController.class
 com\ou\oubusmanager\TicketFormController.class
+com\ou\services\TripService.class
 com\ou\oubusmanager\TripManageController.class
 com\ou\utils\Jdbc.class
