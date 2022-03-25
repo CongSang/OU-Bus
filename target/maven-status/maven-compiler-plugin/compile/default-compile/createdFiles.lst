@@ -5,6 +5,5 @@ com\ou\oubusmanager\BookTicketController.class
 com\ou\oubusmanager\TicketFormController.class
 com\ou\services\TripService.class
 com\ou\oubusmanager\TripManageController.class
-com\ou\oubusmanager\TripManageController$1$1.class
 com\ou\oubusmanager\TripManageController$1.class
 com\ou\utils\Jdbc.class

@@ -9,7 +9,6 @@ import com.ou.services.TicketService;
 import com.ou.services.TripService;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -125,7 +124,7 @@ public class BookTicketController implements Initializable {
                     System.out.println(dtf.format(now));   
 
                     try {
-                        TicketService.createTicketBooked(selected.getId(), seat.getId(), this.customer.getId(), dtf.format(now));
+                        TicketService.createTicketBooking(selected.getId(), seat.getId(), this.customer.getId(), dtf.format(now));
                         EnterController.showSuccessDialog("Đặt vé thành công");
                     } catch (SQLException ex) {
                         Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);

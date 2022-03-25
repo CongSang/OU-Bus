@@ -117,6 +117,7 @@ public class EnterController implements Initializable {
             this.showErrorDialog("Vui lòng nhập Mật khẩu.");
         }
         else {
+            password = Security.encryptMD5(password);        
             Account a = UserService.getUserLogin(username, password);
             if(a instanceof Admin) {
                 changeAdminScene();
@@ -148,6 +149,7 @@ public class EnterController implements Initializable {
         }
         else {
             try {
+                password = Security.encryptMD5(password);
                 UserService.addUserSignUp(fullName, phone, age, username, password, role);
                 this.showSuccessDialog("Tạo tài khoản thành công");
                 reset();
