@@ -17,17 +17,18 @@ public class Trip {
 
     public Trip() {
     }
-
+    
     public Trip(int id, String from, String to, String date
-            , int busId, boolean complete) {
+            , String time, int busId, boolean complete) {
         this.id = id;
         this.from = from;
         this.to = to;
+        this.date = date;
+        this.time = time;
         this.busId = busId;
         this.complete = complete;
-        this.date = date;
     }
-
+    
     //    Create for customer
     public Trip(int id, String from, String to, String date
             , String time, int number, int busId, boolean complete) {
@@ -41,12 +42,13 @@ public class Trip {
         this.complete = complete;
     }
     
-    public Trip(String from, String to, String date, int busId, boolean complete) {
+    public Trip(String from, String to, String date, String time, int busId, boolean complete) {
         this.from = from;
         this.to = to;
         this.busId = busId;
         this.complete = complete;
         this.date = date;
+        this.time = time;
     }
     
     /**
