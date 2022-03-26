@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -106,8 +108,15 @@ public class BookTicketController implements Initializable {
     private Customer customer;
 
     @FXML
-    void btnBookTicketClick(ActionEvent event) {
+    void btnBookTicketClick(ActionEvent event) throws ParseException {
+        // 60p doi ra mili giay
+        long milis60min = 60 * 60 * 1000;
+        
+        Date currentTime = Date.from(Instant.now());
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
+        String date = selected.getDate();
+        String time = selected.getTime();
+        Date date1 = DateTimeCalc.formatDateAndTime(date, time);
         
         if(selected != null) {
             String message = String.format("Đặt vé chuyến %s - %s\nNgày %s\nLúc %s"
@@ -115,27 +124,33 @@ public class BookTicketController implements Initializable {
                     , selected.getDate(), selected.getTime());
         
             Optional<ButtonType> confirm = EnterController.showConfirmDialog(message);
-            if(confirm.get() == ButtonType.OK) {
             
-                Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
-                if (seat != null) {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    LocalDateTime now = LocalDateTime.now();
-                    System.out.println(dtf.format(now));   
+            // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
+            if (DateTimeCalc.timeBetween(currentTime, date1) >= milis60min) {
+                if(confirm.get() == ButtonType.OK) {
 
-                    try {
-                        TicketService.createTicketBooking(selected.getId(), seat.getId(), this.customer.getId(), dtf.format(now));
-                        EnterController.showSuccessDialog("Đặt vé thành công");
-                    } catch (SQLException ex) {
-                        Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-                        EnterController.showErrorDialog(ex.getMessage());
+                    Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
+                    if (seat != null) {
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        LocalDateTime now = LocalDateTime.now();
+                        System.out.println(dtf.format(now));   
+
+                        try {
+                            TicketService.createTicketBooking(selected.getId(), seat.getId(), this.customer.getId(), dtf.format(now));
+                            EnterController.showSuccessDialog("Đặt vé thành công");
+                        } catch (SQLException ex) {
+                            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+                            EnterController.showErrorDialog(ex.getMessage());
+                        }
                     }
+                    else
+                        EnterController.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
                 }
                 else
-                    EnterController.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
+                    EnterController.showErrorDialog("Hủy đặt vé"); 
             }
             else
-                EnterController.showErrorDialog("Hủy đặt vé"); 
+                EnterController.showErrorDialog("Sắp đến thời gian xe chạy không được đặt vé nữa.");
         }
         else
             EnterController.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
