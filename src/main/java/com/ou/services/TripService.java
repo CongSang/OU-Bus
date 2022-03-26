@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +45,11 @@ public class TripService {
                 ResultSet rs = stm.executeQuery();
 
                 while(rs.next()) {
-                    Date d = new Date(rs.getTimestamp("date_start").getTime());           
-                    String strDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(d);
-
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    
                     Trip t = new Trip(rs.getInt(id), rs.getString(from)
-                            , rs.getString(to), strDate
+                            , rs.getString(to), rs.getDate(date).toString()
+                            , sdf.format(rs.getTime(date))
                             , rs.getInt(busId), rs.getBoolean(complete));
 
                     trips.add(t);
@@ -118,7 +120,7 @@ public class TripService {
             
             stm.setString(1, t.getFrom());
             stm.setString(2, t.getTo());
-            stm.setString(3, t.getDate());
+            stm.setString(3, t.getDate() + " " + t.getTime());
             stm.setInt(4, t.getBusId());
             stm.setBoolean(5, t.isComplete());
             
@@ -126,5 +128,53 @@ public class TripService {
 
         }
         
+    }
+    
+    public static int deleteTrip(int id) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("DELETE FROM trip WHERE id = ?");
+            
+            stm.setInt(1, id);
+            
+            return stm.executeUpdate();
+        }
+    }
+    
+    public static int updateTrip(Trip t) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("UPDATE trip SET trip.from = ?"
+                    + ", trip.to = ?, date_start = ?, bus_id = ?, complete = ? WHERE id = ?");
+            
+            stm.setString(1, t.getFrom());
+            stm.setString(2, t.getTo());
+            stm.setString(3, t.getDate() + " " + t.getTime());
+            stm.setInt(4, t.getBusId());
+            stm.setBoolean(5, t.isComplete());
+            stm.setInt(6, t.getId());
+            return stm.executeUpdate();
+        }
+    }
+    
+    public static String getBusSerial(int id) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT bus_serial FROM bus WHERE id = ?");
+            stm.setInt(1, id);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next())
+                return rs.getString("bus_serial");
+            return null;
+        }
+    }
+    
+    public static Bus getBusById(int id) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM bus WHERE id = ?");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next())
+                return new Bus(rs.getInt("id"), rs.getString("bus_serial"));
+            return null;
+        }
     }
 }

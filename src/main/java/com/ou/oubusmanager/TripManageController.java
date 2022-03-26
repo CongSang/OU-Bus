@@ -4,6 +4,8 @@ import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.services.TripService;
 import com.ou.pojo.Admin;
+import com.ou.services.BusService;
+import com.ou.services.SeatService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -59,7 +61,10 @@ public class TripManageController implements Initializable {
 
     @FXML
     private Button btnUpdate;
-
+    
+    @FXML
+    private Button btnCancel;
+    
     @FXML
     private ComboBox<Bus> cbBus;
 
@@ -85,6 +90,9 @@ public class TripManageController implements Initializable {
     private TableColumn<Trip, String> dateColumn;
     
     @FXML
+    private TableColumn<Trip, String> timeColumn;
+    
+    @FXML
     private TableColumn<Trip, Integer> busIdColumn;
     
     @FXML
@@ -104,7 +112,8 @@ public class TripManageController implements Initializable {
 
     @FXML
     private TextField txtTo;
-
+    
+    
     private Admin admin;
 
     public void setAdmin(Admin admin) {
@@ -120,33 +129,76 @@ public class TripManageController implements Initializable {
         fromColumn.setCellValueFactory(new PropertyValueFactory<>("from"));
         toColumn.setCellValueFactory(new PropertyValueFactory<>("to"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
         busIdColumn.setCellValueFactory(new PropertyValueFactory<>("busId"));
         completeColumn.setCellValueFactory(new PropertyValueFactory<>("complete"));
+        completeColumn.resizableProperty().set(false);
+        
+        //thay doi cach hien thi true false
+        completeColumn.setCellFactory(col -> new TableCell<Trip, Boolean>() {
+            @Override
+            protected void updateItem(Boolean t, boolean empty) {
+                super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                setText(empty ? null : t ? "Hoàn thành" : "Chưa");
+            }
+            
+        });
+        
+        //thay doi cach hien thi id
+        busIdColumn.setCellFactory(cell -> new TableCell<Trip, Integer>() {
+            @Override
+            protected void updateItem(Integer t, boolean empty) {
+                super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                try {
+                    if (t != null) {
+                        Bus b = TripService.getBusById(t);
+                        setText(b != null ? b.getBusSerial() : null);
+                    }
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            
+        });
         
         try {
             cbBus.setItems(FXCollections.observableList(TripService.getBuses()));
-        } catch (SQLException ex) {
-            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {       
-            this.loadData(null); 
-        } catch (ParseException ex) {
-            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        txtSearch.textProperty().addListener((event) -> {
+            this.loadData(null);
+            txtSearch.textProperty().addListener((event) -> {
             try {
                 this.loadData(txtSearch.getText());
             } catch (ParseException ex) {
                 Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        } catch (SQLException | ParseException ex) {
+            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // Su kien click 1 dong trong bang
+        tvTrip.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                try {
+                    selectRowTable();
+                    btnAdd.setDisable(true);
+                    btnAdd.setVisible(false);
+                    
+                    btnUpdate.setDisable(false);
+                    btnUpdate.setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
     }
     
     private void loadData(String kw) throws ParseException {       
         ObservableList<Trip> trips = FXCollections.observableArrayList();
-        
+        if (kw == null)
+            txtSearch.setText("");
         try {  
             trips.addAll(TripService.getTrips(kw));          
             tvTrip.setItems(trips);
@@ -191,7 +243,21 @@ public class TripManageController implements Initializable {
                         deleteIcon.setStyleClass("delete-icon");
                         
                         deleteIcon.setOnMouseClicked((MouseEvent event) -> {
-                            EnterController.showErrorDialog("test");
+                            Trip data = getTableView().getItems().get(getIndex());
+                            try {
+                                if(TripService.deleteTrip(data.getId()) != -1) {
+                                    EnterController.showSuccessDialog("Xóa chuyến xe thành công.");
+                                    
+                                    clearSelection();
+                                    reset();
+                                    loadData(null);
+                                }
+                                else
+                                    EnterController.showErrorDialog("Xóa chuyến xe thất bại.");
+                            } catch (SQLException | ParseException ex) {
+                                Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            System.out.println("selectedData: " + data);
                         });
                         
                         HBox managebtn = new HBox(deleteIcon);
@@ -199,12 +265,14 @@ public class TripManageController implements Initializable {
                         HBox.setMargin(deleteIcon, new Insets(2, 2, 2, 1));
                         setGraphic(managebtn);
                         setText(null);
+                        
                     }
                 }
             };
             return cell;
         };
         btnColumn.setCellFactory(cellFactory);
+        btnColumn.setResizable(false);
     }
     
     @FXML
@@ -226,11 +294,12 @@ public class TripManageController implements Initializable {
 
 //                    String datetime = d.toString() + " " + txtTime.getText();                
                     Trip t = new Trip (txtFrom.getText(), txtTo.getText(),
-                    dtf.format(dtCheck), cbBus.getValue().getId(), false);
+                        dtf.format(dtCheck).split(" ")[0],
+                        dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
                     
                     if (TripService.addTrip(t) != -1) {
                         EnterController.showSuccessDialog("Thêm chuyến xe thành công.");
-                        
+
                         loadData(null);
                         reset();
                     }
@@ -238,7 +307,7 @@ public class TripManageController implements Initializable {
                         EnterController.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
                     }
                         
-                } catch (Exception e) {
+                } catch (SQLException | ParseException e) {
                     EnterController.showErrorDialog(e.getMessage());
                 }
             }
@@ -247,12 +316,52 @@ public class TripManageController implements Initializable {
     
     @FXML
     void btnUpdate_click(ActionEvent event) {
+        Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
+        
+        if (dpDate.getValue() == null || txtFrom.getText().isEmpty()||
+                txtTo.getText().isEmpty() || txtTime.getText().isEmpty() ||
+                cbBus.getValue() == null) {
+            EnterController.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
+        }
+        else {
+        
+            LocalDateTime dtCheck;
 
+            if (txtTime.getText() != null) {
+                try {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    dtCheck = LocalDateTime.parse(dpDate.getValue() + " " + txtTime.getText(), dtf);
+            
+                    Trip t = new Trip (selected.getId(), txtFrom.getText(), txtTo.getText(),
+                        dtf.format(dtCheck).split(" ")[0],
+                        dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
+                    
+                    if (TripService.updateTrip(t) != -1) {
+                        EnterController.showSuccessDialog("Cập nhật chuyến xe thành công.");
+
+                        loadData(null);
+                    }
+                    else {
+                        EnterController.showErrorDialog("Có lỗi xảy ra. Không thể cập nhật.");
+                    }
+                        
+                } catch (Exception e) {
+                    EnterController.showErrorDialog(e.getMessage());
+                }
+            }
+        }
     }
     
     @FXML
     void btnReset_click(ActionEvent event) {
         reset();
+    }
+    
+    @FXML
+    void btnCancel_click(ActionEvent event) {
+        reset();
+        
+        clearSelection();
     }
     
     @FXML
@@ -270,10 +379,36 @@ public class TripManageController implements Initializable {
     }
     
     void reset() {
+        
         txtFrom.setText("");
         txtTo.setText("");
         dpDate.setValue(null);
         txtTime.setText(""); 
         cbBus.setValue(null);;
+    }
+    
+    private void selectRowTable() throws SQLException {
+        Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
+        Bus b = TripService.getBusById(selected.getBusId());
+        txtFrom.setText(selected.getFrom());
+        txtTo.setText(selected.getTo());
+        dpDate.setValue(LocalDate.parse(selected.getDate()));
+        txtTime.setText(selected.getTime());
+        if (b != null)
+            cbBus.setValue(b);
+        
+        btnCancel.setVisible(true);
+    }
+    
+    void clearSelection() {
+        this.tvTrip.getSelectionModel().clearSelection();
+        
+        btnAdd.setDisable(false);
+        btnAdd.setVisible(true);
+
+        btnUpdate.setDisable(true);
+        btnUpdate.setVisible(false);
+        
+        btnCancel.setVisible(false);
     }
 }

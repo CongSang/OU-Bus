@@ -112,6 +112,7 @@ public class BookTicketController implements Initializable {
         // 60p doi ra mili giay
         long milis60min = 60 * 60 * 1000;
         
+        // Thoi gian hien tai
         Date currentTime = Date.from(Instant.now());
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
         String date = selected.getDate();
