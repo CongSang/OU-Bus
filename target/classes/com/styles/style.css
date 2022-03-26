@@ -23,6 +23,11 @@
     -fx-text-fill: white;
 }
 
+.btn-cancel {
+    -fx-background-color: #d10000;
+    -fx-text-fill: white;
+}
+
 .delete-icon {
     -fx-cursor: hand;
     -glyph-size: 20px;
