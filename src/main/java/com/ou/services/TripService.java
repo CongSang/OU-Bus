@@ -47,7 +47,6 @@ public class TripService {
                 while(rs.next()) {
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                     
-                    
                     Trip t = new Trip(rs.getInt(id), rs.getString(from)
                             , rs.getString(to), rs.getDate(date).toString()
                             , sdf.format(rs.getTime(date))

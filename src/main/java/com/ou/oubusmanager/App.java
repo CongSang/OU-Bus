@@ -2,7 +2,12 @@ package com.ou.oubusmanager;
 
 import com.ou.services.SeatService;
 import com.ou.services.TicketService;
+import java.util.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -35,7 +40,21 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+        Date d1 = Date.from(Instant.now());
+        String date2 = "26-03-2022";
+        String time2 = "23:00";
+
+        String format = "dd-MM-yyyy hh:mm";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+        sdf.format(d1);
+        Date d2 = DateTimeCalc.formatDateAndTime(date2, time2);
+        
+        DateTimeCalc.timeBetween(d1,d2);
+        
+        
         //Tu dong tao seats va ticket's seats neu chua co
         try {
             // Tao ghe
