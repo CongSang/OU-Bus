@@ -1,13 +1,16 @@
 package com.ou.oubusmanager;
 
+import com.ou.services.BusService;
 import com.ou.services.SeatService;
 import com.ou.services.TicketService;
+import com.ou.services.TripService;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -41,31 +44,45 @@ public class App extends Application {
     }
 
     public static void main(String[] args) throws ParseException {
-        Date d1 = Date.from(Instant.now());
-        String date2 = "26-03-2022";
-        String time2 = "23:00";
-
-        String format = "dd-MM-yyyy hh:mm";
-
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-
-        sdf.format(d1);
-        Date d2 = DateTimeCalc.formatDateAndTime(date2, time2);
+        systemAuto();
         
-        DateTimeCalc.timeBetween(d1,d2);
-        
-        
-        //Tu dong tao seats va ticket's seats neu chua co
-        try {
-            // Tao ghe
-            SeatService.createSeatOfBus();
-            
-            // Tao ve
-            TicketService.createNewTicket();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         launch(args);
+    }
+    
+    public static void systemAuto () throws ParseException {
+        int milisInASecond = 1000;
+        long time = System.currentTimeMillis();
+
+        Runnable update = new Runnable() {
+            public void run() {
+                try {
+                    // Chuyen di da hoan thanh
+                    TripService.setCompleteTrip();
+                    // Chuyen ve trong(FREE) ve trang thai thu hoi(WITHDRAW)
+                    TicketService.setTicketFreeBefore5min();
+                    // Chuyen ve khach hang da dat ma khong lay truoc 30p xe chay
+                    TicketService.setTicketBookedBefore30min();
+                    // Tu tao ghe
+                    SeatService.createSeatOfBus();
+                    // Tu tao ve cho moi chuyen di moi duoc them
+                    TicketService.createNewTicket();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                update.run();
+            }
+        }, time % milisInASecond, milisInASecond);
+
+        // This will update for the current minute, it will be updated again in at most one minute.
+        update.run();
     }
 
     public static Stage getPrimaryStage() {

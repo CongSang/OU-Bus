@@ -20,8 +20,9 @@ public class SeatService {
     // Lay ghe chua co ve cua moi chuyen xe
     public static List<Seat> getAllSeatNoTicket() throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT s.id, s.bus_id, t.id as trip_id FROM seat s, trip t"
-                        + " WHERE s.bus_id= t.bus_id AND t.complete = ? "
+            PreparedStatement stm = conn.prepareStatement("SELECT s.id, s.bus_id, t.id as trip_id"
+                    + " FROM seat s, trip t"
+                    + " WHERE s.bus_id= t.bus_id AND t.complete = ? "
                     + "AND (s.id, t.id) NOT IN (SELECT seat_id, trip_id FROM ticket)");
             stm.setInt(1, 0);
             
