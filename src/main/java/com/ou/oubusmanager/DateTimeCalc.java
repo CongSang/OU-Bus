@@ -22,8 +22,6 @@ public class DateTimeCalc {
 
             sdf.format(date1);
             sdf.format(date2);
-            System.out.println(date1);
-            System.out.println(date2 + "\n");
 
             // getTime() returns the number of milliseconds since January 1, 1970, 00:00:00 GMT represented by this Date object
             long diff = date2.getTime() - date1.getTime();

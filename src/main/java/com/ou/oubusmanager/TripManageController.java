@@ -213,24 +213,6 @@ public class TripManageController implements Initializable {
         Callback<TableColumn<Trip, String>, TableCell<Trip, String>> cellFactory = (TableColumn<Trip, String> param) -> {
             
             final TableCell<Trip, String> cell = new TableCell<Trip, String>() {
-                    
-//                    Image img = new Image("com/images/trashbin.png");
-//                    ImageView view = new ImageView(img);
-                    
-//                    Button btn = new Button();
-//                    {
-//                        btn.setOnAction((ActionEvent event) -> {
-//                            Trip data = getTableView().getItems().get(getIndex());
-//                            System.out.println("selectedData: " + data);
-//                        });
-//                        
-//                        view.setFitHeight(15);
-//                        view.setPreserveRatio(true);
-//                        btn.setPrefSize(5, 5);
-//                        btn.setGraphic(view);
-//                        btn.setCursor(Cursor.HAND);
-//                    }
-
                 @Override
                 public void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -338,12 +320,14 @@ public class TripManageController implements Initializable {
                     
                     if (TripService.updateTrip(t) != -1) {
                         EnterController.showSuccessDialog("Cập nhật chuyến xe thành công.");
-
+                        
                         loadData(null);
                     }
                     else {
                         EnterController.showErrorDialog("Có lỗi xảy ra. Không thể cập nhật.");
                     }
+                    clearSelection();
+                    reset();
                         
                 } catch (Exception e) {
                     EnterController.showErrorDialog(e.getMessage());

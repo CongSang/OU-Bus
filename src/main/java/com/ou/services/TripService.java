@@ -1,5 +1,6 @@
 package com.ou.services;
 
+import com.ou.oubusmanager.DateTimeCalc;
 import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.utils.Jdbc;
@@ -11,8 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +45,14 @@ public class TripService {
                 ResultSet rs = stm.executeQuery();
 
                 while(rs.next()) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    Date d = new Date(rs.getTimestamp("date_start").getTime());           
+                    String strDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(d);
+                    
+                    String dateStart = strDate.split(" ")[0];
+                    String timeStart = strDate.split(" ")[1];
                     
                     Trip t = new Trip(rs.getInt(id), rs.getString(from)
-                            , rs.getString(to), rs.getDate(date).toString()
-                            , sdf.format(rs.getTime(date))
+                            , rs.getString(to), dateStart, timeStart
                             , rs.getInt(busId), rs.getBoolean(complete));
 
                     trips.add(t);
@@ -75,7 +78,7 @@ public class TripService {
              
                 stm.setString(1, fromSearch);
                 stm.setString(2, toSearch);
-                stm.setInt(3, 0);
+                stm.setInt(3, 0); // Chua hoan thanh
                 ResultSet rs = stm.executeQuery();
 
                 while(rs.next()) {
@@ -153,6 +156,28 @@ public class TripService {
             stm.setInt(6, t.getId());
             return stm.executeUpdate();
         }
+    }
+    
+    public static void setCompleteTrip() throws SQLException, ParseException {
+        Date currentTime = Date.from(Instant.now());
+        
+        List<Trip> trips = getTrips(null);
+        for(Trip t : trips) {
+            String date1 = t.getDate();
+            String time = t.getTime();
+            Date date2 = DateTimeCalc.formatDateAndTime(date1, time);
+            if(DateTimeCalc.timeBetween(date2, currentTime) >= 0) {
+                try (Connection conn = Jdbc.getConn()) {
+                    PreparedStatement stm = conn.prepareStatement("UPDATE trip"
+                        +" SET complete = ? WHERE id = ?");
+                    stm.setInt(1, 1); // Hoan thanh
+                    stm.setInt(2, t.getId());
+                    
+                    stm.executeUpdate(); 
+                }
+            }
+        }
+        
     }
     
     public static String getBusSerial(int id) throws SQLException {
