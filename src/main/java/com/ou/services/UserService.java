@@ -67,7 +67,7 @@ public class UserService {
     }
     
     public static int addUser(String fullName, String phone, String age
-            , String username, String password, String user_role) throws SQLException {
+            , String username, String password, String user_role) {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("INSERT INTO user (name, phone, age, username, password, user_role)"
                         + "VALUES (?,?,?,?,?,?)");    
@@ -79,6 +79,9 @@ public class UserService {
             stm.setString(6, user_role);           
             
             return stm.executeUpdate(); 
-        }     
+        } catch (SQLException e) {
+            System.out.println("ERROR CODE: " + e.getErrorCode());
+            return -1;
+        }
     }
 }

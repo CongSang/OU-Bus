@@ -54,7 +54,7 @@ public class TicketService {
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
-                    +" SET customer_id = ?, employee = ?, status = ?, date_book = ? "
+                    +" SET customer_id = ?, employee_id = ?, status = ?, date_book = ? "
                     + " WHERE trip_id = ? AND seat_id = ?");
             stm.setInt(1, customerId);
             stm.setInt(2, employeeId);
