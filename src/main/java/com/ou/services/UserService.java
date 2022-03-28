@@ -42,16 +42,31 @@ public class UserService {
                     case "EMPLOYEE":
                         u = new Employee(id, username, password, name, age, phone);
                         break;
-                    case "CUSTOMER":
-                        u = new Customer(id, username, password, name, age, phone);
-                        break;
                 }
             }      
             return u;
         }     
     }
     
-    public static int addUserSignUp(String fullName, String phone, String age
+    public static Account getCustomer(String name, String phone) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM user where name = ? AND phone = ?");
+            stm.setString(1, name);
+            stm.setString(2, phone);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            Account u = null;
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                
+                u = new Customer(id, name, phone);
+            }      
+            return u;
+        }     
+    }
+    
+    public static int addUser(String fullName, String phone, String age
             , String username, String password, String user_role) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("INSERT INTO user (name, phone, age, username, password, user_role)"

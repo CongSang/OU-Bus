@@ -46,10 +46,14 @@
                         <TableColumn fx:id="seatsColumn" prefWidth="70.0" text="Số lượng" />
                     </columns>
                   </TableView>
-                  <Button fx:id="btnCancelSearch" layoutX="480.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="96.0" styleClass="btn-delete" text="Hủy tìm kiếm">
+                  <Button fx:id="btnCancelSearch" layoutX="480.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="96.0" text="Hủy tìm kiếm">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="btn-delete" />
+                        <String fx:value="btn" />
+                     </styleClass>
                   </Button>
                </children>
             </AnchorPane>
@@ -84,33 +88,33 @@
          <left>
             <AnchorPane prefHeight="587.0" prefWidth="370.0" style="-fx-padding: 8;" BorderPane.alignment="CENTER">
                <children>
-                  <Pane layoutX="18.0" layoutY="23.0" prefHeight="540.0" prefWidth="336.0" styleClass="enterfield">
+                  <Pane layoutX="18.0" layoutY="23.0" prefHeight="543.0" prefWidth="336.0" styleClass="enterfield">
                      <children>
-                        <VBox layoutX="18.0" layoutY="50.0" prefHeight="50.0" prefWidth="300.0">
+                        <VBox layoutX="18.0" layoutY="31.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Từ:" />
                               <TextField fx:id="txtFrom" editable="false" prefHeight="35.0" styleClass="textfield" />
                            </children>
                         </VBox>
-                        <VBox layoutX="18.0" layoutY="110.0" prefHeight="50.0" prefWidth="300.0">
+                        <VBox layoutX="18.0" layoutY="91.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Đến:" />
                               <TextField fx:id="txtTo" editable="false" prefHeight="35.0" styleClass="textfield" />
                            </children>
                         </VBox>
-                        <VBox layoutX="18.0" layoutY="170.0" prefHeight="50.0" prefWidth="300.0">
+                        <VBox layoutX="18.0" layoutY="151.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Ngày khởi hành:" />
                               <TextField fx:id="txtDateDeparture" editable="false" prefHeight="35.0" styleClass="textfield" />
                            </children>
                         </VBox>
-                        <VBox layoutX="18.0" layoutY="230.0" prefHeight="50.0" prefWidth="300.0">
+                        <VBox layoutX="18.0" layoutY="211.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Thời gian khởi hành:" />
                               <TextField fx:id="txtTimeDeparture" editable="false" prefHeight="35.0" styleClass="textfield" />
                            </children>
                         </VBox>
-                        <Button fx:id="btnBookTicket" layoutX="18.0" layoutY="476.0" mnemonicParsing="false" onAction="#btnBookTicketClick" prefHeight="35.0" prefWidth="300.0" text="Book Ticket">
+                        <Button fx:id="btnBookTicket" layoutX="18.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnBookTicketClick" prefHeight="35.0" prefWidth="300.0" text="Book Ticket">
                            <styleClass>
                               <String fx:value="button1" />
                               <String fx:value="btn" />
@@ -119,20 +123,25 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Label layoutX="19.0" layoutY="430.0" prefHeight="36.0" prefWidth="251.0" style="-fx-text-fill: red;" text="Đến và lấy vé sau khi đặt thành công, vé sẽ bị hủy đặt sau 30 phút từ khi đặt vé" wrapText="true" />
-                        <Label layoutX="19.0" layoutY="403.0" prefHeight="27.0" prefWidth="298.0" style="-fx-text-fill: red;" text="Vui lòng kiểm tra kĩ thông tin trước khi đặt vé." wrapText="true" />
-                        <Label layoutX="19.0" layoutY="14.0" styleClass="lbl" text="Khách hàng:" textFill="RED" />
+                        <Label layoutX="19.0" layoutY="14.0" styleClass="lbl" text="Nhân viên:" textFill="RED" />
                         <Label fx:id="lblCustomerName" layoutX="96.0" layoutY="14.0" styleClass="lbl" text="Label" />
-                        <VBox layoutX="18.0" layoutY="290.0" prefHeight="50.0" prefWidth="300.0">
+                        <VBox layoutX="18.0" layoutY="271.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Xe số:" />
                               <TextField fx:id="txtBusSeri" editable="false" prefHeight="35.0" styleClass="textfield" />
                            </children>
                         </VBox>
-                        <VBox layoutX="18.0" layoutY="350.0" prefHeight="50.0" prefWidth="300.0">
+                        <VBox layoutX="18.0" layoutY="427.0" prefHeight="50.0" prefWidth="300.0">
                            <children>
                               <Label styleClass="lbl" text="Chỗ ngồi còn trống:" />
                               <ComboBox fx:id="cbSeatEmpty" prefHeight="35.0" prefWidth="308.0" promptText="Chọn ghế" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="331.0" prefHeight="90.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Thông tin khách hàng đặt:" />
+                              <TextField fx:id="txtFullName" prefHeight="35.0" promptText="Họ tên" styleClass="textfield" />
+                              <TextField fx:id="txtPhone" layoutX="10.0" layoutY="27.0" prefHeight="35.0" promptText="Số điện thoại" styleClass="textfield" />
                            </children>
                         </VBox>
                      </children>
