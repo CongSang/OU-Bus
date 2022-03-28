@@ -1,9 +1,9 @@
 com\ou\oubusmanager\TripManageController$3.class
-com\ou\oubusmanager\EnterController.class
-com\ou\oubusmanager\TripManageController$2.class
-module-info.class
 com\ou\oubusmanager\TicketFormController.class
 com\ou\services\TripService.class
 com\ou\oubusmanager\TripManageController.class
 com\ou\oubusmanager\TripManageController$1.class
+com\ou\oubusmanager\EnterController.class
+com\ou\oubusmanager\TripManageController$2.class
+module-info.class
 com\ou\utils\Jdbc.class

@@ -37,6 +37,9 @@ public class App extends Application {
                 .add(new Image(getClass().getClassLoader().getResource("com/images/logo.png").toString()));
 
         Scene scene = new Scene(root);
+        primaryStage.setOnCloseRequest((t) -> {
+            System.exit(0);
+        });
         primaryStage.centerOnScreen();
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
@@ -50,7 +53,13 @@ public class App extends Application {
     }
     
     public static void systemAuto () throws ParseException {
-        int milisInASecond = 1000;
+        try {
+            // Tu tao ghe
+            SeatService.createSeatOfBus();
+        } catch (SQLException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int milisInAMinute = 60000;
         long time = System.currentTimeMillis();
 
         Runnable update = new Runnable() {
@@ -62,8 +71,6 @@ public class App extends Application {
                     TicketService.setTicketFreeBefore5min();
                     // Chuyen ve khach hang da dat ma khong lay truoc 30p xe chay
                     TicketService.setTicketBookedBefore30min();
-                    // Tu tao ghe
-                    SeatService.createSeatOfBus();
                     // Tu tao ve cho moi chuyen di moi duoc them
                     TicketService.createNewTicket();
                 } catch (SQLException ex) {
@@ -79,7 +86,7 @@ public class App extends Application {
             public void run() {
                 update.run();
             }
-        }, time % milisInASecond, milisInASecond);
+        }, time % milisInAMinute, milisInAMinute);
 
         // This will update for the current minute, it will be updated again in at most one minute.
         update.run();
