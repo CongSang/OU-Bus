@@ -56,7 +56,7 @@ public class Ticket {
     
     
     public enum Status {
-        FREE, BOOKING, BOOKED, BOUGHT, WITHDRAW
+        FREE, BOOKED, BOUGHT, WITHDRAW
     }
 
     /**

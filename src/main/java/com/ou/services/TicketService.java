@@ -48,19 +48,20 @@ public class TicketService {
     }
     
     // Khach hang dat ve va chuyen trang thai BOOKED
-    public static int createTicketBooking(int tripId, int seatId
-            , int customerId, String dateBook) throws SQLException {
-        String status = "BOOKING";
+    public static int createTicketBooked(int tripId, int seatId
+            , int customerId, int employeeId, String dateBook) throws SQLException {
+        String status = "BOOKED";
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
-                    +" SET customer_id = ?, status = ?, date_book = ? "
+                    +" SET customer_id = ?, employee = ?, status = ?, date_book = ? "
                     + " WHERE trip_id = ? AND seat_id = ?");
             stm.setInt(1, customerId);
-            stm.setString(2, status);
-            stm.setString(3, dateBook);
-            stm.setInt(4, tripId);
-            stm.setInt(5, seatId);           
+            stm.setInt(2, employeeId);
+            stm.setString(3, status);
+            stm.setString(4, dateBook);
+            stm.setInt(5, tripId);
+            stm.setInt(6, seatId);           
             
             return stm.executeUpdate(); 
         }     
@@ -91,7 +92,7 @@ public class TicketService {
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
-                    +" SET status = ?"
+                    + " SET status = ?"
                     + " WHERE trip_id = ? AND seat_id = ? AND status = ?");
             stm.setString(1, status);
             stm.setInt(2, tripId);
@@ -106,9 +107,8 @@ public class TicketService {
     public static List<Ticket> getTicketByTrip(int tripId) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("SELECT k.*"
-                    + " FROM seat s, ticket k, trip t"
-                    + " WHERE k.trip_id = t.id AND k.seat_id = s.id"
-                    + " AND t.id = ?");
+                    + " FROM ticket k, trip t"
+                    + " WHERE k.trip_id = t.id AND t.id = ?");
             stm.setInt(1, tripId);
             
             ResultSet rs = stm.executeQuery();

@@ -19,6 +19,12 @@ public abstract class Account {
 
     public Account() {
     }
+    
+    public Account(int id, String name, String phone) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+    }
 
     public Account(int id, String username, String password, String name, String age, String phone) {
         this.id = id;

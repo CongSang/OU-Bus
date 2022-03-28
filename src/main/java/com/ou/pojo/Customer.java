@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.ou.pojo;
 
 /**
@@ -5,10 +9,10 @@ package com.ou.pojo;
  * @author CÔNG SANG
  */
 public class Customer extends Account{
-    private UserRole role = Account.UserRole.CUSTOMER;
+    private Account.UserRole role = Account.UserRole.CUSTOMER;
 
-    public Customer(int id, String username, String password, String name, String age, String phone) {
-        super(id, username, password, name, age, phone);
+    public Customer(int id, String name, String phone) {
+        super(id, name, phone);
     }
 
     public Customer() {
@@ -27,5 +31,4 @@ public class Customer extends Account{
     public void setRole(Account.UserRole role) {
         this.role = role;
     }
-    
 }

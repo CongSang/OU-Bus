@@ -1,12 +1,14 @@
 package com.ou.oubusmanager;
 
 import com.ou.pojo.Customer;
+import com.ou.pojo.Employee;
 import com.ou.pojo.Seat;
 import com.ou.pojo.Trip;
 import com.ou.services.BusService;
 import com.ou.services.SeatService;
 import com.ou.services.TicketService;
 import com.ou.services.TripService;
+import com.ou.services.UserService;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -104,11 +106,17 @@ public class BookTicketController implements Initializable {
     private TextField txtBusSeri;
     
     @FXML
-    private ComboBox<Seat> cbSeatEmpty;
-    private Customer customer;
+    private TextField txtFullName;
 
     @FXML
-    void btnBookTicketClick(ActionEvent event) throws ParseException {
+    private TextField txtPhone;
+    
+    @FXML
+    private ComboBox<Seat> cbSeatEmpty;
+    private Employee employee;
+
+    @FXML
+    void btnBookTicketClick(ActionEvent event) throws ParseException, SQLException {
         // 60p doi ra mili giay
         long milis60min = 60 * 60 * 1000;
         
@@ -129,19 +137,19 @@ public class BookTicketController implements Initializable {
             // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
             if (DateTimeCalc.timeBetween(currentTime, date1) >= milis60min) {
                 if(confirm.get() == ButtonType.OK) {
-
+                    String name = txtFullName.getText();
+                    String phone = txtPhone.getText();
+                    Customer customer = (Customer) UserService.getCustomer(name, phone);
                     Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
+                    // Kiem tra khong chon ghe
                     if (seat != null) {
-                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                        LocalDateTime now = LocalDateTime.now();
-                        System.out.println(dtf.format(now));   
-
-                        try {
-                            TicketService.createTicketBooking(selected.getId(), seat.getId(), this.customer.getId(), dtf.format(now));
-                            EnterController.showSuccessDialog("Đặt vé thành công");
-                        } catch (SQLException ex) {
-                            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-                            EnterController.showErrorDialog(ex.getMessage());
+                        if(customer != null) {
+                            bookTicket(selected, seat, customer);
+                        }
+                        else {
+                            UserService.addUser(name, phone, null, null, null, "CUSTOMER");
+                            Customer customer1 = (Customer) UserService.getCustomer(name, phone);
+                            bookTicket(selected, seat, customer1);
                         }
                     }
                     else
@@ -156,6 +164,21 @@ public class BookTicketController implements Initializable {
         else
             EnterController.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
     }
+    
+    public void bookTicket(Trip trip, Seat seat, Customer customer) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));   
+
+        try {
+            TicketService.createTicketBooked(trip.getId(), seat.getId()
+                    , customer.getId(), this.employee.getId(), dtf.format(now));
+            EnterController.showSuccessDialog("Đặt vé thành công");
+        } catch (SQLException ex) {
+            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+            EnterController.showErrorDialog(ex.getMessage());
+        }
+    }
 
     @FXML
     void btnLogoutClick(MouseEvent event) throws IOException {
@@ -167,7 +190,7 @@ public class BookTicketController implements Initializable {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setResizable(false);
-        this.customer = null;
+        this.employee = null;
         stage.show();
     }
     
@@ -178,9 +201,9 @@ public class BookTicketController implements Initializable {
         txtSearchTo.setText("");
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-        this.setNameUser(this.customer.getName());
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+        this.setNameUser(this.employee.getName());
     }
     
     public void setNameUser(String name) {

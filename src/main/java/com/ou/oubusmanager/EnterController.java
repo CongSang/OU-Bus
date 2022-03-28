@@ -14,7 +14,6 @@ import animatefx.animation.FadeInRight;
 import animatefx.animation.FadeInLeft;
 import com.ou.pojo.Account;
 import com.ou.pojo.Admin;
-import com.ou.pojo.Customer;
 import com.ou.pojo.Employee;
 import com.ou.services.UserService;
 import java.io.IOException;
@@ -123,12 +122,9 @@ public class EnterController implements Initializable {
                 changeAdminScene();
                 tripmanage.setAdmin((Admin) a);
             }
-            else if (a instanceof Customer) {
-                changeCustomerScene();
-                bookticket.setCustomer((Customer) a);
-            }
             else if (a instanceof Employee) {
                 changeEmployeeScene();
+                bookticket.setEmployee((Employee) a);
             }
             else
                 showErrorDialog("Sai Tài khoản hoặc Mật khẩu.");
@@ -141,7 +137,7 @@ public class EnterController implements Initializable {
         String fullName = txtFullName.getText();
         String phone = txtPhone.getText();
         String age = txtAge.getText();
-        String role = "CUSTOMER";
+        String role = "EMPLOYEE";
         
         if(fullName.equals("") || phone.equals("") || age.equals("") 
                 || username.equals("") || password.equals("")) {
@@ -150,7 +146,7 @@ public class EnterController implements Initializable {
         else {
             try {
                 password = Security.encryptMD5(password);
-                UserService.addUserSignUp(fullName, phone, age, username, password, role);
+                UserService.addUser(fullName, phone, age, username, password, role);
                 this.showSuccessDialog("Tạo tài khoản thành công");
                 reset();
                 
@@ -162,21 +158,6 @@ public class EnterController implements Initializable {
             }
         }
     }
-    
-    public void changeCustomerScene() throws IOException {
-        Stage primaryStage = (Stage) btnLogin.getScene().getWindow();
-        
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("com/ou/oubusmanager/BookTicket.fxml"));
-        Parent root = fxmlLoader.load();
-        bookticket = fxmlLoader.<BookTicketController>getController();
-        
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.centerOnScreen();
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    } 
     
     public void changeAdminScene() throws IOException {
         Stage primaryStage = (Stage) btnLogin.getScene().getWindow();
@@ -197,9 +178,10 @@ public class EnterController implements Initializable {
         Stage primaryStage = (Stage) btnLogin.getScene().getWindow();
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("com/ou/oubusmanager/TicketManage.fxml"));
+                .getResource("com/ou/oubusmanager/BookTicket.fxml"));
         Parent root = fxmlLoader.load();
-        ticketmanage = fxmlLoader.<TicketManageController>getController();
+        bookticket = fxmlLoader.<BookTicketController>getController();
+//        ticketmanage = fxmlLoader.<TicketManageController>getController();
         
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
