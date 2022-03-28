@@ -1,5 +1,6 @@
 package com.ou.oubusmanager;
 
+import com.ou.utils.Security;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -144,18 +145,12 @@ public class EnterController implements Initializable {
             this.showErrorDialog("Vui lòng điền hết các thông tin.");
         }
         else {
-            try {
-                password = Security.encryptMD5(password);
-                UserService.addUser(fullName, phone, age, username, password, role);
-                this.showSuccessDialog("Tạo tài khoản thành công");
-                reset();
-                
-                pnSignIn.toFront();
-                new FadeInLeft(pnSignIn).play();
-            } catch (SQLException ex) {
-                Logger.getLogger(EnterController.class.getName()).log(Level.SEVERE, null, ex);
-                this.showErrorDialog("Tạo tài khoản thất bại.\nTên tài khoản của bạn có thể bị trùng.");
-            }
+            password = Security.encryptMD5(password);
+            UserService.addUser(fullName, phone, age, username, password, role);
+            this.showSuccessDialog("Tạo tài khoản thành công");
+            reset();
+            pnSignIn.toFront();
+            new FadeInLeft(pnSignIn).play();
         }
     }
     
