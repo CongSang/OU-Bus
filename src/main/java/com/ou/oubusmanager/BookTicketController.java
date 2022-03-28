@@ -1,5 +1,6 @@
 package com.ou.oubusmanager;
 
+import com.ou.utils.DateTimeCalc;
 import com.ou.pojo.Customer;
 import com.ou.pojo.Employee;
 import com.ou.pojo.Seat;
@@ -125,7 +126,7 @@ public class BookTicketController implements Initializable {
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
         String date = selected.getDate();
         String time = selected.getTime();
-        Date date1 = DateTimeCalc.formatDateAndTime(date, time);
+        Date date1 = DateTimeCalc.formatToDate(date, time);
         
         if(selected != null) {
             String message = String.format("Đặt vé chuyến %s - %s\nNgày %s\nLúc %s"

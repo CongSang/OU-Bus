@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.ou.oubusmanager;
+package com.ou.utils;
 
 import java.util.Date;
 import java.text.ParseException;
@@ -41,12 +41,30 @@ public class DateTimeCalc {
         return -1;
     }
     
-    public static Date formatDateAndTime(String date, String time) throws ParseException {
-        String format = "dd-MM-yyyy hh:mm";
+    public static Date formatToDate(String date, String time) throws ParseException {
+        String format = "dd-MM-yyyy HH:mm";
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Date dateFormat = (Date) sdf.parse(date + " " + time);
         return dateFormat;
+    }
+    
+    public static String formatddMMyyyy(String date) throws ParseException {
+        String format = "MM-dd-yyyy";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date dateFormat = (Date) sdf.parse(date);
+    
+        return new SimpleDateFormat("dd-MM-yyyy").format(dateFormat);
+    }
+    
+    public static String formatyyyyMMdd(String date) throws ParseException {
+        String format = "dd-MM-yyyy";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date dateFormat = (Date) sdf.parse(date);
+    
+        return new SimpleDateFormat("yyyy-MM-dd").format(dateFormat);
     }
     
 }

@@ -1,5 +1,6 @@
 package com.ou.oubusmanager;
 
+import com.ou.utils.DateTimeCalc;
 import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.services.TripService;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import java.util.logging.Level;
@@ -46,6 +48,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 /**
  * FXML Controller class
  *
@@ -134,6 +137,30 @@ public class TripManageController implements Initializable {
         completeColumn.setCellValueFactory(new PropertyValueFactory<>("complete"));
         completeColumn.resizableProperty().set(false);
         
+        //format dd/MM/yyyy dpDate
+        dpDate.setConverter(new StringConverter<LocalDate>()
+        {
+            private DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            @Override
+            public String toString(LocalDate localDate)
+            {
+                if(localDate==null)
+                    return "";
+                return dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String dateString)
+            {
+                if(dateString==null || dateString.trim().isEmpty())
+                {
+                    return null;
+                }
+                return LocalDate.parse(dateString,dateTimeFormatter);
+            }
+        });
+        
         //thay doi cach hien thi true false
         completeColumn.setCellFactory(col -> new TableCell<Trip, Boolean>() {
             @Override
@@ -189,6 +216,8 @@ public class TripManageController implements Initializable {
                     btnUpdate.setVisible(true);
                 } catch (SQLException ex) {
                     Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -199,8 +228,18 @@ public class TripManageController implements Initializable {
         ObservableList<Trip> trips = FXCollections.observableArrayList();
         if (kw == null)
             txtSearch.setText("");
-        try {  
-            trips.addAll(TripService.getTrips(kw));          
+        try {
+            trips.addAll(TripService.getTrips(kw));
+            long milis5min = 60*5*1000;
+            for (Trip t : trips) {
+                Date dateStart = DateTimeCalc.formatToDate(t.getDate(), t.getTime());
+                if (DateTimeCalc.timeBetween(new Date(), dateStart) <= milis5min) {
+                    t.setComplete(true);
+                    TripService.updateTrip(t);
+                }
+                    
+            }
+            
             tvTrip.setItems(trips);
             addButtonToTable();
         } catch (SQLException ex) {
@@ -311,9 +350,11 @@ public class TripManageController implements Initializable {
 
             if (txtTime.getText() != null) {
                 try {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    dtCheck = LocalDateTime.parse(dpDate.getValue() + " " + txtTime.getText(), dtf);
-            
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    
+                    dtCheck = LocalDateTime.parse(dpDate.getValue().format(dateFormat) + " " + txtTime.getText(), dtf);
+           
                     Trip t = new Trip (selected.getId(), txtFrom.getText(), txtTo.getText(),
                         dtf.format(dtCheck).split(" ")[0],
                         dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
@@ -322,12 +363,12 @@ public class TripManageController implements Initializable {
                         EnterController.showSuccessDialog("Cập nhật chuyến xe thành công.");
                         
                         loadData(null);
+                        reset();
+                        clearSelection();
                     }
                     else {
                         EnterController.showErrorDialog("Có lỗi xảy ra. Không thể cập nhật.");
                     }
-                    clearSelection();
-                    reset();
                         
                 } catch (Exception e) {
                     EnterController.showErrorDialog(e.getMessage());
@@ -371,12 +412,14 @@ public class TripManageController implements Initializable {
         cbBus.setValue(null);;
     }
     
-    private void selectRowTable() throws SQLException {
+    private void selectRowTable() throws SQLException, ParseException {
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
         Bus b = TripService.getBusById(selected.getBusId());
         txtFrom.setText(selected.getFrom());
         txtTo.setText(selected.getTo());
-        dpDate.setValue(LocalDate.parse(selected.getDate()));
+        
+        LocalDate parsedDate = LocalDate.parse(DateTimeCalc.formatyyyyMMdd(selected.getDate()));
+        dpDate.setValue(parsedDate);
         txtTime.setText(selected.getTime());
         if (b != null)
             cbBus.setValue(b);

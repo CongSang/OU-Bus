@@ -1,6 +1,6 @@
 package com.ou.services;
 
-import com.ou.oubusmanager.DateTimeCalc;
+import com.ou.utils.DateTimeCalc;
 import com.ou.pojo.Seat;
 import com.ou.pojo.Ticket;
 import com.ou.pojo.Trip;
@@ -54,7 +54,7 @@ public class TicketService {
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
-                    +" SET customer_id = ?, employee = ?, status = ?, date_book = ? "
+                    +" SET customer_id = ?, employee_id = ?, status = ?, date_book = ? "
                     + " WHERE trip_id = ? AND seat_id = ?");
             stm.setInt(1, customerId);
             stm.setInt(2, employeeId);
@@ -139,7 +139,7 @@ public class TicketService {
         for (Trip t : trips) {
             String date = t.getDate();
             String time = t.getTime();
-            Date date1 = DateTimeCalc.formatDateAndTime(date, time);
+            Date date1 = DateTimeCalc.formatToDate(date, time);
             long db = DateTimeCalc.timeBetween(currentTime, date1);
             if(db <= millis30min && db > millis5min) {
                 tickets = getTicketByTrip(t.getId());
@@ -161,7 +161,7 @@ public class TicketService {
         for (Trip t : trips) {
             String date = t.getDate();
             String time = t.getTime();
-            Date date1 = DateTimeCalc.formatDateAndTime(date, time);
+            Date date1 = DateTimeCalc.formatToDate(date, time);
             if(DateTimeCalc.timeBetween(currentTime, date1) <= millis5min) {
                 tickets = getTicketByTrip(t.getId());
                 for(Ticket tk : tickets) {
