@@ -117,7 +117,7 @@ public class BookTicketController implements Initializable {
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
         String date = selected.getDate();
         String time = selected.getTime();
-        Date date1 = DateTimeCalc.formatDateAndTime(date, time);
+        Date date1 = DateTimeCalc.formatToDate(date, time);
         
         if(selected != null) {
             String message = String.format("Đặt vé chuyến %s - %s\nNgày %s\nLúc %s"

@@ -139,7 +139,7 @@ public class TicketService {
         for (Trip t : trips) {
             String date = t.getDate();
             String time = t.getTime();
-            Date date1 = DateTimeCalc.formatDateAndTime(date, time);
+            Date date1 = DateTimeCalc.formatToDate(date, time);
             long db = DateTimeCalc.timeBetween(currentTime, date1);
             if(db <= millis30min && db > millis5min) {
                 tickets = getTicketByTrip(t.getId());
@@ -161,7 +161,7 @@ public class TicketService {
         for (Trip t : trips) {
             String date = t.getDate();
             String time = t.getTime();
-            Date date1 = DateTimeCalc.formatDateAndTime(date, time);
+            Date date1 = DateTimeCalc.formatToDate(date, time);
             if(DateTimeCalc.timeBetween(currentTime, date1) <= millis5min) {
                 tickets = getTicketByTrip(t.getId());
                 for(Ticket tk : tickets) {
