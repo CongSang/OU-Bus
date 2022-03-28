@@ -41,12 +41,30 @@ public class DateTimeCalc {
         return -1;
     }
     
-    public static Date formatDateAndTime(String date, String time) throws ParseException {
-        String format = "dd-MM-yyyy hh:mm";
+    public static Date formatToDate(String date, String time) throws ParseException {
+        String format = "dd-MM-yyyy HH:mm";
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Date dateFormat = (Date) sdf.parse(date + " " + time);
         return dateFormat;
+    }
+    
+    public static String formatddMMyyyy(String date) throws ParseException {
+        String format = "MM-dd-yyyy";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date dateFormat = (Date) sdf.parse(date);
+    
+        return new SimpleDateFormat("dd-MM-yyyy").format(dateFormat);
+    }
+    
+    public static String formatyyyyMMdd(String date) throws ParseException {
+        String format = "dd-MM-yyyy";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date dateFormat = (Date) sdf.parse(date);
+    
+        return new SimpleDateFormat("yyyy-MM-dd").format(dateFormat);
     }
     
 }

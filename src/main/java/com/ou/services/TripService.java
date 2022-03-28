@@ -143,14 +143,16 @@ public class TripService {
         }
     }
     
-    public static int updateTrip(Trip t) throws SQLException {
+    public static int updateTrip(Trip t) throws SQLException, ParseException {
         try(Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE trip SET trip.from = ?"
                     + ", trip.to = ?, date_start = ?, bus_id = ?, complete = ? WHERE id = ?");
             
+            String strDate = DateTimeCalc.formatyyyyMMdd(t.getDate());
+            
             stm.setString(1, t.getFrom());
             stm.setString(2, t.getTo());
-            stm.setString(3, t.getDate() + " " + t.getTime());
+            stm.setString(3, strDate + " " + t.getTime());
             stm.setInt(4, t.getBusId());
             stm.setBoolean(5, t.isComplete());
             stm.setInt(6, t.getId());
@@ -165,7 +167,7 @@ public class TripService {
         for(Trip t : trips) {
             String date1 = t.getDate();
             String time = t.getTime();
-            Date date2 = DateTimeCalc.formatDateAndTime(date1, time);
+            Date date2 = DateTimeCalc.formatToDate(date1, time);
             if(DateTimeCalc.timeBetween(date2, currentTime) >= 0) {
                 try (Connection conn = Jdbc.getConn()) {
                     PreparedStatement stm = conn.prepareStatement("UPDATE trip"

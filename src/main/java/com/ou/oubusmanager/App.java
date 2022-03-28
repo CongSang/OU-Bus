@@ -18,7 +18,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import javafx.scene.image.Image;
 
 /**
@@ -47,6 +46,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) throws ParseException {
+        System.out.println(DateTimeCalc.formatToDate("12-02-2022", "15:20"));
+        
         systemAuto();
         
         launch(args);
