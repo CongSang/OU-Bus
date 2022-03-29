@@ -1,6 +1,6 @@
 package com.ou.services;
 
-import com.ou.oubusmanager.DateTimeCalc;
+import com.ou.utils.DateTimeCalc;
 import com.ou.pojo.Seat;
 import com.ou.pojo.Ticket;
 import com.ou.pojo.Trip;
