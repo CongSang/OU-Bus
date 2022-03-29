@@ -41,7 +41,8 @@ public class TicketService {
                     stm.setString(4, status);           
 
                     stm.executeUpdate(); 
-                }   
+                } 
+                return 1;
             } 
         }
         return 0;
@@ -68,36 +69,34 @@ public class TicketService {
     }
     
     // Ve trong neu con 30p xe chay nhung khach hang khong lay hoac huy ve
-    public static int createTicketFree(int tripId, int seatId) throws SQLException {
+    public static int createTicketFree(int tripId) throws SQLException {
         String status = "FREE";
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
                     +" SET customer_id = ?, status = ?, date_book = ? "
-                    + " WHERE trip_id = ? AND seat_id = ? AND status = ?");
+                    + " WHERE trip_id = ? AND status = ?");
             stm.setString(1, null);
             stm.setString(2, status);
             stm.setString(3, null);
             stm.setInt(4, tripId);
-            stm.setInt(5, seatId);
-            stm.setString(6, "BOOKED");
+            stm.setString(5, "BOOKED");
             
             return stm.executeUpdate(); 
         }     
     }
     
     // Trong vong 5p truoc khi xe khoi hanh ve FREE se chuyen ve trang thai WITHDRAW 
-    public static int createTicketWithDraw(int tripId, int seatId) throws SQLException {
+    public static int createTicketWithDraw(int tripId) throws SQLException {
         String status = "WITHDRAW";
                
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
                     + " SET status = ?"
-                    + " WHERE trip_id = ? AND seat_id = ? AND status = ?");
+                    + " WHERE trip_id = ? AND status = ?");
             stm.setString(1, status);
             stm.setInt(2, tripId);
-            stm.setInt(3, seatId); 
-            stm.setString(4, "FREE");
+            stm.setString(3, "FREE");
             
             return stm.executeUpdate(); 
         }     
@@ -106,9 +105,9 @@ public class TicketService {
     //Lay tat ca ve cua 1 chuyen
     public static List<Ticket> getTicketByTrip(int tripId) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT k.*"
-                    + " FROM ticket k, trip t"
-                    + " WHERE k.trip_id = t.id AND t.id = ?");
+            PreparedStatement stm = conn.prepareStatement("SELECT *"
+                    + " FROM ticket"
+                    + " WHERE trip_id = ?");
             stm.setInt(1, tripId);
             
             ResultSet rs = stm.executeQuery();
@@ -118,7 +117,7 @@ public class TicketService {
                 int id = rs.getInt("id");
                 int seatId = rs.getInt("seat_id");
                 int customerId = rs.getInt("customer_id");
-                int employeeId = rs.getInt("employee");
+                int employeeId = rs.getInt("employee_id");
                 String dateBook = rs.getString("date_book");
                 String datePrint = rs.getString("date_print");
                 tickets.add(new Ticket(id, tripId, seatId, customerId, employeeId, dateBook, datePrint));
@@ -132,7 +131,6 @@ public class TicketService {
         long millis30min = 30 * 60 * 1000;
         long millis5min = 5 * 60 * 1000;
         Date currentTime = Date.from(Instant.now());
-        List<Ticket> tickets = new ArrayList<>();
         
         List<Trip> trips = TripService.getTripForCustomerSearch(null, null);
         
@@ -142,10 +140,7 @@ public class TicketService {
             Date date1 = DateTimeCalc.formatToDate(date, time);
             long db = DateTimeCalc.timeBetween(currentTime, date1);
             if(db <= millis30min && db > millis5min) {
-                tickets = getTicketByTrip(t.getId());
-                for(Ticket tk : tickets) {
-                    createTicketFree(t.getId(), tk.getSeatId());
-                }
+                createTicketFree(t.getId());
             }
         }
     }
@@ -154,7 +149,6 @@ public class TicketService {
     public static void setTicketFreeBefore5min () throws SQLException, ParseException {
         long millis5min = 5 * 60 * 1000;
         Date currentTime = Date.from(Instant.now());
-        List<Ticket> tickets = new ArrayList<>();
         
         List<Trip> trips = TripService.getTripForCustomerSearch(null, null);
         
@@ -163,10 +157,7 @@ public class TicketService {
             String time = t.getTime();
             Date date1 = DateTimeCalc.formatToDate(date, time);
             if(DateTimeCalc.timeBetween(currentTime, date1) <= millis5min) {
-                tickets = getTicketByTrip(t.getId());
-                for(Ticket tk : tickets) {
-                    createTicketWithDraw(t.getId(), tk.getSeatId());
-                }
+                createTicketWithDraw(t.getId());
             }
         }
     }
