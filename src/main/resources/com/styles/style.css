@@ -38,6 +38,20 @@
 .delete-icon:hover {
     -fx-opacity: 1;
 }
+
+.selected-btn {
+    -fx-background-color: #a5daff;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0 0 0 0 ;
+}
+
+.menu-btn {
+    -fx-background-color: #f3f3f3; 
+}
+
+.menu-btn:hover {
+    -fx-background-color: #a5daff;
+}
 /*---------------Sign in/Sign up style-----------------*/
 
 /*color1: #0598ff: lighblue
