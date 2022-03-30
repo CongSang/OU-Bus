@@ -143,7 +143,7 @@ public class BookTicketController implements Initializable {
                 if(confirm.get() == ButtonType.OK) {
                     String name = txtFullName.getText();
                     String phone = txtPhone.getText();
-                    Customer customer = (Customer) UserService.getCustomer(name, phone);
+                    Customer customer = (Customer) UserService.getCustomer(phone);
                     Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
                     // Kiem tra khong chon ghe
                     if (seat != null) {
@@ -152,7 +152,7 @@ public class BookTicketController implements Initializable {
                         }
                         else {
                             UserService.addUser(name, phone, null, null, null, "CUSTOMER");
-                            Customer customer1 = (Customer) UserService.getCustomer(name, phone);
+                            Customer customer1 = (Customer) UserService.getCustomer(phone);
                             bookTicket(selected, seat, customer1);
                         }
                     }

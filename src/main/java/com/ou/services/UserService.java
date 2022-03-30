@@ -4,11 +4,12 @@
  */
 package com.ou.services;
 
-import com.ou.pojo.Account;
+import com.ou.pojo.User;
 import com.ou.pojo.Admin;
 import com.ou.pojo.Customer;
 import com.ou.pojo.Employee;
 import com.ou.utils.Jdbc;
+import com.ou.utils.Security;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,15 +20,16 @@ import java.sql.SQLException;
  * @author CÔNG SANG
  */
 public class UserService {
-    public static Account getUserLogin(String username, String password) throws SQLException {
+    public static User getUserLogin(String username, String password) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
+            password = Security.encryptMD5(password);
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
             stm.setString(1, username);
             stm.setString(2, password);
             
             ResultSet rs = stm.executeQuery();
             
-            Account u = null;
+            User u = null;
             while(rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
@@ -48,18 +50,18 @@ public class UserService {
         }     
     }
     
-    public static Account getCustomer(String name, String phone) throws SQLException {
+    public static User getCustomer(String phone) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT * FROM user where name = ? AND phone = ?");
-            stm.setString(1, name);
-            stm.setString(2, phone);
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM user where phone = ?");
+//            stm.setString(1, name);
+            stm.setString(1, phone);
             
             ResultSet rs = stm.executeQuery();
             
-            Account u = null;
+            User u = null;
             while(rs.next()) {
                 int id = rs.getInt("id");
-                
+                String name = rs.getString("name");
                 u = new Customer(id, name, phone);
             }      
             return u;

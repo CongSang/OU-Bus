@@ -8,7 +8,7 @@ package com.ou.pojo;
  *
  * @author CÔNG SANG
  */
-public abstract class Account {
+public abstract class User {
     private int id;
     private String username;
     private String password;
@@ -17,16 +17,16 @@ public abstract class Account {
     private String phone;
     
 
-    public Account() {
+    public User() {
     }
     
-    public Account(int id, String name, String phone) {
+    public User(int id, String name, String phone) {
         this.id = id;
         this.name = name;
         this.phone = phone;
     }
 
-    public Account(int id, String username, String password, String name, String age, String phone) {
+    public User(int id, String username, String password, String name, String age, String phone) {
         this.id = id;
         this.username = username;
         this.password = password;
