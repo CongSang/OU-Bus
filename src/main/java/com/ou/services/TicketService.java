@@ -20,17 +20,20 @@ import java.util.Random;
  * @author CÔNG SANG
  */
 public class TicketService {
+    static long millis30min = 30 * 60 * 1000;
+    static long millis5min = 5 * 60 * 1000;
     
     // Create when app run
     public static int createNewTicket() throws SQLException {
         final int MAX = 1000000;
+        int rows = 0;
         String status = "FREE";
         Random rand = new Random();
         try (Connection conn = Jdbc.getConn()) {
             
             List<Seat> seats = SeatService.getAllSeatNoTicket();
             System.out.println("Create Ticket:" + seats.size());
-            if (seats != null) {
+            if (!seats.isEmpty()) {
                 for(Seat s : seats) {
                     PreparedStatement stm = conn.prepareStatement("INSERT INTO ticket (id, trip_id"
                             + ", seat_id, status)"
@@ -38,14 +41,15 @@ public class TicketService {
                     stm.setInt(1, rand.nextInt(MAX));
                     stm.setInt(2, s.getTripId());
                     stm.setInt(3, s.getId());
-                    stm.setString(4, status);           
+                    stm.setString(4, status); 
+                    rows++;
 
                     stm.executeUpdate(); 
                 } 
-                return 1;
+                return rows;
             } 
         }
-        return 0;
+        return rows;
     }
     
     // Khach hang dat ve va chuyen trang thai BOOKED
@@ -127,38 +131,44 @@ public class TicketService {
     }
     
     // Chuyen ve khach hang da dat ma khong lay truoc 30p xe chay
-    public static void setTicketBookedBefore30min () throws SQLException, ParseException {
-        long millis30min = 30 * 60 * 1000;
-        long millis5min = 5 * 60 * 1000;
+    public static boolean setTicketFree30minLeft () throws SQLException, ParseException {
         Date currentTime = Date.from(Instant.now());
         
         List<Trip> trips = TripService.getTripForCustomerSearch(null, null);
         
-        for (Trip t : trips) {
-            String date = t.getDate();
-            String time = t.getTime();
-            Date date1 = DateTimeCalc.formatToDate(date, time);
-            long db = DateTimeCalc.timeBetween(currentTime, date1);
-            if(db <= millis30min && db > millis5min) {
-                createTicketFree(t.getId());
+        if(!trips.isEmpty()) {
+            for (Trip t : trips) {
+                String date = t.getDate();
+                String time = t.getTime();
+                Date date1 = DateTimeCalc.formatToDate(date, time);
+                long db = DateTimeCalc.timeBetween(currentTime, date1);
+                if(db <= millis30min && db > millis5min) {
+                    createTicketFree(t.getId());
+                }
             }
+            return true;
         }
+        return false;
     }
     
     // Chuyen ve trong (FREE) ve trang thai thu hoi (WITHDRAW)
-    public static void setTicketFreeBefore5min () throws SQLException, ParseException {
-        long millis5min = 5 * 60 * 1000;
+    public static boolean setTicketWithDraw5minLeft () throws SQLException, ParseException {
         Date currentTime = Date.from(Instant.now());
         
         List<Trip> trips = TripService.getTripForCustomerSearch(null, null);
         
-        for (Trip t : trips) {
-            String date = t.getDate();
-            String time = t.getTime();
-            Date date1 = DateTimeCalc.formatToDate(date, time);
-            if(DateTimeCalc.timeBetween(currentTime, date1) <= millis5min) {
-                createTicketWithDraw(t.getId());
+        if(!trips.isEmpty()) {
+            for (Trip t : trips) {
+                String date = t.getDate();
+                String time = t.getTime();
+                Date date1 = DateTimeCalc.formatToDate(date, time);
+                long db = DateTimeCalc.timeBetween(currentTime, date1);
+                if(db <= millis5min && db > 0) {
+                    createTicketWithDraw(t.getId());
+                }
             }
+            return true;
         }
+        return false;
     }
 }

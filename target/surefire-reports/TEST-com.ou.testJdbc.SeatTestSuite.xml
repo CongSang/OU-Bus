@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.ou.testJdbc.SeatTestSuite" time="1.221" tests="5" errors="0" skipped="0" failures="3">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.ou.testJdbc.SeatTestSuite" time="1.186" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17.0.2\bin"/>
-    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter C:\Users\DELL\AppData\Local\Temp\surefire4454878850275043737 2022-03-29T18-37-30_188-jvmRun1 surefire16555478511970616630tmp surefire_013040926225742912325tmp"/>
+    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter C:\Users\DELL\AppData\Local\Temp\surefire18254966949295247264 2022-03-30T17-16-27_889-jvmRun1 surefire12041432871024693775tmp surefire_04554158666228281052tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="com.ou.testJdbc.SeatTestSuite"/>
     <property name="surefire.test.class.path" value="E:\CongSang&apos;s files\Projects\Java_Projects\OU-Bus\target\test-classes;C:\Users\DELL\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\DELL\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\DELL\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\DELL\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\DELL\.m2\repository\com\jfoenix\jfoenix\9.0.10\jfoenix-9.0.10.jar;C:\Users\DELL\.m2\repository\mysql\mysql-connector-java\8.0.28\mysql-connector-java-8.0.28.jar;C:\Users\DELL\.m2\repository\com\google\protobuf\protobuf-java\3.11.4\protobuf-java-3.11.4.jar;C:\Users\DELL\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\DELL\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\DELL\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\DELL\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\DELL\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\DELL\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\DELL\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.8.2\junit-jupiter-params-5.8.2.jar;"/>
@@ -59,21 +59,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testGetSeatEmpty{int, int}[1]" classname="com.ou.testJdbc.SeatTestSuite" time="0.152">
-    <failure message="Dang ktr tripId = 4, busId = 3 ==&gt; expected: &lt;3&gt; but was: &lt;0&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Dang ktr tripId = 4, busId = 3 ==> expected: <3> but was: <0>
-	at com.ou.oubusmanager/com.ou.testJdbc.SeatTestSuite.testGetSeatEmpty(SeatTestSuite.java:70)
-]]></failure>
-  </testcase>
-  <testcase name="testGetSeatEmpty{int, int}[2]" classname="com.ou.testJdbc.SeatTestSuite" time="0.049">
-    <failure message="Dang ktr tripId = 7, busId = 3 ==&gt; expected: &lt;3&gt; but was: &lt;1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Dang ktr tripId = 7, busId = 3 ==> expected: <3> but was: <1>
-	at com.ou.oubusmanager/com.ou.testJdbc.SeatTestSuite.testGetSeatEmpty(SeatTestSuite.java:70)
-]]></failure>
-  </testcase>
-  <testcase name="testGetSeatEmpty{int, int}[3]" classname="com.ou.testJdbc.SeatTestSuite" time="0.048">
-    <failure message="Dang ktr tripId = 8, busId = 3 ==&gt; expected: &lt;3&gt; but was: &lt;1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Dang ktr tripId = 8, busId = 3 ==> expected: <3> but was: <1>
-	at com.ou.oubusmanager/com.ou.testJdbc.SeatTestSuite.testGetSeatEmpty(SeatTestSuite.java:70)
-]]></failure>
-  </testcase>
-  <testcase name="testGetSeatEmpty{int, int}[4]" classname="com.ou.testJdbc.SeatTestSuite" time="0.037"/>
-  <testcase name="testSeatNoTicket" classname="com.ou.testJdbc.SeatTestSuite" time="0.037"/>
+  <testcase name="testGetSeatEmpty{int, int, int}[1]" classname="com.ou.testJdbc.SeatTestSuite" time="0.184"/>
+  <testcase name="testGetSeatEmpty{int, int, int}[2]" classname="com.ou.testJdbc.SeatTestSuite" time="0.05"/>
+  <testcase name="testGetSeatEmpty{int, int, int}[3]" classname="com.ou.testJdbc.SeatTestSuite" time="0.038"/>
+  <testcase name="testSeatNoTicket" classname="com.ou.testJdbc.SeatTestSuite" time="0.041"/>
 </testsuite>

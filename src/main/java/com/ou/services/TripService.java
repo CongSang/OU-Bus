@@ -160,7 +160,7 @@ public class TripService {
         }
     }
     
-    public static void setCompleteTrip() throws SQLException, ParseException {
+    public static boolean setCompleteTrip() throws SQLException, ParseException {
         Date currentTime = Date.from(Instant.now());
         
         List<Trip> trips = getTrips(null);
@@ -177,9 +177,10 @@ public class TripService {
                     
                     stm.executeUpdate(); 
                 }
+                return true;
             }
         }
-        
+        return false;
     }
     
     public static String getBusSerial(int id) throws SQLException {
