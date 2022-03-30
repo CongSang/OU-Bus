@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.ou.testJdbc.BusTestSuite" time="1.586" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.ou.test01.CalcDateTimeTestSuite" time="0.206" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,9 +15,9 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17.0.2\bin"/>
-    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter C:\Users\DELL\AppData\Local\Temp\surefire2353745509768464899 2022-03-30T16-24-32_806-jvmRun1 surefire6752860520689006703tmp surefire_01153636369757001537tmp"/>
+    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter C:\Users\DELL\AppData\Local\Temp\surefire16390212293603036565 2022-03-30T18-19-48_043-jvmRun1 surefire6581763834842463004tmp surefire_09687202051730942980tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="test" value="com.ou.testJdbc.BusTestSuite"/>
+    <property name="test" value="com.ou.test01.CalcDateTimeTestSuite"/>
     <property name="surefire.test.class.path" value="E:\CongSang&apos;s files\Projects\Java_Projects\OU-Bus\target\test-classes;C:\Users\DELL\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\DELL\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\DELL\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\DELL\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\DELL\.m2\repository\com\jfoenix\jfoenix\9.0.10\jfoenix-9.0.10.jar;C:\Users\DELL\.m2\repository\mysql\mysql-connector-java\8.0.28\mysql-connector-java-8.0.28.jar;C:\Users\DELL\.m2\repository\com\google\protobuf\protobuf-java\3.11.4\protobuf-java-3.11.4.jar;C:\Users\DELL\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\DELL\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\DELL\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\DELL\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\DELL\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\DELL\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\DELL\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.8.2\junit-jupiter-params-5.8.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\DELL"/>
@@ -59,8 +59,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testBusNotEnoughSeat" classname="com.ou.testJdbc.BusTestSuite" time="0.192"/>
-  <testcase name="testBusNotNull{int}[1]" classname="com.ou.testJdbc.BusTestSuite" time="0.202"/>
-  <testcase name="testBusNotNull{int}[2]" classname="com.ou.testJdbc.BusTestSuite" time="0.055"/>
-  <testcase name="testBusNotNull{int}[3]" classname="com.ou.testJdbc.BusTestSuite" time="0.05"/>
+  <testcase name="testFormatyyyyMMdd{String}[1]" classname="com.ou.test01.CalcDateTimeTestSuite" time="0.062"/>
+  <testcase name="testFormatToDate{String, String}[1]" classname="com.ou.test01.CalcDateTimeTestSuite" time="0.01"/>
+  <testcase name="testFormatToDate{String, String}[2]" classname="com.ou.test01.CalcDateTimeTestSuite" time="0.002"/>
+  <testcase name="testDateTimeCalc" classname="com.ou.test01.CalcDateTimeTestSuite" time="0.002"/>
+  <testcase name="testFormatddMMyyyy{String}[1]" classname="com.ou.test01.CalcDateTimeTestSuite" time="0.002"/>
 </testsuite>
