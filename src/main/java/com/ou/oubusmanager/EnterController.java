@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import animatefx.animation.FadeInRight;
 import animatefx.animation.FadeInLeft;
-import com.ou.pojo.Account;
+import com.ou.pojo.User;
 import com.ou.pojo.Admin;
 import com.ou.pojo.Employee;
 import com.ou.services.UserService;
@@ -117,8 +117,7 @@ public class EnterController implements Initializable {
             this.showErrorDialog("Vui lòng nhập Mật khẩu.");
         }
         else {
-            password = Security.encryptMD5(password);        
-            Account a = UserService.getUserLogin(username, password);
+            User a = UserService.getUserLogin(username, password);
             if(a instanceof Admin) {
                 changeAdminScene();
                 tripmanage.setAdmin((Admin) a);

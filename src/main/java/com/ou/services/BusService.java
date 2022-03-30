@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +55,18 @@ public class BusService {
             }
         return b;
         }
+    }
+
+    public static List<Bus> getBuses() throws SQLException {
+        List<Bus> list = new ArrayList<>();
+        try (final Connection conn = Jdbc.getConn()) {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("Select * from bus");
+            while (rs.next()) {
+                Bus b = new Bus(rs.getInt(TripService.id), rs.getString(TripService.busSerial));
+                list.add(b);
+            }
+        }
+        return list;
     }
 }

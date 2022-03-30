@@ -97,24 +97,7 @@ public class TripService {
             }
         return trips;
     }
-    
-    public static List<Bus> getBuses() throws SQLException {
-        List<Bus> list = new ArrayList<>();
-        try(Connection conn = Jdbc.getConn()) {
-            Statement stm = conn.createStatement();
-            
-            ResultSet rs = stm.executeQuery("Select * from bus");
-            
-            while(rs.next()) {
-                Bus b = new Bus(rs.getInt(id), rs.getString(busSerial));
-                
-                list.add(b);
-            }
-        }
-        
-        return list;
-    }
-    
+     
     public static int addTrip(Trip t) throws SQLException {
         try(Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("INSERT INTO "
@@ -127,7 +110,12 @@ public class TripService {
             stm.setInt(4, t.getBusId());
             stm.setBoolean(5, t.isComplete());
             
-            return stm.executeUpdate();
+            if (stm.executeUpdate() > 0) {
+                // Tu tao ve cho moi chuyen di moi duoc them
+                TicketService.createNewTicket();
+                return 1;
+            }
+            return 0;
 
         }
         
@@ -178,30 +166,6 @@ public class TripService {
                     stm.executeUpdate(); 
                 }
             }
-        }
-        
-    }
-    
-    public static String getBusSerial(int id) throws SQLException {
-        try(Connection conn = Jdbc.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT bus_serial FROM bus WHERE id = ?");
-            stm.setInt(1, id);
-            
-            ResultSet rs = stm.executeQuery();
-            if(rs.next())
-                return rs.getString("bus_serial");
-            return null;
-        }
-    }
-    
-    public static Bus getBusById(int id) throws SQLException {
-        try(Connection conn = Jdbc.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT * FROM bus WHERE id = ?");
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-            if(rs.next())
-                return new Bus(rs.getInt("id"), rs.getString("bus_serial"));
-            return null;
-        }
+        }      
     }
 }

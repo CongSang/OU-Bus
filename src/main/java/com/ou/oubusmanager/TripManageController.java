@@ -178,7 +178,7 @@ public class TripManageController implements Initializable {
                 super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
                 try {
                     if (t != null) {
-                        Bus b = TripService.getBusById(t);
+                        Bus b = BusService.getBusById(t);
                         setText(b != null ? b.getBusSerial() : null);
                     }
                     
@@ -191,7 +191,7 @@ public class TripManageController implements Initializable {
         });
         
         try {
-            cbBus.setItems(FXCollections.observableList(TripService.getBuses()));
+            cbBus.setItems(FXCollections.observableList(BusService.getBuses()));
             this.loadData(null);
             txtSearch.textProperty().addListener((event) -> {
             try {
@@ -230,10 +230,9 @@ public class TripManageController implements Initializable {
             txtSearch.setText("");
         try {
             trips.addAll(TripService.getTrips(kw));
-            long milis5min = 60*5*1000;
             for (Trip t : trips) {
                 Date dateStart = DateTimeCalc.formatToDate(t.getDate(), t.getTime());
-                if (DateTimeCalc.timeBetween(new Date(), dateStart) <= milis5min) {
+                if (DateTimeCalc.timeBetween(new Date(), dateStart) <= 0) {
                     t.setComplete(true);
                     TripService.updateTrip(t);
                 }
@@ -328,7 +327,7 @@ public class TripManageController implements Initializable {
                         EnterController.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
                     }
                         
-                } catch (SQLException | ParseException e) {
+                } catch (Exception e) {
                     EnterController.showErrorDialog(e.getMessage());
                 }
             }
@@ -414,7 +413,7 @@ public class TripManageController implements Initializable {
     
     private void selectRowTable() throws SQLException, ParseException {
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
-        Bus b = TripService.getBusById(selected.getBusId());
+        Bus b = BusService.getBusById(selected.getBusId());
         txtFrom.setText(selected.getFrom());
         txtTo.setText(selected.getTo());
         

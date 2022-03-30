@@ -4,7 +4,7 @@ package com.ou.pojo;
  *
  * @author CÔNG SANG
  */
-public class Admin extends Account{
+public class Admin extends User{
     private UserRole role = UserRole.ADMIN;
 
     public Admin(int id, String username, String password, String name, String age, String phone) {

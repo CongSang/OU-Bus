@@ -4,7 +4,7 @@ package com.ou.pojo;
  *
  * @author CÔNG SANG
  */
-public class Employee extends Account{
+public class Employee extends User{
     private UserRole role = UserRole.EMPLOYEE;
 
     public Employee(int id, String username, String password, String name, String age, String phone) {

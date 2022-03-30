@@ -8,8 +8,8 @@ package com.ou.pojo;
  *
  * @author CÔNG SANG
  */
-public class Customer extends Account{
-    private Account.UserRole role = Account.UserRole.CUSTOMER;
+public class Customer extends User{
+    private User.UserRole role = User.UserRole.CUSTOMER;
 
     public Customer(int id, String name, String phone) {
         super(id, name, phone);
@@ -21,14 +21,14 @@ public class Customer extends Account{
     /**
      * @return the role
      */
-    public Account.UserRole getRole() {
+    public User.UserRole getRole() {
         return role;
     }
 
     /**
      * @param role the role to set
      */
-    public void setRole(Account.UserRole role) {
+    public void setRole(User.UserRole role) {
         this.role = role;
     }
 }
