@@ -114,6 +114,9 @@ public class BookTicketController implements Initializable {
     
     @FXML
     private ComboBox<Seat> cbSeatEmpty;
+
+    @FXML
+    private Button btnSaleTicket;
     private Employee employee;
 
     @FXML
@@ -179,6 +182,11 @@ public class BookTicketController implements Initializable {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
             EnterController.showErrorDialog(ex.getMessage());
         }
+    }
+    
+    @FXML
+    void btnSaleTicketClick(ActionEvent event) {
+
     }
 
     @FXML
