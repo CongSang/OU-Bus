@@ -72,7 +72,7 @@ public class App extends Application {
                     // Chuyen ve trong(FREE) ve trang thai thu hoi(WITHDRAW)
                     TicketService.setTicketWithDraw5minLeft();
                     // Chuyen ve khach hang da dat ma khong lay truoc 30p xe chay
-                    TicketService.setTicketBookedBefore30min();
+                    TicketService.setTicketFree30minLeft();
                     
                 } catch (SQLException ex) {
                     Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
