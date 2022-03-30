@@ -70,7 +70,7 @@ public class App extends Application {
                     // Chuyen di da hoan thanh
                     TripService.setCompleteTrip();
                     // Chuyen ve trong(FREE) ve trang thai thu hoi(WITHDRAW)
-                    TicketService.setTicketFreeBefore5min();
+                    TicketService.setTicketWithDraw5minLeft();
                     // Chuyen ve khach hang da dat ma khong lay truoc 30p xe chay
                     TicketService.setTicketBookedBefore30min();
                     
