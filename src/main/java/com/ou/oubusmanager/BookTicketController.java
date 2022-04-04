@@ -119,7 +119,7 @@ public class BookTicketController implements Initializable {
     @FXML
     private Button btnSaleTicket;
     private Employee employee;
-    public static TicketFormController ticketForm;
+    public static TicketExportController ticketForm;
 
     @FXML
     void btnBookTicketClick(ActionEvent event) throws ParseException, SQLException {
@@ -258,7 +258,7 @@ public class BookTicketController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
                 .getResource("com/ou/oubusmanager/TicketForm.fxml"));
         Parent root = fxmlLoader.load();
-        ticketForm = fxmlLoader.<TicketFormController>getController();
+        ticketForm = fxmlLoader.<TicketExportController>getController();
         
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
