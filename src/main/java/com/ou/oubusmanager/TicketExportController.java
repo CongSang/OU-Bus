@@ -26,7 +26,7 @@ import javafx.scene.control.Label;
  *
  * @author CÔNG SANG
  */
-public class TicketFormController implements Initializable {
+public class TicketExportController implements Initializable {
     @FXML
     private Button btnPrint;
 
