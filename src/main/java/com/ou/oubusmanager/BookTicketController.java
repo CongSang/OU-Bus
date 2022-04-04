@@ -4,13 +4,13 @@ import com.ou.utils.DateTimeCalc;
 import com.ou.pojo.Customer;
 import com.ou.pojo.Employee;
 import com.ou.pojo.Seat;
+import com.ou.pojo.Ticket;
 import com.ou.pojo.Trip;
 import com.ou.services.BusService;
 import com.ou.services.SeatService;
 import com.ou.services.TicketService;
 import com.ou.services.TripService;
 import com.ou.services.UserService;
-import com.ou.utils.MyAlert;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -119,7 +119,7 @@ public class BookTicketController implements Initializable {
     @FXML
     private Button btnSaleTicket;
     private Employee employee;
-    public TicketManageController ticketManageController;
+    public static TicketExportController ticketForm;
 
     @FXML
     void btnBookTicketClick(ActionEvent event) throws ParseException, SQLException {
@@ -138,7 +138,7 @@ public class BookTicketController implements Initializable {
                     , selected.getFrom(), selected.getTo()
                     , selected.getDate(), selected.getTime());
         
-            Optional<ButtonType> confirm = MyAlert.showConfirmDialog(message);
+            Optional<ButtonType> confirm = EnterController.showConfirmDialog(message);
             
             // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
             if (DateTimeCalc.timeBetween(currentTime, date1) >= milis60min) {
@@ -159,16 +159,16 @@ public class BookTicketController implements Initializable {
                         }
                     }
                     else
-                        MyAlert.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
+                        EnterController.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
                 }
                 else
-                    MyAlert.showErrorDialog("Hủy đặt vé"); 
+                    EnterController.showErrorDialog("Hủy đặt vé"); 
             }
             else
-                MyAlert.showErrorDialog("Sắp đến thời gian xe chạy không được đặt vé nữa.");
+                EnterController.showErrorDialog("Sắp đến thời gian xe chạy không được đặt vé nữa.");
         }
         else
-            MyAlert.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
+            EnterController.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
     }
     
     public void bookTicket(Trip trip, Seat seat, Customer customer) {
@@ -179,34 +179,106 @@ public class BookTicketController implements Initializable {
         try {
             TicketService.createTicketBooked(trip.getId(), seat.getId()
                     , customer.getId(), this.employee.getId(), dtf.format(now));
-            MyAlert.showSuccessDialog("Đặt vé thành công");
+            EnterController.showSuccessDialog("Đặt vé thành công");
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-            MyAlert.showErrorDialog(ex.getMessage());
+            EnterController.showErrorDialog(ex.getMessage());
         }
     }
     
     @FXML
-    void btnSaleTicketClick(ActionEvent event) {
-
+    void btnSaleTicketClick(ActionEvent event) throws ParseException, SQLException, IOException {
+        // 5p doi ra mili giay
+        long milis5min = 5 * 60 * 1000;
+        
+        // Thoi gian hien tai
+        Date currentTime = Date.from(Instant.now());
+        Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
+        String date = selected.getDate();
+        String time = selected.getTime();
+        Date date1 = DateTimeCalc.formatToDate(date, time);
+        Ticket ticket = null;
+        
+        if(selected != null) {
+            String message = String.format("Bán vé chuyến %s - %s\nNgày %s\nLúc %s"
+                    , selected.getFrom(), selected.getTo()
+                    , selected.getDate(), selected.getTime());
+        
+            Optional<ButtonType> confirm = EnterController.showConfirmDialog(message);
+            
+            // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
+            if (DateTimeCalc.timeBetween(currentTime, date1) >= milis5min) {
+                if(confirm.get() == ButtonType.OK) {
+                    String name = txtFullName.getText();
+                    String phone = txtPhone.getText();
+                    Customer customer = (Customer) UserService.getCustomer(phone);
+                    Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
+                    // Kiem tra khong chon ghe
+                    if (seat != null) {
+                        if(customer != null) {
+                            saletTicket(selected, seat, customer);
+                            ticket = TicketService.getTicketByTripSeat(selected.getId(), seat.getId());
+                        }
+                        else {
+                            UserService.addUser(name, phone, null, null, null, "CUSTOMER");
+                            Customer customer1 = (Customer) UserService.getCustomer(phone);
+                            saletTicket(selected, seat, customer1);
+                            ticket = TicketService.getTicketByTripSeat(selected.getId(), seat.getId());
+                        }
+                        printTicket();
+                        ticketForm.setTicket(ticket);
+                    }
+                    else
+                        EnterController.showErrorDialog("Vui lòng chọn ghế muốn mua.");
+                }
+                else
+                    EnterController.showErrorDialog("Hủy bán vé"); 
+            }
+            else
+                EnterController.showErrorDialog("Sắp đến thời gian xe chạy không được mua vé nữa.");
+        }
+        else
+            EnterController.showErrorDialog("Chọn chuyến đi trước khi mua vé.");
+    }
+    
+    public void saletTicket(Trip trip, Seat seat, Customer customer) {  
+        try {
+            TicketService.createTicketBought(trip.getId(), seat.getId()
+                    , customer.getId(), this.employee.getId());
+            EnterController.showSuccessDialog("Bán vé thành công");
+        } catch (SQLException ex) {
+            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+            EnterController.showErrorDialog(ex.getMessage());
+        }
+    }
+    
+    public void printTicket() throws IOException {
+        Stage primaryStage = new Stage();
+        
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/TicketForm.fxml"));
+        Parent root = fxmlLoader.load();
+        ticketForm = fxmlLoader.<TicketExportController>getController();
+        
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     @FXML
     void btnLogoutClick(MouseEvent event) throws IOException {
         Stage stage = App.getPrimaryStage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("com/ou/oubusmanager/TicketManage.fxml"));
-        Parent root = fxmlLoader.load();
-        ticketManageController = fxmlLoader.<TicketManageController>getController();
-        
+        Parent root = FXMLLoader.load(this.getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/Enter.fxml"));
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setResizable(false);
-        stage.show();
-        
-        ticketManageController.setEmployee(this.employee);
         this.employee = null;
+        stage.show();
     }
     
     

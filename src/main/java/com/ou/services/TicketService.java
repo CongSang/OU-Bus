@@ -72,6 +72,24 @@ public class TicketService {
         }     
     }
     
+    public static int createTicketBought(int tripId, int seatId
+            , int customerId, int employeeId) throws SQLException {
+        String status = "BOUGHT";
+               
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
+                    +" SET customer_id = ?, employee_id = ?, status = ? "
+                    + " WHERE trip_id = ? AND seat_id = ?");
+            stm.setInt(1, customerId);
+            stm.setInt(2, employeeId);
+            stm.setString(3, status);
+            stm.setInt(4, tripId);
+            stm.setInt(5, seatId);           
+            
+            return stm.executeUpdate(); 
+        }     
+    }
+    
     // Ve trong neu con 30p xe chay nhung khach hang khong lay hoac huy ve
     public static int createTicketFree(int tripId) throws SQLException {
         String status = "FREE";
@@ -127,6 +145,29 @@ public class TicketService {
                 tickets.add(new Ticket(id, tripId, seatId, customerId, employeeId, dateBook, datePrint));
             }
         return tickets;
+        }
+    }
+    
+    public static Ticket getTicketByTripSeat(int tripId, int seatId) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT *"
+                    + " FROM ticket"
+                    + " WHERE trip_id = ? AND seat_id = ?");
+            stm.setInt(1, tripId);
+            stm.setInt(2, seatId);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            Ticket ticket = null;
+            if(rs.next()) {
+                int id = rs.getInt("id");
+                int customerId = rs.getInt("customer_id");
+                int employeeId = rs.getInt("employee_id");
+                String dateBook = rs.getString("date_book");
+                String datePrint = rs.getString("date_print");
+                ticket = new Ticket(id, tripId, seatId, customerId, employeeId, dateBook, datePrint);
+            }
+        return ticket;
         }
     }
     

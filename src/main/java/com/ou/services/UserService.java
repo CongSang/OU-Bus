@@ -50,10 +50,45 @@ public class UserService {
         }     
     }
     
+    public static User getCustomerById(int id) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM user"
+                    + " where id = ?");
+            stm.setInt(1, id);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            User u = null;
+            while(rs.next()) {
+                String name = rs.getString("name");
+                String phone = rs.getString("phone");
+                u = new Customer(id, name, phone);
+            }      
+            return u;
+        }     
+    }
+    
+    public static User getEmployeeById(int id) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM user"
+                    + " where id = ?");
+            stm.setInt(1, id);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            User u = null;
+            while(rs.next()) {
+                String name = rs.getString("name");
+                String phone = rs.getString("phone");
+                u = new Employee(id, name, phone);
+            }      
+            return u;
+        }     
+    }
+    
     public static User getCustomer(String phone) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM user where phone = ?");
-//            stm.setString(1, name);
             stm.setString(1, phone);
             
             ResultSet rs = stm.executeQuery();
