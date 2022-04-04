@@ -171,4 +171,44 @@ public class TicketService {
         }
         return false;
     }
+    
+    public static List<Ticket> getBooketTickets(String kw) throws SQLException {
+        List<Ticket> tks = new ArrayList<>();
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT ticket.id, trip_id, seat_id, customer_id"
+                    + " FROM ticket join user on ticket.customer_id = user.id "
+                    + " WHERE status = 'BOOKED' AND (name like concat('%', ?, '%')"
+                    + " OR phone like concat('%', ?, '%'));");
+            
+            if(kw == null)
+                kw = "";
+            
+            stm.setString(1, kw);
+            stm.setString(2, kw);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()) {
+                Ticket t = new Ticket();
+                t.setId(rs.getInt("ticket.id"));
+                t.setTripId(rs.getInt("trip_id"));
+                t.setSeatId(rs.getInt("seat_id"));
+                t.setCustomerId(rs.getInt("customer_id"));
+                
+                tks.add(t);
+            }
+        }
+        
+        return tks;
+    }
+    
+    public static int setTicketFree(int ticketId) throws SQLException {
+        try(Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
+                    + " SET customer_id=null, employee_id=null"
+                    + ", status='FREE', date_book=null WHERE id=?");
+            stm.setInt(1, ticketId);
+            return stm.executeUpdate();
+        }
+    }
 }

@@ -10,6 +10,7 @@ import com.ou.services.SeatService;
 import com.ou.services.TicketService;
 import com.ou.services.TripService;
 import com.ou.services.UserService;
+import com.ou.utils.MyAlert;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -118,6 +119,7 @@ public class BookTicketController implements Initializable {
     @FXML
     private Button btnSaleTicket;
     private Employee employee;
+    public TicketManageController ticketManageController;
 
     @FXML
     void btnBookTicketClick(ActionEvent event) throws ParseException, SQLException {
@@ -136,7 +138,7 @@ public class BookTicketController implements Initializable {
                     , selected.getFrom(), selected.getTo()
                     , selected.getDate(), selected.getTime());
         
-            Optional<ButtonType> confirm = EnterController.showConfirmDialog(message);
+            Optional<ButtonType> confirm = MyAlert.showConfirmDialog(message);
             
             // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
             if (DateTimeCalc.timeBetween(currentTime, date1) >= milis60min) {
@@ -157,16 +159,16 @@ public class BookTicketController implements Initializable {
                         }
                     }
                     else
-                        EnterController.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
+                        MyAlert.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
                 }
                 else
-                    EnterController.showErrorDialog("Hủy đặt vé"); 
+                    MyAlert.showErrorDialog("Hủy đặt vé"); 
             }
             else
-                EnterController.showErrorDialog("Sắp đến thời gian xe chạy không được đặt vé nữa.");
+                MyAlert.showErrorDialog("Sắp đến thời gian xe chạy không được đặt vé nữa.");
         }
         else
-            EnterController.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
+            MyAlert.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
     }
     
     public void bookTicket(Trip trip, Seat seat, Customer customer) {
@@ -177,10 +179,10 @@ public class BookTicketController implements Initializable {
         try {
             TicketService.createTicketBooked(trip.getId(), seat.getId()
                     , customer.getId(), this.employee.getId(), dtf.format(now));
-            EnterController.showSuccessDialog("Đặt vé thành công");
+            MyAlert.showSuccessDialog("Đặt vé thành công");
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
-            EnterController.showErrorDialog(ex.getMessage());
+            MyAlert.showErrorDialog(ex.getMessage());
         }
     }
     
@@ -192,15 +194,19 @@ public class BookTicketController implements Initializable {
     @FXML
     void btnLogoutClick(MouseEvent event) throws IOException {
         Stage stage = App.getPrimaryStage();
-        Parent root = FXMLLoader.load(this.getClass().getClassLoader()
-                .getResource("com/ou/oubusmanager/Enter.fxml"));
-
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/TicketManage.fxml"));
+        Parent root = fxmlLoader.load();
+        ticketManageController = fxmlLoader.<TicketManageController>getController();
+        
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setResizable(false);
-        this.employee = null;
         stage.show();
+        
+        ticketManageController.setEmployee(this.employee);
+        this.employee = null;
     }
     
     

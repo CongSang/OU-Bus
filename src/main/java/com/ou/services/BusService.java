@@ -24,7 +24,7 @@ public class BusService {
             ResultSet rs = stm.executeQuery();
             
             Bus b = null;
-            while(rs.next()) {
+            if(rs.next()) {
                 String busSeri = rs.getString("bus_serial");
                 b = new Bus(id, busSeri);
             }
@@ -68,5 +68,21 @@ public class BusService {
             }
         }
         return list;
+    }
+    
+    public static Bus getBusByTripId(int tripId) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT bus.* "
+                    + "FROM bus join trip on bus.id=trip.bus_id where trip.id = ?");
+            stm.setInt(1, tripId);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            Bus b = null;
+            if(rs.next()) {
+                b = new Bus(rs.getInt("id"), rs.getString("bus_serial"));
+            }
+        return b;
+        }
     }
 }

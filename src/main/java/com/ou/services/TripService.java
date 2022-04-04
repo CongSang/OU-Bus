@@ -1,7 +1,6 @@
 package com.ou.services;
 
 import com.ou.utils.DateTimeCalc;
-import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.utils.Jdbc;
 import java.sql.Connection;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -169,5 +167,27 @@ public class TripService {
             }
         }
         return false;
+    }
+
+    public static Trip getTripById(int tripId) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM trip where id = ?");
+            stm.setInt(1, tripId);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            Trip t = null;
+            if(rs.next()) {
+                Date d = new Date(rs.getTimestamp("date_start").getTime());           
+                String strDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(d);
+
+                String dateStart = strDate.split(" ")[0];
+                String timeStart = strDate.split(" ")[1];
+                    
+                t = new Trip(tripId, rs.getString(from), rs.getString(to)
+                        ,dateStart, timeStart, rs.getInt(busId), rs.getBoolean(complete));
+            }
+            return t;
+        }
     }
 }

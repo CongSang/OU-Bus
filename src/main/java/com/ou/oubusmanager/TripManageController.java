@@ -7,6 +7,7 @@ import com.ou.services.TripService;
 import com.ou.pojo.Admin;
 import com.ou.services.BusService;
 import com.ou.services.SeatService;
+import com.ou.utils.MyAlert;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -128,99 +129,102 @@ public class TripManageController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        fromColumn.setCellValueFactory(new PropertyValueFactory<>("from"));
-        toColumn.setCellValueFactory(new PropertyValueFactory<>("to"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        busIdColumn.setCellValueFactory(new PropertyValueFactory<>("busId"));
-        completeColumn.setCellValueFactory(new PropertyValueFactory<>("complete"));
-        completeColumn.resizableProperty().set(false);
-        
-        //format dd/MM/yyyy dpDate
-        dpDate.setConverter(new StringConverter<LocalDate>()
-        {
-            private DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate localDate)
-            {
-                if(localDate==null)
-                    return "";
-                return dateTimeFormatter.format(localDate);
-            }
-
-            @Override
-            public LocalDate fromString(String dateString)
-            {
-                if(dateString==null || dateString.trim().isEmpty())
-                {
-                    return null;
-                }
-                return LocalDate.parse(dateString,dateTimeFormatter);
-            }
-        });
-        
-        //thay doi cach hien thi true false
-        completeColumn.setCellFactory(col -> new TableCell<Trip, Boolean>() {
-            @Override
-            protected void updateItem(Boolean t, boolean empty) {
-                super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-                setText(empty ? null : t ? "Hoàn thành" : "Chưa");
-            }
+        try {
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            fromColumn.setCellValueFactory(new PropertyValueFactory<>("from"));
+            toColumn.setCellValueFactory(new PropertyValueFactory<>("to"));
+            dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+            timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+            busIdColumn.setCellValueFactory(new PropertyValueFactory<>("busId"));
+            completeColumn.setCellValueFactory(new PropertyValueFactory<>("complete"));
+            completeColumn.resizableProperty().set(false);
             
-        });
-        
-        //thay doi cach hien thi id
-        busIdColumn.setCellFactory(cell -> new TableCell<Trip, Integer>() {
-            @Override
-            protected void updateItem(Integer t, boolean empty) {
-                super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-                try {
-                    if (t != null) {
-                        Bus b = BusService.getBusById(t);
-                        setText(b != null ? b.getBusSerial() : null);
-                    }
-                    
-                } catch (SQLException ex) {
-                    Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+            //format dd/MM/yyyy dpDate
+            dpDate.setConverter(new StringConverter<LocalDate>()
+            {
+                private DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                
+                @Override
+                public String toString(LocalDate localDate)
+                {
+                    if(localDate==null)
+                        return "";
+                    return dateTimeFormatter.format(localDate);
                 }
                 
-            }
+                @Override
+                public LocalDate fromString(String dateString)
+                {
+                    if(dateString==null || dateString.trim().isEmpty())
+                    {
+                        return null;
+                    }
+                    return LocalDate.parse(dateString,dateTimeFormatter);
+                }
+            });
             
-        });
-        
-        try {
+            //thay doi cach hien thi true false
+            completeColumn.setCellFactory(col -> new TableCell<Trip, Boolean>() {
+                @Override
+                protected void updateItem(Boolean t, boolean empty) {
+                    super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                    setText(empty ? null : t ? "Hoàn thành" : "Chưa");
+                }
+                
+            });
+            
+            //thay doi cach hien thi id
+            busIdColumn.setCellFactory(cell -> new TableCell<Trip, Integer>() {
+                @Override
+                protected void updateItem(Integer t, boolean empty) {
+                    super.updateItem(t, empty); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                    
+                    if (t != null) {
+                        try {
+                            Bus b = BusService.getBusById(t);
+                            setText(b != null ? b.getBusSerial() : null);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+               
+                    
+                }
+                
+            });
+            
             cbBus.setItems(FXCollections.observableList(BusService.getBuses()));
             this.loadData(null);
             txtSearch.textProperty().addListener((event) -> {
-            try {
-                this.loadData(txtSearch.getText());
-            } catch (ParseException ex) {
-                Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        } catch (SQLException | ParseException ex) {
-            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        // Su kien click 1 dong trong bang
-        tvTrip.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
                 try {
-                    selectRowTable();
-                    btnAdd.setDisable(true);
-                    btnAdd.setVisible(false);
-                    
-                    btnUpdate.setDisable(false);
-                    btnUpdate.setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+                    this.loadData(txtSearch.getText());
                 } catch (ParseException ex) {
                     Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-        });
+            });
+            
+            // Su kien click 1 dong trong bang
+            tvTrip.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    try {
+                        selectRowTable();
+                        btnAdd.setDisable(true);
+                        btnAdd.setVisible(false);
+                        
+                        btnUpdate.setDisable(false);
+                        btnUpdate.setVisible(true);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        } catch (ParseException ex) {
+            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
@@ -266,14 +270,14 @@ public class TripManageController implements Initializable {
                             Trip data = getTableView().getItems().get(getIndex());
                             try {
                                 if(TripService.deleteTrip(data.getId()) != -1) {
-                                    EnterController.showSuccessDialog("Xóa chuyến xe thành công.");
+                                    MyAlert.showSuccessDialog("Xóa chuyến xe thành công.");
                                     
                                     clearSelection();
                                     reset();
                                     loadData(null);
                                 }
                                 else
-                                    EnterController.showErrorDialog("Xóa chuyến xe thất bại.");
+                                    MyAlert.showErrorDialog("Xóa chuyến xe thất bại.");
                             } catch (SQLException | ParseException ex) {
                                 Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -301,7 +305,7 @@ public class TripManageController implements Initializable {
         if (dpDate.getValue() == null || txtFrom.getText().isEmpty()||
                 txtTo.getText().isEmpty() || txtTime.getText().isEmpty() ||
                 cbBus.getValue() == null) {
-            EnterController.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
+            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
         }
         else {
         
@@ -318,17 +322,17 @@ public class TripManageController implements Initializable {
                         dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
                     
                     if (TripService.addTrip(t) != -1) {
-                        EnterController.showSuccessDialog("Thêm chuyến xe thành công.");
+                        MyAlert.showSuccessDialog("Thêm chuyến xe thành công.");
 
                         loadData(null);
                         reset();
                     }
                     else {
-                        EnterController.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
+                        MyAlert.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
                     }
                         
                 } catch (Exception e) {
-                    EnterController.showErrorDialog(e.getMessage());
+                    MyAlert.showErrorDialog(e.getMessage());
                 }
             }
         }            
@@ -341,7 +345,7 @@ public class TripManageController implements Initializable {
         if (dpDate.getValue() == null || txtFrom.getText().isEmpty()||
                 txtTo.getText().isEmpty() || txtTime.getText().isEmpty() ||
                 cbBus.getValue() == null) {
-            EnterController.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
+            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
         }
         else {
         
@@ -359,18 +363,18 @@ public class TripManageController implements Initializable {
                         dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
                     
                     if (TripService.updateTrip(t) != -1) {
-                        EnterController.showSuccessDialog("Cập nhật chuyến xe thành công.");
+                        MyAlert.showSuccessDialog("Cập nhật chuyến xe thành công.");
                         
                         loadData(null);
                         reset();
                         clearSelection();
                     }
                     else {
-                        EnterController.showErrorDialog("Có lỗi xảy ra. Không thể cập nhật.");
+                        MyAlert.showErrorDialog("Có lỗi xảy ra. Không thể cập nhật.");
                     }
                         
                 } catch (Exception e) {
-                    EnterController.showErrorDialog(e.getMessage());
+                    MyAlert.showErrorDialog(e.getMessage());
                 }
             }
         }
