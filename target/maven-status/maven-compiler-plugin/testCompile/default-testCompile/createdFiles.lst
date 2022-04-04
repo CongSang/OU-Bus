@@ -1,1 +1,6 @@
 com\ou\testJdbc\TripTestSuite.class
+com\ou\test01\BusTestSuite.class
+com\ou\test01\CalcDateTimeTestSuite.class
+com\ou\testJdbc\UserTestSuite.class
+com\ou\test01\SeatTestSuite.class
+com\ou\test01\TicketTestSuite.class
