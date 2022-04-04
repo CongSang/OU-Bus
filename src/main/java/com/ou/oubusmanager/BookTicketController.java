@@ -4,6 +4,7 @@ import com.ou.utils.DateTimeCalc;
 import com.ou.pojo.Customer;
 import com.ou.pojo.Employee;
 import com.ou.pojo.Seat;
+import com.ou.pojo.Ticket;
 import com.ou.pojo.Trip;
 import com.ou.services.BusService;
 import com.ou.services.SeatService;
@@ -118,6 +119,7 @@ public class BookTicketController implements Initializable {
     @FXML
     private Button btnSaleTicket;
     private Employee employee;
+    public static TicketFormController ticketForm;
 
     @FXML
     void btnBookTicketClick(ActionEvent event) throws ParseException, SQLException {
@@ -185,8 +187,84 @@ public class BookTicketController implements Initializable {
     }
     
     @FXML
-    void btnSaleTicketClick(ActionEvent event) {
-
+    void btnSaleTicketClick(ActionEvent event) throws ParseException, SQLException, IOException {
+        // 5p doi ra mili giay
+        long milis5min = 5 * 60 * 1000;
+        
+        // Thoi gian hien tai
+        Date currentTime = Date.from(Instant.now());
+        Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
+        String date = selected.getDate();
+        String time = selected.getTime();
+        Date date1 = DateTimeCalc.formatToDate(date, time);
+        Ticket ticket = null;
+        
+        if(selected != null) {
+            String message = String.format("Bán vé chuyến %s - %s\nNgày %s\nLúc %s"
+                    , selected.getFrom(), selected.getTo()
+                    , selected.getDate(), selected.getTime());
+        
+            Optional<ButtonType> confirm = EnterController.showConfirmDialog(message);
+            
+            // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
+            if (DateTimeCalc.timeBetween(currentTime, date1) >= milis5min) {
+                if(confirm.get() == ButtonType.OK) {
+                    String name = txtFullName.getText();
+                    String phone = txtPhone.getText();
+                    Customer customer = (Customer) UserService.getCustomer(phone);
+                    Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
+                    // Kiem tra khong chon ghe
+                    if (seat != null) {
+                        if(customer != null) {
+                            saletTicket(selected, seat, customer);
+                            ticket = TicketService.getTicketByTripSeat(selected.getId(), seat.getId());
+                        }
+                        else {
+                            UserService.addUser(name, phone, null, null, null, "CUSTOMER");
+                            Customer customer1 = (Customer) UserService.getCustomer(phone);
+                            saletTicket(selected, seat, customer1);
+                            ticket = TicketService.getTicketByTripSeat(selected.getId(), seat.getId());
+                        }
+                        printTicket();
+                        ticketForm.setTicket(ticket);
+                    }
+                    else
+                        EnterController.showErrorDialog("Vui lòng chọn ghế muốn mua.");
+                }
+                else
+                    EnterController.showErrorDialog("Hủy bán vé"); 
+            }
+            else
+                EnterController.showErrorDialog("Sắp đến thời gian xe chạy không được mua vé nữa.");
+        }
+        else
+            EnterController.showErrorDialog("Chọn chuyến đi trước khi mua vé.");
+    }
+    
+    public void saletTicket(Trip trip, Seat seat, Customer customer) {  
+        try {
+            TicketService.createTicketBought(trip.getId(), seat.getId()
+                    , customer.getId(), this.employee.getId());
+            EnterController.showSuccessDialog("Bán vé thành công");
+        } catch (SQLException ex) {
+            Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
+            EnterController.showErrorDialog(ex.getMessage());
+        }
+    }
+    
+    public void printTicket() throws IOException {
+        Stage primaryStage = new Stage();
+        
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/TicketForm.fxml"));
+        Parent root = fxmlLoader.load();
+        ticketForm = fxmlLoader.<TicketFormController>getController();
+        
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     @FXML

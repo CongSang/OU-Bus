@@ -14,6 +14,10 @@ public class Employee extends User{
     public Employee() {
     }
 
+    public Employee(int id, String name, String phone) {
+        super(id, name, phone);
+    }
+
     /**
      * @return the role
      */

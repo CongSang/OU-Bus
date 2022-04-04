@@ -15,11 +15,13 @@ com\ou\utils\Security.class
 com\ou\pojo\Ticket$Status.class
 com\ou\pojo\Trip.class
 com\ou\oubusmanager\App.class
+com\ou\pojo\User$UserRole.class
 com\ou\oubusmanager\EnterController.class
 com\ou\oubusmanager\TripManageController$2.class
 module-info.class
 com\ou\oubusmanager\TicketManageController.class
 com\ou\oubusmanager\App$2.class
+com\ou\pojo\User.class
 com\ou\services\BusService.class
 com\ou\services\SeatService.class
 com\ou\pojo\Employee.class

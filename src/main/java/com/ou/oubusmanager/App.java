@@ -47,7 +47,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) throws ParseException {
-        System.out.println(DateTimeCalc.formatToDate("12-02-2022", "15:20"));
         
         systemAuto();
         
