@@ -174,7 +174,6 @@ public class TicketFormController implements Initializable{
         tripColumn.setCellValueFactory(new PropertyValueFactory<>("tripId"));
         seatColumn.setCellValueFactory(new PropertyValueFactory<>("seatId"));
         customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        changeCellFactory();
         
         loadTickets(null);
         
@@ -208,6 +207,8 @@ public class TicketFormController implements Initializable{
         try {
             tks.addAll(TicketService.getBooketTickets(kw));
             tvTicket.setItems(tks);
+            
+            changeCellFactory();
             if(!txtSearch.getText().isBlank())
                 btnCancelSearch.setVisible(true);
         } catch (SQLException ex) {
@@ -221,8 +222,9 @@ public class TicketFormController implements Initializable{
         customerColumn.setCellFactory(col -> new TableCell<Ticket, Integer>() {
             @Override
             protected void updateItem(Integer t, boolean empty) {
+                super.updateItem(t, empty);
                 try {
-                    if (t != null) {
+                    if (!empty) {
                         Customer c = UserService.getCustomerById(t);
                         setText(c != null ? c.getName() : null);
                     }
@@ -236,8 +238,9 @@ public class TicketFormController implements Initializable{
         tripColumn.setCellFactory(col -> new TableCell<Ticket, Integer>() {
             @Override
             protected void updateItem(Integer t, boolean empty) {
+                super.updateItem(t, empty);
                 try {
-                    if (t != null){
+                    if (!empty){
                         Trip trip = TripService.getTripById(t);
                         setText(trip != null ? trip.getFrom() + " - " + trip.getTo() : null);
                     }
@@ -254,11 +257,17 @@ public class TicketFormController implements Initializable{
         Bus b = BusService.getBusByTripId(selected.getTripId());
         Trip t = TripService.getTripById(selected.getTripId());
         Seat s = SeatService.getSeatById(selected.getSeatId());
+        Customer c = UserService.getCustomerById(selected.getCustomerId());
+        
         txtFrom.setText(t.getFrom());
         txtTo.setText(t.getTo());
         txtDateDeparture.setText(t.getDate());
         txtTimeDeparture.setText(t.getTime());
         txtBusSeri.setText(b.getBusSerial());
+        
+        lblCustomerName.setText(c.getName());
+        lblCustomerPhone.setText(c.getPhone());
+        
         if (s!= null)
             cbSeat.setValue(s);
     }

@@ -195,26 +195,4 @@ public class TripService {
         }
         return false;
     }
-
-    public static Trip getTripById(int tripId) throws SQLException {
-        try (Connection conn = Jdbc.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT * FROM trip where id = ?");
-            stm.setInt(1, tripId);
-            
-            ResultSet rs = stm.executeQuery();
-            
-            Trip t = null;
-            if(rs.next()) {
-                Date d = new Date(rs.getTimestamp("date_start").getTime());           
-                String strDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(d);
-
-                String dateStart = strDate.split(" ")[0];
-                String timeStart = strDate.split(" ")[1];
-                    
-                t = new Trip(tripId, rs.getString(from), rs.getString(to)
-                        ,dateStart, timeStart, rs.getInt(busId), rs.getBoolean(complete));
-            }
-            return t;
-        }
-    }
 }
