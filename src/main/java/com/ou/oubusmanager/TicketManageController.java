@@ -82,5 +82,7 @@ public class TicketManageController implements Initializable {
         primaryStage.centerOnScreen();
         primaryStage.setResizable(false);
         primaryStage.show();
+        
+        bookticket.setEmployee(this.employee);
     }
 }

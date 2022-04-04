@@ -258,7 +258,7 @@ public class BookTicketController implements Initializable {
         Stage primaryStage = new Stage();
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("com/ou/oubusmanager/TicketForm.fxml"));
+                .getResource("com/ou/oubusmanager/TicketExport.fxml"));
         Parent root = fxmlLoader.load();
         ticketForm = fxmlLoader.<TicketExportController>getController();
         
