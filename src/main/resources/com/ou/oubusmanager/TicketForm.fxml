@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="960.0" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ou.oubusmanager.TicketFormController">
+   <children>
+      <BorderPane prefHeight="640.0" prefWidth="960.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="960.0" style="-fx-background-color: #005792; -fx-padding: 8;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/bus-white.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label prefHeight="32.0" prefWidth="356.0" styleClass="head-title" text="OU BUS">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+                  <ImageView fx:id="btnLogout" fitHeight="30.0" fitWidth="30.0" layoutX="28.0" layoutY="18.0" onMouseClicked="#btnLogoutClick" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                     <image>
+                        <Image url="@../../images/logout.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="755.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </HBox>
+         </top>
+         <left>
+            <AnchorPane prefHeight="587.0" prefWidth="370.0" style="-fx-padding: 8;" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane layoutX="18.0" layoutY="23.0" prefHeight="543.0" prefWidth="336.0" styleClass="enterfield">
+                     <children>
+                        <VBox layoutX="18.0" layoutY="56.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Từ:" />
+                              <TextField fx:id="txtFrom" editable="false" prefHeight="35.0" prefWidth="300.0" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="114.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Đến:" />
+                              <TextField fx:id="txtTo" editable="false" prefHeight="35.0" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="176.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Ngày khởi hành:" />
+                              <TextField fx:id="txtDateDeparture" editable="false" prefHeight="35.0" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="btnCancelTicket" layoutX="18.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnCancelTicket_click" prefHeight="35.0" prefWidth="144.0" text="Hủy vé" visible="false">
+                           <styleClass>
+                              <String fx:value="btn-delete" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Label layoutX="19.0" layoutY="14.0" styleClass="lbl" text="Khách hàng:" textFill="RED" />
+                        <Label fx:id="lblCustomerName" layoutX="96.0" layoutY="14.0" styleClass="lbl" text="HoTen" />
+                        <VBox layoutX="18.0" layoutY="238.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Thời gian khởi hành:" />
+                              <TextField fx:id="txtTimeDeparture" editable="false" prefHeight="35.0" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="359.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Chỗ ngồi:" />
+                              <ComboBox fx:id="cbSeat" prefHeight="35.0" prefWidth="308.0" promptText="Chọn ghế" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="18.0" layoutY="299.0" prefHeight="54.0" prefWidth="300.0">
+                           <children>
+                              <Label styleClass="lbl" text="Xe số:" />
+                              <TextField fx:id="txtBusSeri" editable="false" prefHeight="35.0" styleClass="textfield" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="btnExport" layoutX="178.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnExport_click" prefHeight="35.0" prefWidth="144.0" text="Xuất vé" visible="false">
+                           <styleClass>
+                              <String fx:value="btn-add" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Label layoutX="18.0" layoutY="38.0" styleClass="lbl" text="Số điện thoại:" textFill="RED" />
+                        <Label fx:id="lblCustomerPhone" layoutX="99.0" layoutY="38.0" styleClass="lbl" text="sdt" />
+                        <Button fx:id="btnSave" layoutX="168.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnSave_click" prefHeight="35.0" prefWidth="144.0" text="Lưu" visible="false">
+                           <styleClass>
+                              <String fx:value="button1" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btnChangeTrip" layoutX="18.0" layoutY="436.0" mnemonicParsing="false" onAction="#btnChangeTrip_click" prefHeight="35.0" prefWidth="294.0" text="Đổi chuyến" visible="false">
+                           <styleClass>
+                              <String fx:value="btn-update" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+         </left>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="txtSearch" layoutX="5.0" layoutY="43.0" prefHeight="35.0" prefWidth="579.0" promptText="Họ tên, sdt..." />
+                        <Label layoutX="259.0" layoutY="14.0" text="TÌM KIẾM VÉ">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutY="141.0" text="Nhấn để chọn vé">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="tvTicket" layoutX="-2.0" layoutY="176.0" prefHeight="390.0" prefWidth="578.0">
+                           <columns>
+                              <TableColumn fx:id="idColumn" prefWidth="145.0" text="Mã vé" />
+                              <TableColumn fx:id="tripColumn" prefWidth="173.5999755859375" text="Chuyến" />
+                              <TableColumn fx:id="seatColumn" minWidth="0.0" prefWidth="46.4000244140625" text="Số ghế" />
+                              <TableColumn fx:id="customerColumn" prefWidth="210.0" text="Khách hàng" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="btnCancelSearch" layoutX="480.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="96.0" text="Hủy tìm kiếm" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="btn-delete" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btnCancel" layoutX="5.0" layoutY="88.0" mnemonicParsing="false" onAction="#btnCancel_click" prefHeight="35.0" prefWidth="77.0" text="Hủy chọn" visible="false">
+                           <styleClass>
+                              <String fx:value="btn-delete" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

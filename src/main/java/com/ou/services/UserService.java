@@ -50,7 +50,7 @@ public class UserService {
         }     
     }
     
-    public static User getCustomerById(int id) throws SQLException {
+    public static Customer getCustomerById(int id) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM user"
                     + " where id = ?");
@@ -58,7 +58,7 @@ public class UserService {
             
             ResultSet rs = stm.executeQuery();
             
-            User u = null;
+            Customer u = null;
             while(rs.next()) {
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");

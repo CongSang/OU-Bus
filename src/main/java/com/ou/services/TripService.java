@@ -1,7 +1,6 @@
 package com.ou.services;
 
 import com.ou.utils.DateTimeCalc;
-import com.ou.pojo.Bus;
 import com.ou.pojo.Trip;
 import com.ou.utils.Jdbc;
 import java.sql.Connection;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
