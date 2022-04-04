@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="687.0" style="-fx-background-color: #dbdbdb;" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ou.oubusmanager.TicketFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="687.0" style="-fx-background-color: #dbdbdb;" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ou.oubusmanager.TicketExportController">
    <children>
       <AnchorPane layoutX="144.0" layoutY="14.0" prefHeight="390.0" prefWidth="400.0" style="-fx-background-color: #ffffff;" stylesheets="@../../styles/style.css">
          <children>

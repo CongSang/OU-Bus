@@ -2,7 +2,6 @@ com\ou\services\TicketService.class
 com\ou\oubusmanager\TripManageController$3.class
 com\ou\oubusmanager\BookTicketController.class
 com\ou\pojo\Ticket.class
-com\ou\oubusmanager\TicketFormController.class
 com\ou\oubusmanager\TripManageController$4.class
 com\ou\pojo\Bus.class
 com\ou\services\TripService.class
