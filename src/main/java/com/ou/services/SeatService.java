@@ -2,12 +2,20 @@ package com.ou.services;
 
 import com.ou.pojo.Bus;
 import com.ou.pojo.Seat;
+import com.ou.pojo.Trip;
+import static com.ou.services.TripService.busId;
+import static com.ou.services.TripService.complete;
+import static com.ou.services.TripService.from;
+import static com.ou.services.TripService.id;
+import static com.ou.services.TripService.to;
 import com.ou.utils.Jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -104,6 +112,20 @@ public class SeatService {
             }
         }
         return false;
+    }
+
+    public static Seat getSeatById(int seatId) throws SQLException {
+        try (Connection conn = Jdbc.getConn()) {
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM seat where id = ?");
+            stm.setInt(1, seatId);
+            ResultSet rs = stm.executeQuery();
+            
+            Seat s = null;
+            if(rs.next()) {  
+                s = new Seat(rs.getInt("id"), rs.getInt("bus_id"));
+            }
+            return s;
+        }
     }
     
 }

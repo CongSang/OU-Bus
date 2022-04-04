@@ -17,6 +17,7 @@ import com.ou.pojo.User;
 import com.ou.pojo.Admin;
 import com.ou.pojo.Employee;
 import com.ou.services.UserService;
+import com.ou.utils.MyAlert;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -78,6 +79,7 @@ public class EnterController implements Initializable {
     public static BookTicketController bookticket;
     public static TripManageController tripmanage;
     public static TicketManageController ticketmanage;
+    public static TicketFormController ticketform;
     
     @FXML
     void btnBackClick(MouseEvent event) {
@@ -111,10 +113,10 @@ public class EnterController implements Initializable {
         String password = txtPasswordSignIn.getText();
         
         if (username.equals("")) {
-            this.showErrorDialog("Vui lòng nhập Tài khoản.");
+            MyAlert.showErrorDialog("Vui lòng nhập Tài khoản.");
         }
         else if (password.equals("")) {
-            this.showErrorDialog("Vui lòng nhập Mật khẩu.");
+            MyAlert.showErrorDialog("Vui lòng nhập Mật khẩu.");
         }
         else {
             User a = UserService.getUserLogin(username, password);
@@ -124,10 +126,10 @@ public class EnterController implements Initializable {
             }
             else if (a instanceof Employee) {
                 changeEmployeeScene();
-                bookticket.setEmployee((Employee) a);
+                ticketmanage.setEmployee((Employee) a);
             }
             else
-                showErrorDialog("Sai Tài khoản hoặc Mật khẩu.");
+                MyAlert.showErrorDialog("Sai Tài khoản hoặc Mật khẩu.");
         }
     }
     
@@ -141,12 +143,12 @@ public class EnterController implements Initializable {
         
         if(fullName.equals("") || phone.equals("") || age.equals("") 
                 || username.equals("") || password.equals("")) {
-            this.showErrorDialog("Vui lòng điền hết các thông tin.");
+            MyAlert.showErrorDialog("Vui lòng điền hết các thông tin.");
         }
         else {
             password = Security.encryptMD5(password);
             UserService.addUser(fullName, phone, age, username, password, role);
-            this.showSuccessDialog("Tạo tài khoản thành công");
+            MyAlert.showSuccessDialog("Tạo tài khoản thành công");
             reset();
             pnSignIn.toFront();
             new FadeInLeft(pnSignIn).play();
@@ -172,10 +174,10 @@ public class EnterController implements Initializable {
         Stage primaryStage = (Stage) btnLogin.getScene().getWindow();
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("com/ou/oubusmanager/BookTicket.fxml"));
+                .getResource("com/ou/oubusmanager/TicketManage.fxml"));
         Parent root = fxmlLoader.load();
-        bookticket = fxmlLoader.<BookTicketController>getController();
-//        ticketmanage = fxmlLoader.<TicketManageController>getController();
+        ticketmanage = fxmlLoader.<TicketManageController>getController();
+//        ticketform = fxmlLoader.<TicketFormController>getController();
         
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -183,31 +185,6 @@ public class EnterController implements Initializable {
         primaryStage.setResizable(false);
         primaryStage.show();
     } 
-    
-    public static void showErrorDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Cảnh báo");
-        alert.setHeaderText(message);
-        alert.setContentText("LỖI");
-        alert.showAndWait();
-    }
-    
-    public static void showSuccessDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông tin");
-        alert.setHeaderText(message);
-        alert.setContentText("THÀNH CÔNG");
-        alert.showAndWait();
-    }
-    
-    public static Optional<ButtonType> showConfirmDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Xác nhận");
-        alert.setHeaderText(message);
-        alert.setContentText("Nhấn OK để hoàn thành");
-        Optional<ButtonType> option = alert.showAndWait();
-        return option;
-    }
     
     public void reset() {
         txtFullName.setText("");
