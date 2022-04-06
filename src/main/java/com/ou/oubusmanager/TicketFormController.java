@@ -224,7 +224,6 @@ public class TicketFormController implements Initializable{
         } catch (SQLException ex) {
             Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
     //Thay doi cach hien thi cua cac column
