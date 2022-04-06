@@ -7,6 +7,8 @@ package com.ou.utils;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -67,4 +69,10 @@ public class DateTimeCalc {
         return new SimpleDateFormat("yyyy-MM-dd").format(dateFormat);
     }
     
+    public static String getNow() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        
+        return dtf.format(now);
+    }
 }

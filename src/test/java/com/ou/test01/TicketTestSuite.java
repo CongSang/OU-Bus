@@ -4,6 +4,7 @@
  */
 package com.ou.test01;
 
+import com.ou.pojo.Ticket;
 import com.ou.pojo.Trip;
 import com.ou.services.TicketService;
 import com.ou.services.TripService;
@@ -103,8 +104,9 @@ public class TicketTestSuite {
     public void testSetTicketBooked(int tripId, int seatId, int customerID
             , int employeeId, String dateBook, int expected) {
         try {
-            int actual = t.createTicketBooked(tripId, seatId
-                    , customerID, employeeId, dateBook); // Chuyen 1 ve FREE thanh BOOKED
+            Ticket ticket = new Ticket(tripId, seatId, customerID, employeeId, Ticket.Status.FREE, dateBook);
+            
+            int actual = t.createTicketBooked(ticket); // Chuyen 1 ve FREE thanh BOOKED
             Assertions.assertEquals(expected, actual
                     , String.format("Dang ktra tripId = %d", tripId));
         } catch (SQLException ex) {
