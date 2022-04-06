@@ -120,7 +120,7 @@ public class BookTicketController implements Initializable {
     @FXML
     private Button btnSaleTicket;
     private Employee employee;
-    public static TicketExportController ticketForm;
+    public static TicketExportController ticketExport;
     public static TicketManageController ticketManageController;
 
     @FXML
@@ -173,12 +173,14 @@ public class BookTicketController implements Initializable {
             MyAlert.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
     }
     
-    public void bookTicket(Trip trip, Seat seat, Customer customer) {
+    public void bookTicket(Trip trip, Seat seat, Customer customer) throws ParseException {
         try {
             Ticket t = new Ticket(trip.getId(), seat.getId(), customer.getId(),
                     this.employee.getId(), Ticket.Status.BOOKED, DateTimeCalc.getNow());
             TicketService.createTicketBooked(t);
             MyAlert.showSuccessDialog("Đặt vé thành công");
+            reset();
+            loadData(null, null);
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
             MyAlert.showErrorDialog(ex.getMessage());
@@ -225,7 +227,7 @@ public class BookTicketController implements Initializable {
                             ticket = TicketService.getTicketByTripSeat(selected.getId(), seat.getId());
                         }
                         printTicket();
-                        ticketForm.setTicket(ticket);
+                        ticketExport.setTicket(ticket);
                     }
                     else
                         MyAlert.showErrorDialog("Vui lòng chọn ghế muốn mua.");
@@ -240,11 +242,13 @@ public class BookTicketController implements Initializable {
             MyAlert.showErrorDialog("Chọn chuyến đi trước khi mua vé.");
     }
     
-    public void saletTicket(Trip trip, Seat seat, Customer customer) {  
+    public void saletTicket(Trip trip, Seat seat, Customer customer) throws ParseException {  
         try {
             TicketService.createTicketBought(trip.getId(), seat.getId()
                     , customer.getId(), this.employee.getId());
             MyAlert.showSuccessDialog("Bán vé thành công");
+            reset();
+            loadData(null, null);
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
             MyAlert.showErrorDialog(ex.getMessage());
@@ -257,7 +261,7 @@ public class BookTicketController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
                 .getResource("com/ou/oubusmanager/TicketExport.fxml"));
         Parent root = fxmlLoader.load();
-        ticketForm = fxmlLoader.<TicketExportController>getController();
+        ticketExport = fxmlLoader.<TicketExportController>getController();
         
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -289,6 +293,7 @@ public class BookTicketController implements Initializable {
     void btnCancelSearchClick(ActionEvent event) {
         txtSearchFrom.setText("");
         txtSearchTo.setText("");
+        btnCancelSearch.setVisible(false);
     }
 
     public void setEmployee(Employee employee) {
@@ -322,6 +327,7 @@ public class BookTicketController implements Initializable {
         // Tim kiem diem di
         txtSearchFrom.textProperty().addListener((event) -> {
             try {
+                btnCancelSearch.setVisible(true);
                 this.loadData(txtSearchFrom.getText(), txtSearchTo.getText());
             } catch (ParseException ex) {
                 Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -331,6 +337,7 @@ public class BookTicketController implements Initializable {
         // Tim kiem diem den
         txtSearchTo.textProperty().addListener((event) -> {
             try {
+                btnCancelSearch.setVisible(true);
                 this.loadData(txtSearchFrom.getText(), txtSearchTo.getText());
             } catch (ParseException ex) {
                 Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -370,5 +377,12 @@ public class BookTicketController implements Initializable {
         txtBusSeri.setText(BusService.getBusById(selected.getBusId()).getBusSerial());
         this.cbSeatEmpty.setItems(FXCollections.observableList(SeatService
                 .getSeatEmpty(selected.getBusId(), selected.getId())));
+    }
+    
+    void reset() {
+        this.tvTrip.getSelectionModel().clearSelection();
+        txtFullName.setText("");
+        txtPhone.setText("");
+        cbSeatEmpty.setItems(null);
     }
 }

@@ -166,7 +166,12 @@ public class TripService {
             stm.setInt(4, t.getBusId());
             stm.setBoolean(5, t.isComplete());
             stm.setInt(6, t.getId());
-            return stm.executeUpdate();
+            if (stm.executeUpdate() > 0) {
+                // Tu tao ve cho moi chuyen di moi duoc them
+                TicketService.createNewTicket();
+                return 1;
+            }
+            return 0;
         }
     }
     

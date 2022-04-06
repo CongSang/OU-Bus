@@ -89,17 +89,18 @@ public class SeatService {
     
     // Create when App run
     public static boolean createSeatOfBus() throws SQLException {
-        Random rand = new Random();
-        int MAX = 10000;
+        
         try (Connection conn = Jdbc.getConn()) {
             List<Bus> busNeedAddSeat = BusService.getBusNotEnoughtSeats();
             System.out.println("Create seat bus: " + busNeedAddSeat.size());
             
             if(!busNeedAddSeat.isEmpty()) {
                 for(Bus b : busNeedAddSeat) { 
+                    int seatNumber = 0;
                     System.out.println(b.getBusSerial() + "   " + b.getSeatNumber());
                     for(int i = 0; i < b.getSeatNumber(); i++) {
-                        int id = b.getId()*100000 + rand.nextInt(MAX);
+                        seatNumber += 1;
+                        int id = seatNumber;
                         PreparedStatement stm = conn.prepareStatement("INSERT INTO seat "
                         + "(id, bus_id) VALUES(?,?)");
                         stm.setInt(1, id);

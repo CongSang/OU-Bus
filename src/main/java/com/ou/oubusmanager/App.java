@@ -46,8 +46,8 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) throws ParseException {
-        
+    public static void main(String[] args) throws ParseException, SQLException {
+        TicketService.createNewTicket();
         systemAuto();
         
         launch(args);
