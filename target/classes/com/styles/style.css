@@ -35,6 +35,17 @@
     -fx-fill: #ff0000;
 }
 
+.select-icon {
+    -fx-cursor: hand;
+    -glyph-size: 20px;
+    -fx-opacity: 0.7;
+    -fx-fill: #5055e6;
+}
+
+.select-icon:hover {
+    -fx-opacity: 1;
+}
+
 .delete-icon:hover {
     -fx-opacity: 1;
 }

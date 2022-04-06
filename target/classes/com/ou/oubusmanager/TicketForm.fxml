@@ -53,7 +53,7 @@
             </HBox>
          </top>
          <left>
-            <AnchorPane prefHeight="587.0" prefWidth="370.0" style="-fx-padding: 8;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="593.0" prefWidth="370.0" style="-fx-padding: 8;" BorderPane.alignment="CENTER">
                <children>
                   <Pane layoutX="18.0" layoutY="23.0" prefHeight="543.0" prefWidth="336.0" styleClass="enterfield">
                      <children>
@@ -151,31 +151,72 @@
             </AnchorPane>
          </left>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane prefHeight="569.0" prefWidth="590.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane fx:id="pane2" minHeight="-Infinity" prefHeight="546.0" prefWidth="590.0" style="-fx-background-color: #fff;">
                      <children>
-                        <TextField fx:id="txtSearch" layoutX="5.0" layoutY="43.0" prefHeight="35.0" prefWidth="579.0" promptText="Họ tên, sdt..." />
-                        <Label layoutX="259.0" layoutY="14.0" text="TÌM KIẾM VÉ">
+                        <ImageView fx:id="btnBack" fitHeight="33.0" fitWidth="35.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#btnBack_clicked" opacity="0.59" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                           <image>
+                              <Image url="@../../images/go_back.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <TextField fx:id="txtSearchFrom" layoutY="106.0" prefHeight="35.0" prefWidth="282.0" promptText="Điểm đi" />
+                        <Label layoutX="212.0" layoutY="58.0" text="TÌM KIẾM CHUYẾN ĐI">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Label layoutX="-3.0" layoutY="158.0" text="Nhấn để chọn vé">
+                        <TextField fx:id="txtSearchTo" layoutX="287.0" layoutY="106.0" prefHeight="35.0" prefWidth="283.0" promptText="Điểm đến" />
+                        <TableView fx:id="tvTrip" layoutY="150.0" prefHeight="405.0" prefWidth="577.0">
+                           <columns>
+                              <TableColumn fx:id="fromColumn" prefWidth="145.0" text="Điểm đi" />
+                              <TableColumn fx:id="toColumn" prefWidth="145.0" text="Điểm đến" />
+                              <TableColumn fx:id="dateColumn" prefWidth="120.0" text="Ngày đi" />
+                              <TableColumn fx:id="timeColumn" prefWidth="120.0" text="Thời gian" />
+                              <TableColumn fx:id="id_hiddenColumn" prefWidth="102.666748046875" text="Id" visible="false" />
+                              <TableColumn fx:id="busId_hiddenColumn" prefWidth="102.6666259765625" text="BusId" visible="false" />
+                              <TableColumn fx:id="btnColumn" prefWidth="43.0" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="btnCancelSearchTrip" layoutX="475.0" layoutY="69.0" mnemonicParsing="false" onAction="#btnCancelSearchTripClick" prefHeight="29.0" prefWidth="96.0" text="Hủy tìm kiếm" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="btn-delete" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;">
+                     <children>
+                        <TextField fx:id="txtSearch" layoutX="5.0" layoutY="67.0" prefHeight="35.0" prefWidth="579.0" promptText="Họ tên, sdt..." />
+                        <Label layoutX="249.0" layoutY="24.0" text="TÌM KIẾM VÉ">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="5.0" layoutY="158.0" text="Nhấn để chọn vé">
                            <font>
                               <Font name="System Bold Italic" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="tvTicket" layoutX="-2.0" layoutY="176.0" prefHeight="390.0" prefWidth="578.0">
+                        <TableView fx:id="tvTicket" layoutX="3.0" layoutY="176.0" prefHeight="390.0" prefWidth="573.0">
                            <columns>
                               <TableColumn fx:id="idColumn" prefWidth="145.0" text="Mã vé" />
                               <TableColumn fx:id="tripColumn" prefWidth="173.5999755859375" text="Chuyến" />
                               <TableColumn fx:id="seatColumn" minWidth="0.0" prefWidth="46.4000244140625" text="Số ghế" />
-                              <TableColumn fx:id="customerColumn" prefWidth="210.0" text="Khách hàng" />
+                              <TableColumn fx:id="customerColumn" prefWidth="203.19998168945312" text="Khách hàng" />
                            </columns>
                         </TableView>
-                        <Button fx:id="btnCancelSearch" layoutX="548.0" layoutY="46.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="35.0" style="-fx-background-color: transparent;" visible="false">
+                        <Button fx:id="btnCancelSearch" layoutX="548.0" layoutY="70.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="35.0" style="-fx-background-color: transparent;" visible="false">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

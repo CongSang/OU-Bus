@@ -173,15 +173,14 @@ public class BookTicketController implements Initializable {
             MyAlert.showErrorDialog("Chọn chuyến đi trước khi đặt vé.");
     }
     
-    public void bookTicket(Trip trip, Seat seat, Customer customer) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now));   
-
+    public void bookTicket(Trip trip, Seat seat, Customer customer) throws ParseException {
         try {
-            TicketService.createTicketBooked(trip.getId(), seat.getId()
-                    , customer.getId(), this.employee.getId(), dtf.format(now));
+            Ticket t = new Ticket(trip.getId(), seat.getId(), customer.getId(),
+                    this.employee.getId(), Ticket.Status.BOOKED, DateTimeCalc.getNow());
+            TicketService.createTicketBooked(t);
             MyAlert.showSuccessDialog("Đặt vé thành công");
+            reset();
+            loadData(null, null);
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
             MyAlert.showErrorDialog(ex.getMessage());
@@ -243,11 +242,13 @@ public class BookTicketController implements Initializable {
             MyAlert.showErrorDialog("Chọn chuyến đi trước khi mua vé.");
     }
     
-    public void saletTicket(Trip trip, Seat seat, Customer customer) {  
+    public void saletTicket(Trip trip, Seat seat, Customer customer) throws ParseException {  
         try {
             TicketService.createTicketBought(trip.getId(), seat.getId()
                     , customer.getId(), this.employee.getId());
             MyAlert.showSuccessDialog("Bán vé thành công");
+            reset();
+            loadData(null, null);
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
             MyAlert.showErrorDialog(ex.getMessage());
@@ -292,6 +293,7 @@ public class BookTicketController implements Initializable {
     void btnCancelSearchClick(ActionEvent event) {
         txtSearchFrom.setText("");
         txtSearchTo.setText("");
+        btnCancelSearch.setVisible(false);
     }
 
     public void setEmployee(Employee employee) {
@@ -325,6 +327,7 @@ public class BookTicketController implements Initializable {
         // Tim kiem diem di
         txtSearchFrom.textProperty().addListener((event) -> {
             try {
+                btnCancelSearch.setVisible(true);
                 this.loadData(txtSearchFrom.getText(), txtSearchTo.getText());
             } catch (ParseException ex) {
                 Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -334,6 +337,7 @@ public class BookTicketController implements Initializable {
         // Tim kiem diem den
         txtSearchTo.textProperty().addListener((event) -> {
             try {
+                btnCancelSearch.setVisible(true);
                 this.loadData(txtSearchFrom.getText(), txtSearchTo.getText());
             } catch (ParseException ex) {
                 Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -352,7 +356,7 @@ public class BookTicketController implements Initializable {
         });
     } 
     
-    private void loadData(String from, String to) throws ParseException {       
+    protected void loadData(String from, String to) throws ParseException {       
         ObservableList<Trip> trips = FXCollections.observableArrayList();
         
         try {
@@ -373,5 +377,12 @@ public class BookTicketController implements Initializable {
         txtBusSeri.setText(BusService.getBusById(selected.getBusId()).getBusSerial());
         this.cbSeatEmpty.setItems(FXCollections.observableList(SeatService
                 .getSeatEmpty(selected.getBusId(), selected.getId())));
+    }
+    
+    void reset() {
+        this.tvTrip.getSelectionModel().clearSelection();
+        txtFullName.setText("");
+        txtPhone.setText("");
+        cbSeatEmpty.setItems(null);
     }
 }

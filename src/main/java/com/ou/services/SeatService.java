@@ -100,7 +100,7 @@ public class SeatService {
                     System.out.println(b.getBusSerial() + "   " + b.getSeatNumber());
                     for(int i = 0; i < b.getSeatNumber(); i++) {
                         seatNumber += 1;
-                        int id = b.getId()*100000 + seatNumber;
+                        int id = seatNumber;
                         PreparedStatement stm = conn.prepareStatement("INSERT INTO seat "
                         + "(id, bus_id) VALUES(?,?)");
                         stm.setInt(1, id);
