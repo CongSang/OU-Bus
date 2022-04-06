@@ -52,7 +52,30 @@ public class Ticket {
         this.dateBook = dateBook;
         this.datePrint = datePrint;
     }
-            
+    
+    //update new ticket
+    public Ticket(int id, int tripId, int seatId, int customerId
+            , int employeeId, Status status, String dateBook) {
+        this.id = id;
+        this.tripId = tripId;
+        this.seatId = seatId;
+        this.customerId = customerId;
+        this.employeeId = employeeId;
+        this.status = status;
+        this.dateBook = dateBook;
+    }
+    
+    // update ticket
+    public Ticket(int tripId, int seatId, int customerId
+            , int employeeId, Status status, String dateBook) {
+        this.tripId = tripId;
+        this.seatId = seatId;
+        this.customerId = customerId;
+        this.employeeId = employeeId;
+        this.status = status;
+        this.dateBook = dateBook;
+        this.datePrint = datePrint;
+    }
     
     
     public enum Status {

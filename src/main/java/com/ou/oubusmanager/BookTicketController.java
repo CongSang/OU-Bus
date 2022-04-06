@@ -174,13 +174,10 @@ public class BookTicketController implements Initializable {
     }
     
     public void bookTicket(Trip trip, Seat seat, Customer customer) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now));   
-
         try {
-            TicketService.createTicketBooked(trip.getId(), seat.getId()
-                    , customer.getId(), this.employee.getId(), dtf.format(now));
+            Ticket t = new Ticket(trip.getId(), seat.getId(), customer.getId(),
+                    this.employee.getId(), Ticket.Status.BOOKED, DateTimeCalc.getNow());
+            TicketService.createTicketBooked(t);
             MyAlert.showSuccessDialog("Đặt vé thành công");
         } catch (SQLException ex) {
             Logger.getLogger(BookTicketController.class.getName()).log(Level.SEVERE, null, ex);
@@ -352,7 +349,7 @@ public class BookTicketController implements Initializable {
         });
     } 
     
-    private void loadData(String from, String to) throws ParseException {       
+    protected void loadData(String from, String to) throws ParseException {       
         ObservableList<Trip> trips = FXCollections.observableArrayList();
         
         try {

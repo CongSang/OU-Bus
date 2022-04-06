@@ -53,20 +53,18 @@ public class TicketService {
     }
     
     // Khach hang dat ve va chuyen trang thai BOOKED
-    public static int createTicketBooked(int tripId, int seatId
-            , int customerId, int employeeId, String dateBook) throws SQLException {
-        String status = "BOOKED";
-               
+    public static int createTicketBooked(Ticket t) throws SQLException {
         try (Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
                     +" SET customer_id = ?, employee_id = ?, status = ?, date_book = ? "
                     + " WHERE trip_id = ? AND seat_id = ?");
-            stm.setInt(1, customerId);
-            stm.setInt(2, employeeId);
-            stm.setString(3, status);
-            stm.setString(4, dateBook);
-            stm.setInt(5, tripId);
-            stm.setInt(6, seatId);           
+            
+            stm.setInt(1, t.getCustomerId());
+            stm.setInt(2, t.getEmployeeId());
+            stm.setString(3, t.getStatus().toString());
+            stm.setString(4, t.getDateBook());
+            stm.setInt(5, t.getTripId());
+            stm.setInt(6, t.getSeatId());           
             
             return stm.executeUpdate(); 
         }     
@@ -243,12 +241,13 @@ public class TicketService {
         return tks;
     }
     
-    public static int setTicketFree(int ticketId) throws SQLException {
+    public static int setTicketFree(int tripId, int seatId) throws SQLException {
         try(Connection conn = Jdbc.getConn()) {
             PreparedStatement stm = conn.prepareStatement("UPDATE ticket"
                     + " SET customer_id=null, employee_id=null"
-                    + ", status='FREE', date_book=null WHERE id=?");
-            stm.setInt(1, ticketId);
+                    + ", status='FREE', date_book=null WHERE trip_id=? AND seat_id=?");
+            stm.setInt(1, tripId);
+            stm.setInt(2, seatId);
             return stm.executeUpdate();
         }
     }
