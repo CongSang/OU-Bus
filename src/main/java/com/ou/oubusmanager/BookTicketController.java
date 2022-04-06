@@ -120,7 +120,7 @@ public class BookTicketController implements Initializable {
     @FXML
     private Button btnSaleTicket;
     private Employee employee;
-    public static TicketExportController ticketForm;
+    public static TicketExportController ticketExport;
     public static TicketManageController ticketManageController;
 
     @FXML
@@ -228,7 +228,7 @@ public class BookTicketController implements Initializable {
                             ticket = TicketService.getTicketByTripSeat(selected.getId(), seat.getId());
                         }
                         printTicket();
-                        ticketForm.setTicket(ticket);
+                        ticketExport.setTicket(ticket);
                     }
                     else
                         MyAlert.showErrorDialog("Vui lòng chọn ghế muốn mua.");
@@ -260,7 +260,7 @@ public class BookTicketController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
                 .getResource("com/ou/oubusmanager/TicketExport.fxml"));
         Parent root = fxmlLoader.load();
-        ticketForm = fxmlLoader.<TicketExportController>getController();
+        ticketExport = fxmlLoader.<TicketExportController>getController();
         
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

@@ -58,9 +58,6 @@ public class TicketFormController implements Initializable{
 
     @FXML
     private Button btnSave;
-    
-    @FXML
-    private Button btnCancel;
 
     @FXML
     private ComboBox<Seat> cbSeat;
@@ -106,7 +103,8 @@ public class TicketFormController implements Initializable{
     
     private Employee employee;   
     private Ticket selected;
-    public TicketManageController ticketManageController;
+    public static TicketManageController ticketManageController;
+    public static TicketExportController ticketExport;
     
     public void setEmployee(Employee em) {
         this.employee = em;
@@ -136,8 +134,11 @@ public class TicketFormController implements Initializable{
     }
 
     @FXML
-    void btnExport_click(ActionEvent event) {
-
+    void btnExport_click(ActionEvent event) throws SQLException, IOException {
+        Ticket ticket = TicketService.getTicketByTripSeat(selected.getTripId()
+                , selected.getSeatId());
+        printTicket();
+        ticketExport.setTicket(ticket);
     }
 
     @FXML
@@ -162,11 +163,6 @@ public class TicketFormController implements Initializable{
     void btnSave_click(ActionEvent event) {
 
     }
-    
-    @FXML
-    void btnCancel_click(ActionEvent event) {
-        clearSelection();
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -190,7 +186,6 @@ public class TicketFormController implements Initializable{
                         btnChangeTrip.setVisible(true);
                         btnExport.setVisible(true);
                         btnSave.setVisible(true);
-                        btnCancel.setVisible(true);
                     } catch (SQLException ex) {
                         Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ParseException ex) {
@@ -198,6 +193,21 @@ public class TicketFormController implements Initializable{
                     }
                 }
             });
+    }
+    
+    public void printTicket() throws IOException {
+        Stage primaryStage = new Stage();
+        
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("com/ou/oubusmanager/TicketExport.fxml"));
+        Parent root = fxmlLoader.load();
+        ticketExport = fxmlLoader.<TicketExportController>getController();
+        
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
     
     public void loadTickets(String kw) {
@@ -279,7 +289,6 @@ public class TicketFormController implements Initializable{
         btnChangeTrip.setVisible(false);
         btnExport.setVisible(false);
         btnSave.setVisible(false);
-        btnCancel.setVisible(false);
         
         lblCustomerName.setText("");
         lblCustomerPhone.setText("");
