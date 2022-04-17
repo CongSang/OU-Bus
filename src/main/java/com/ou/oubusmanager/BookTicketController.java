@@ -12,6 +12,7 @@ import com.ou.services.TicketService;
 import com.ou.services.TripService;
 import com.ou.services.UserService;
 import com.ou.utils.MyAlert;
+import com.ou.utils.Util;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -131,22 +132,26 @@ public class BookTicketController implements Initializable {
         // Thoi gian hien tai
         Date currentTime = Date.from(Instant.now());
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
-        String date = selected.getDate();
-        String time = selected.getTime();
-        Date date1 = DateTimeCalc.formatToDate(date, time);
         
         if(selected != null) {
+            String date = selected.getDate();
+            String time = selected.getTime();
+            Date date1 = DateTimeCalc.formatToDate(date, time);
             String message = String.format("Đặt vé chuyến %s - %s\nNgày %s\nLúc %s"
                     , selected.getFrom(), selected.getTo()
                     , selected.getDate(), selected.getTime());
+            
+            String name = txtFullName.getText();
+            String phone = txtPhone.getText();
+            if(Util.checkInfoCustomer(txtFullName, txtPhone) == false){
+                return;
+            }
         
             Optional<ButtonType> confirm = MyAlert.showConfirmDialog(message);
             
             // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
             if (DateTimeCalc.timeBetween(currentTime, date1) >= milis60min) {
                 if(confirm.get() == ButtonType.OK) {
-                    String name = txtFullName.getText();
-                    String phone = txtPhone.getText();
                     Customer customer = (Customer) UserService.getCustomer(phone);
                     Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
                     // Kiem tra khong chon ghe
@@ -164,7 +169,7 @@ public class BookTicketController implements Initializable {
                         MyAlert.showErrorDialog("Vui lòng chọn ghế trước khi đặt.");
                 }
                 else
-                    MyAlert.showErrorDialog("Hủy đặt vé"); 
+                    MyAlert.showErrorDialog("Hủy đặt vé."); 
             }
             else
                 MyAlert.showErrorDialog("Sắp đến thời gian xe chạy không được đặt vé nữa.");
@@ -195,23 +200,27 @@ public class BookTicketController implements Initializable {
         // Thoi gian hien tai
         Date currentTime = Date.from(Instant.now());
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
-        String date = selected.getDate();
-        String time = selected.getTime();
-        Date date1 = DateTimeCalc.formatToDate(date, time);
         Ticket ticket = null;
         
         if(selected != null) {
+            String date = selected.getDate();
+            String time = selected.getTime();
+            Date date1 = DateTimeCalc.formatToDate(date, time);
             String message = String.format("Bán vé chuyến %s - %s\nNgày %s\nLúc %s"
                     , selected.getFrom(), selected.getTo()
                     , selected.getDate(), selected.getTime());
+            
+            String name = txtFullName.getText();
+            String phone = txtPhone.getText();
+            if(Util.checkInfoCustomer(txtFullName, txtPhone) == false){
+                return;
+            }
         
             Optional<ButtonType> confirm = MyAlert.showConfirmDialog(message);
             
             // Kiem tra thoi gian dat ve chi duoc thuc hien truoc khi xe chay 60p 
             if (DateTimeCalc.timeBetween(currentTime, date1) >= milis5min) {
                 if(confirm.get() == ButtonType.OK) {
-                    String name = txtFullName.getText();
-                    String phone = txtPhone.getText();
                     Customer customer = (Customer) UserService.getCustomer(phone);
                     Seat seat = cbSeatEmpty.getSelectionModel().getSelectedItem();
                     // Kiem tra khong chon ghe
