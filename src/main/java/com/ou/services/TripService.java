@@ -126,9 +126,9 @@ public class TripService {
                     + "trip(trip.from, trip.to, date_start, bus_id, complete)"
                     + "VALUES(?,?,?,?,?)");
             
-            stm.setString(1, t.getFrom());
-            stm.setString(2, t.getTo());
-            stm.setString(3, t.getDate() + " " + t.getTime());
+            stm.setString(1, t.getFrom().trim());
+            stm.setString(2, t.getTo().trim());
+            stm.setString(3, (t.getDate() + " " + t.getTime()).trim());
             stm.setInt(4, t.getBusId());
             stm.setBoolean(5, t.isComplete());
             
@@ -160,9 +160,9 @@ public class TripService {
             
             String strDate = DateTimeCalc.formatyyyyMMdd(t.getDate());
             
-            stm.setString(1, t.getFrom());
-            stm.setString(2, t.getTo());
-            stm.setString(3, strDate + " " + t.getTime());
+            stm.setString(1, t.getFrom().trim());
+            stm.setString(2, t.getTo().trim());
+            stm.setString(3, (strDate + " " + t.getTime()).trim());
             stm.setInt(4, t.getBusId());
             stm.setBoolean(5, t.isComplete());
             stm.setInt(6, t.getId());

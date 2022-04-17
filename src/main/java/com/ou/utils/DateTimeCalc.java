@@ -18,7 +18,7 @@ public class DateTimeCalc {
     public static long timeBetween(Date date1, Date date2) {
         try {
 
-            String format = "dd-MM-yyyy hh:mm";
+            String format = "dd-MM-yyyy HH:mm";
 
             SimpleDateFormat sdf = new SimpleDateFormat(format);
 
@@ -45,6 +45,14 @@ public class DateTimeCalc {
     
     public static Date formatToDate(String date, String time) throws ParseException {
         String format = "dd-MM-yyyy HH:mm";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date dateFormat = (Date) sdf.parse(date + " " + time);
+        return dateFormat;
+    }
+    
+    public static Date formatToDate2(String date, String time) throws ParseException {
+        String format = "yyyy-MM-dd HH:mm";
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Date dateFormat = (Date) sdf.parse(date + " " + time);
