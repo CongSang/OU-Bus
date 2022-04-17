@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
@@ -267,21 +269,24 @@ public class TripManageController implements Initializable {
                         deleteIcon.setStyleClass("delete-icon");
                         
                         deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+                            Optional<ButtonType> confirm = MyAlert.showConfirmDialog("Có chắc chắn xóa không?");
                             Trip data = getTableView().getItems().get(getIndex());
-                            try {
-                                if(TripService.deleteTrip(data.getId()) != -1) {
-                                    MyAlert.showSuccessDialog("Xóa chuyến xe thành công.");
-                                    
-                                    clearSelection();
-                                    reset();
-                                    loadData(null);
+                            
+                            if(confirm.get() == ButtonType.OK) {
+                                try {
+                                    if(TripService.deleteTrip(data.getId()) != -1) {
+                                        MyAlert.showSuccessDialog("Xóa chuyến xe thành công.");
+
+                                        clearSelection();
+                                        reset();
+                                        loadData(null);
+                                    }
+                                    else
+                                        MyAlert.showErrorDialog("Xóa chuyến xe thất bại.");
+                                } catch (SQLException | ParseException ex) {
+                                    Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                else
-                                    MyAlert.showErrorDialog("Xóa chuyến xe thất bại.");
-                            } catch (SQLException | ParseException ex) {
-                                Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            System.out.println("selectedData: " + data);
                         });
                         
                         HBox managebtn = new HBox(deleteIcon);

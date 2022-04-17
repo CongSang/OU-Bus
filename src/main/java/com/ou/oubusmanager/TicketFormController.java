@@ -22,6 +22,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -178,13 +180,17 @@ public class TicketFormController implements Initializable{
     
     @FXML
     void btnCancelTicket_click(ActionEvent event) throws SQLException {
-        if(TicketService.setTicketFree(selectedTicket.getTripId(), selectedTicket.getSeatId()) > 0) {
-            MyAlert.showSuccessDialog("Hủy vé thành công");
-            loadTickets(null);
-            clearSelection();      
+        Optional<ButtonType> confirm = MyAlert.showConfirmDialog("Có chắc chắn hủy vé không?");
+        
+        if(confirm.get() == ButtonType.OK) {
+            if(TicketService.setTicketFree(selectedTicket.getTripId(), selectedTicket.getSeatId()) > 0) {
+                MyAlert.showSuccessDialog("Hủy vé thành công");
+                loadTickets(null);
+                clearSelection();      
+            }
+            else
+                MyAlert.showErrorDialog("Hủy vé thất bại");
         }
-        else
-            MyAlert.showErrorDialog("Hủy vé thất bại");
         
     }
 
@@ -290,6 +296,9 @@ public class TicketFormController implements Initializable{
             
             trips.addAll(TripService.getTripForCustomerSearch(from, to));
             tvTrip.setItems(trips);
+            
+            if(!txtSearchFrom.getText().isBlank() && !txtSearchTo.getText().isBlank())
+                btnCancelSearchTrip.setVisible(true);
             
             addButtonToTable();
         } catch (SQLException ex) {

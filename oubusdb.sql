@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: localhost    Database: oubusdb
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `bus`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bus` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `bus_serial` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bus_serial` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `seats` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -52,7 +52,7 @@ CREATE TABLE `seat` (
   `bus_id` int NOT NULL,
   PRIMARY KEY (`id`,`bus_id`),
   KEY `fk_seat_bus_id_idx` (`bus_id`),
-  CONSTRAINT `fk_seat_bus_id` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`id`)
+  CONSTRAINT `fk_seat_bus_id` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -79,7 +79,7 @@ CREATE TABLE `ticket` (
   `seat_id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
   `employee_id` int DEFAULT NULL,
-  `status` enum('FREE','BOOKING','BOOKED','BOUGHT','WITHDRAW') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('FREE','BOOKING','BOOKED','BOUGHT','WITHDRAW') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_book` datetime DEFAULT NULL,
   `date_print` datetime DEFAULT NULL,
   PRIMARY KEY (`trip_id`,`seat_id`),
@@ -88,8 +88,8 @@ CREATE TABLE `ticket` (
   KEY `fk_ticket_seat_id_idx` (`seat_id`),
   CONSTRAINT `fk_ticket_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_ticket_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `fk_ticket_seat_id` FOREIGN KEY (`seat_id`) REFERENCES `seat` (`id`),
-  CONSTRAINT `fk_ticket_trip_id` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`id`)
+  CONSTRAINT `fk_ticket_seat_id` FOREIGN KEY (`seat_id`) REFERENCES `seat` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_ticket_trip_id` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -99,7 +99,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (299224,7,1,4,3,'BOOKED','2022-03-28 21:16:00',NULL),(980057,7,2,4,3,'BOOKED','2022-03-28 21:18:00',NULL),(75000,8,1,4,NULL,'BOOKING','2022-03-28 20:25:00',NULL),(563067,8,2,NULL,NULL,'FREE',NULL,NULL),(368731,11,1,NULL,NULL,'FREE',NULL,NULL),(833262,11,2,NULL,NULL,'FREE',NULL,NULL),(979983,11,3,NULL,NULL,'FREE',NULL,NULL);
+INSERT INTO `ticket` VALUES (299224,7,1,4,3,'BOOKED','2022-03-28 21:16:00',NULL),(980057,7,2,4,3,'BOOKED','2022-03-28 21:18:00',NULL),(368731,11,1,NULL,NULL,'FREE',NULL,NULL),(833262,11,2,NULL,NULL,'FREE',NULL,NULL),(979983,11,3,NULL,NULL,'FREE',NULL,NULL);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,14 +112,14 @@ DROP TABLE IF EXISTS `trip`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trip` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `from` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `to` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_start` datetime NOT NULL,
   `bus_id` int NOT NULL,
   `complete` tinyint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_trip_bus_id_idx` (`bus_id`),
-  CONSTRAINT `fk_trip_bus_id` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`id`)
+  CONSTRAINT `fk_trip_bus_id` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -129,7 +129,7 @@ CREATE TABLE `trip` (
 
 LOCK TABLES `trip` WRITE;
 /*!40000 ALTER TABLE `trip` DISABLE KEYS */;
-INSERT INTO `trip` VALUES (4,'TPHCM','HN','2022-03-12 15:00:00',3,1),(7,'Bình Thuận','TPHCM','2022-06-11 14:00:00',3,0),(8,'TPHCM','Cà Mau','2022-03-29 05:00:00',2,0),(10,'aaaaaaaa','bbbbbbbbb','2022-03-17 15:00:00',3,1),(11,'TPHCM','Cần Thơ','2022-03-31 10:00:00',1,0);
+INSERT INTO `trip` VALUES (4,'TPHCM','HN','2022-03-12 15:00:00',3,1),(7,'Bình Thuận','TPHCM','2022-06-11 14:00:00',3,0),(10,'aaaaaaaa','bbbbbbbbb','2022-03-17 15:00:00',3,1),(11,'TPHCM','Cần Thơ','2022-03-31 10:00:00',1,1);
 /*!40000 ALTER TABLE `trip` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,12 +142,12 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `age` int DEFAULT NULL,
-  `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_role` enum('CUSTOMER','EMPLOYEE','ADMIN') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_role` enum('CUSTOMER','EMPLOYEE','ADMIN') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
   UNIQUE KEY `username_UNIQUE` (`username`)
@@ -173,4 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-28 22:54:29
+-- Dump completed on 2022-04-17 11:12:17
