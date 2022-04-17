@@ -47,7 +47,7 @@
                         <TableColumn fx:id="seatsColumn" prefWidth="70.0" text="Số lượng" />
                     </columns>
                   </TableView>
-                  <Button fx:id="btnCancelSearch" layoutX="480.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="96.0" text="Hủy tìm kiếm">
+                  <Button fx:id="btnCancelSearch" layoutX="480.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnCancelSearchClick" prefHeight="29.0" prefWidth="96.0" text="Hủy tìm kiếm" visible="false">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
