@@ -17,13 +17,16 @@ import java.text.ParseException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -198,11 +201,7 @@ public class TripManageController implements Initializable {
             cbBus.setItems(FXCollections.observableList(BusService.getBuses()));
             this.loadData(null);
             txtSearch.textProperty().addListener((event) -> {
-                try {
                     this.loadData(txtSearch.getText());
-                } catch (ParseException ex) {
-                    Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
-                }
             });
             
             // Su kien click 1 dong trong bang
@@ -222,15 +221,13 @@ public class TripManageController implements Initializable {
                     }
                 }
             });
-        } catch (ParseException ex) {
-            Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
     
-    private void loadData(String kw) throws ParseException {       
+    private void loadData(String kw) {       
         ObservableList<Trip> trips = FXCollections.observableArrayList();
         if (kw == null)
             txtSearch.setText("");
@@ -247,7 +244,7 @@ public class TripManageController implements Initializable {
             
             tvTrip.setItems(trips);
             addButtonToTable();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -283,7 +280,7 @@ public class TripManageController implements Initializable {
                                     }
                                     else
                                         MyAlert.showErrorDialog("Xóa chuyến xe thất bại.");
-                                } catch (SQLException | ParseException ex) {
+                                } catch (SQLException ex) {
                                     Logger.getLogger(TripManageController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
@@ -305,23 +302,35 @@ public class TripManageController implements Initializable {
     }
     
     @FXML
-    void btnAdd_click(ActionEvent event){
-//        LocalDate d = LocalDate.now();
-        if (dpDate.getValue() == null || txtFrom.getText().isEmpty()||
-                txtTo.getText().isEmpty() || txtTime.getText().isEmpty() ||
+    void btnAdd_click(ActionEvent event) throws ParseException{
+        String splChrs = "-/@#$%^&_+=()" ;
+        Date trip_date = DateTimeCalc.formatToDate2(dpDate.getValue().toString(), txtTime.getText());
+        Date now = new Date();
+        
+        if (dpDate.getValue() == null || txtFrom.getText().isBlank()||
+                txtTo.getText().isBlank() || txtTime.getText().isBlank() ||
                 cbBus.getValue() == null) {
-            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
+            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin!");
+        }
+        else if(txtFrom.getText().matches(".*\\d.*") 
+                || txtTo.getText().matches(".*\\d.*") 
+                || txtFrom.getText().matches("[" + splChrs + "]+") 
+                || txtTo.getText().matches("[" + splChrs + "]+")) {
+            MyAlert.showErrorDialog("Vui lòng nhập nơi đi hoặc nơi đến hợp lệ!");
+        }
+        else if (DateTimeCalc.timeBetween(now, trip_date) < 0) {
+            MyAlert.showErrorDialog("Ngày khởi hành không hợp lệ!!");
         }
         else {
         
             LocalDateTime dtCheck;
-
-            if (txtTime.getText() != null) {
+            if (!txtTime.getText().isBlank()) {
                 try {
+                    
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     dtCheck = LocalDateTime.parse(dpDate.getValue() + " " + txtTime.getText(), dtf);
 
-//                    String datetime = d.toString() + " " + txtTime.getText();                
+//                    String datetime = dtf.format(dtCheck).split(" ")[0] + " " + dtf.format(dtCheck).split(" ")[1]; 
                     Trip t = new Trip (txtFrom.getText(), txtTo.getText(),
                         dtf.format(dtCheck).split(" ")[0],
                         dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
@@ -336,21 +345,36 @@ public class TripManageController implements Initializable {
                         MyAlert.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
                     }
                         
-                } catch (Exception e) {
-                    MyAlert.showErrorDialog(e.getMessage());
+                } catch (SQLException e) {
+                    MyAlert.showErrorDialog("Hệ thống đang có lỗi!");
+                } catch (DateTimeParseException e) {
+                    MyAlert.showErrorDialog("Vui lòng nhập đúng định dạng giờ 00:00!");
                 }
             }
         }            
     }
     
     @FXML
-    void btnUpdate_click(ActionEvent event) {
+    void btnUpdate_click(ActionEvent event) throws ParseException {
         Trip selected = (Trip) this.tvTrip.getSelectionModel().getSelectedItem();
         
-        if (dpDate.getValue() == null || txtFrom.getText().isEmpty()||
-                txtTo.getText().isEmpty() || txtTime.getText().isEmpty() ||
+        String splChrs = "-/@#$%^&_+=()" ;
+        Date trip_date = DateTimeCalc.formatToDate2(dpDate.getValue().toString(), txtTime.getText());
+        Date now = new Date();
+        
+        if (dpDate.getValue() == null || txtFrom.getText().isBlank()||
+                txtTo.getText().isBlank() || txtTime.getText().isBlank() ||
                 cbBus.getValue() == null) {
-            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin");
+            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin!");
+        }
+        else if(txtFrom.getText().matches(".*\\d.*") 
+                || txtTo.getText().matches(".*\\d.*") 
+                || txtFrom.getText().matches("[" + splChrs + "]+") 
+                || txtTo.getText().matches("[" + splChrs + "]+")) {
+            MyAlert.showErrorDialog("Vui lòng nhập nơi đi hoặc nơi đến hợp lệ!");
+        }
+        else if (DateTimeCalc.timeBetween(now, trip_date) < 0) {
+            MyAlert.showErrorDialog("Ngày khởi hành không hợp lệ!!");
         }
         else {
         
@@ -378,8 +402,10 @@ public class TripManageController implements Initializable {
                         MyAlert.showErrorDialog("Có lỗi xảy ra. Không thể cập nhật.");
                     }
                         
-                } catch (Exception e) {
-                    MyAlert.showErrorDialog(e.getMessage());
+                } catch (SQLException e) {
+                    MyAlert.showErrorDialog("Hệ thống đang có lỗi!");
+                } catch (DateTimeParseException e) {
+                    MyAlert.showErrorDialog("Vui lòng nhập đúng định dạng giờ 00:00!");
                 }
             }
         }
