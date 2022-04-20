@@ -28,6 +28,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -106,6 +108,13 @@ public class EnterController implements Initializable {
     @FXML
     void btnLoginClick(ActionEvent event) throws SQLException, IOException {
         checkLogin();
+    }
+    
+    @FXML
+    public void enterLogin(KeyEvent e) throws SQLException, IOException {
+        if(e.getCode().equals(KeyCode.ENTER)) {
+            checkLogin();
+        }
     }
     
     public void checkLogin() throws SQLException, IOException {
