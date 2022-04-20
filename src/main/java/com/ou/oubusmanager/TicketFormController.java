@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -195,11 +196,20 @@ public class TicketFormController implements Initializable{
     }
 
     @FXML
-    void btnChangeTrip_click(ActionEvent event) {
-        new FadeInRight(pane2).play();
-        pane2.toFront();
-        loadTrips(null, null);
-        btnChangeTrip.setVisible(false);
+    void btnChangeTrip_click(ActionEvent event) throws ParseException {
+        long millis60min = 60 * 60 * 1000;
+        Date selectedTripDate = DateTimeCalc.formatToDate(selectedTrip.getDate(),
+                        selectedTrip.getTime());
+        if (DateTimeCalc.timeBetween(new Date(), selectedTripDate) <= millis60min) {
+            MyAlert.showErrorDialog("Không đổi vé trước 60 phút xe chạy!");
+        }
+        else {
+        
+            new FadeInRight(pane2).play();
+            pane2.toFront();
+            loadTrips(null, null);
+            btnChangeTrip.setVisible(false);
+        }
     }
 
     @FXML
@@ -229,19 +239,32 @@ public class TicketFormController implements Initializable{
     }
 
     @FXML
-    void btnSave_click(ActionEvent event) throws SQLException {
-        if(TicketService.setTicketFree(selectedTicket.getTripId(),
-                selectedTicket.getSeatId()) > 0) {
-            Ticket newTicket = new Ticket(selectedTrip.getId()
-                    , cbSeat.getSelectionModel().getSelectedItem().getId(),
-                    selectedTicket.getCustomerId()
-                    , this.employee.getId(), Ticket.Status.BOOKED,
-                    DateTimeCalc.getNow());
+    void btnSave_click(ActionEvent event) throws SQLException, ParseException {
+        long millis60min = 60 * 60 * 1000;
+        Date selectedTripDate = DateTimeCalc.formatToDate(selectedTrip.getDate(),
+                        selectedTrip.getTime());
+        
+        if (cbSeat.getSelectionModel().getSelectedItem() == null ) {
+            MyAlert.showErrorDialog("Vui lòng chọn ghế cần đổi!");
+        } 
+        else if (DateTimeCalc.timeBetween(new Date(), selectedTripDate) <= millis60min) {
+            MyAlert.showErrorDialog("Không đổi vé trước 60 phút xe chạy!");
+        }
+        else {
             
-            if(TicketService.createTicketBooked(newTicket) > 0) {
-                MyAlert.showSuccessDialog("Lưu thành công");
-                selectedTicket = newTicket;
-                loadTickets(null);
+            if(TicketService.setTicketFree(selectedTicket.getTripId(),
+                    selectedTicket.getSeatId()) > 0) {
+                Ticket newTicket = new Ticket(selectedTrip.getId()
+                        , cbSeat.getSelectionModel().getSelectedItem().getId(),
+                        selectedTicket.getCustomerId()
+                        , this.employee.getId(), Ticket.Status.BOOKED,
+                        DateTimeCalc.getNow());
+
+                if(TicketService.createTicketBooked(newTicket) > 0) {
+                    MyAlert.showSuccessDialog("Lưu thành công");
+                    selectedTicket = newTicket;
+                    loadTickets(null);
+                }
             }
         }
     }
@@ -400,10 +423,10 @@ public class TicketFormController implements Initializable{
     
     private void selectRowTable() throws SQLException, ParseException {
         selectedTicket = (Ticket) this.tvTicket.getSelectionModel().getSelectedItem();
-        selectedTrip.setId(selectedTicket.getTripId());
         
         Bus b = BusService.getBusByTripId(selectedTicket.getTripId());
-        Trip t = TripService.getTripById(selectedTicket.getTripId());     
+        Trip t = TripService.getTripById(selectedTicket.getTripId());
+        selectedTrip = t;
         Customer c = UserService.getCustomerById(selectedTicket.getCustomerId());
         ObservableList<Seat> freeSeats = FXCollections.observableArrayList();
         freeSeats.addAll(SeatService.getSeatEmpty(b.getId(), t.getId()));
