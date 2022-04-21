@@ -85,7 +85,6 @@ public class App extends Application {
         timer.schedule(new TimerTask() {
             public void run() {
                 update.run();
-                System.out.println("aaaaaa");
             }
         }, 0, milisInAMinute);
 
