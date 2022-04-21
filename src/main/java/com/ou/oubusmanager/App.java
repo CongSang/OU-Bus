@@ -60,7 +60,7 @@ public class App extends Application {
         } catch (SQLException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int milisInAMinute = 60000;
+        int milisInAMinute = 30000;
         long time = System.currentTimeMillis();
 
         Runnable update = new Runnable() {
@@ -85,8 +85,9 @@ public class App extends Application {
         timer.schedule(new TimerTask() {
             public void run() {
                 update.run();
+                System.out.println("aaaaaa");
             }
-        }, time % milisInAMinute, milisInAMinute);
+        }, 0, milisInAMinute);
 
         // This will update for the current minute, it will be updated again in at most one minute.
         update.run();

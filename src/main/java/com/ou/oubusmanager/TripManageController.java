@@ -302,31 +302,32 @@ public class TripManageController implements Initializable {
     }
     
     @FXML
-    void btnAdd_click(ActionEvent event) throws ParseException{
-        String splChrs = "-/@#$%^&_+=()" ;
-        Date trip_date = DateTimeCalc.formatToDate2(dpDate.getValue().toString(), txtTime.getText());
-        Date now = new Date();
-        
-        if (dpDate.getValue() == null || txtFrom.getText().isBlank()||
-                txtTo.getText().isBlank() || txtTime.getText().isBlank() ||
-                cbBus.getValue() == null) {
-            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin!");
-        }
-        else if(txtFrom.getText().matches(".*\\d.*") 
-                || txtTo.getText().matches(".*\\d.*") 
-                || txtFrom.getText().matches("[" + splChrs + "]+") 
-                || txtTo.getText().matches("[" + splChrs + "]+")) {
-            MyAlert.showErrorDialog("Vui lòng nhập nơi đi hoặc nơi đến hợp lệ!");
-        }
-        else if (DateTimeCalc.timeBetween(now, trip_date) < 0) {
-            MyAlert.showErrorDialog("Ngày khởi hành không hợp lệ!!");
-        }
-        else {
-        
-            LocalDateTime dtCheck;
-            if (!txtTime.getText().isBlank()) {
-                try {
-                    
+    void btnAdd_click(ActionEvent event) {
+        String splChrs = "-/@#$%^&_+=()" ;    
+        try {
+            if (dpDate.getValue() == null || txtFrom.getText().isBlank()||
+                    txtTo.getText().isBlank() || txtTime.getText().isBlank() ||
+                    cbBus.getValue() == null) {
+                MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+            else if(txtFrom.getText().matches(".*\\d.*") 
+                    || txtTo.getText().matches(".*\\d.*") 
+                    || txtFrom.getText().matches(".*[" + splChrs + "]+.*") 
+                    || txtTo.getText().matches(".*[" + splChrs + "]+.*")) {
+                MyAlert.showErrorDialog("Vui lòng nhập nơi đi hoặc nơi đến hợp lệ!");
+                return;
+            }
+            
+            Date trip_date = DateTimeCalc.formatToDate2(dpDate.getValue().toString(), txtTime.getText());
+            Date now = new Date();
+            if (DateTimeCalc.timeBetween(now, trip_date) < 0) {
+                MyAlert.showErrorDialog("Ngày khởi hành không hợp lệ!!");
+            }
+            else {
+
+                LocalDateTime dtCheck;
+                if (!txtTime.getText().isBlank()) {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     dtCheck = LocalDateTime.parse(dpDate.getValue() + " " + txtTime.getText(), dtf);
 
@@ -334,7 +335,7 @@ public class TripManageController implements Initializable {
                     Trip t = new Trip (txtFrom.getText(), txtTo.getText(),
                         dtf.format(dtCheck).split(" ")[0],
                         dtf.format(dtCheck).split(" ")[1], cbBus.getValue().getId(), false);
-                    
+
                     if (TripService.addTrip(t) != -1) {
                         MyAlert.showSuccessDialog("Thêm chuyến xe thành công.");
 
@@ -343,15 +344,18 @@ public class TripManageController implements Initializable {
                     }
                     else {
                         MyAlert.showErrorDialog("Có lỗi xảy ra. Không thể thêm.");
-                    }
-                        
-                } catch (SQLException e) {
-                    MyAlert.showErrorDialog("Hệ thống đang có lỗi!");
-                } catch (DateTimeParseException e) {
-                    MyAlert.showErrorDialog("Vui lòng nhập đúng định dạng giờ 00:00!");
+                    }    
                 }
-            }
-        }            
+            }   
+        } catch (SQLException e) {
+            MyAlert.showErrorDialog("Hệ thống đang có lỗi!");
+        } catch (DateTimeParseException e) {
+            MyAlert.showErrorDialog("Vui lòng nhập đúng định dạng giờ HH:mm!");
+        } catch (ParseException e) {
+            MyAlert.showErrorDialog("Vui lòng nhập đúng định dạng giờ HH:mm!");
+        } catch (NullPointerException e) {
+            MyAlert.showErrorDialog("Vui lòng nhập đầy đủ thông tin!");
+        }
     }
     
     @FXML
