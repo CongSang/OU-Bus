@@ -18,6 +18,7 @@ import com.ou.pojo.Admin;
 import com.ou.pojo.Employee;
 import com.ou.services.UserService;
 import com.ou.utils.MyAlert;
+import com.ou.utils.Util;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -153,14 +154,29 @@ public class EnterController implements Initializable {
         if(fullName.equals("") || phone.equals("") || age.equals("") 
                 || username.equals("") || password.equals("")) {
             MyAlert.showErrorDialog("Vui lòng điền hết các thông tin.");
-        }
-        else {
+        } else {
+            if(Util.checkInfoCustomer(txtFullName, txtPhone) == false) {
+                return;
+            } else if(Util.checkAge(txtAge) == false) {
+                return;
+            } else if(Util.checkUsername(txtUsernameSignUp) == false) {
+                return;
+            } else if(Util.checkPass(txtPasswordSignUp) == false) {
+                return;
+            }
+            
             password = Security.encryptMD5(password);
-            UserService.addUser(fullName, phone, age, username, password, role);
-            MyAlert.showSuccessDialog("Tạo tài khoản thành công");
-            reset();
-            pnSignIn.toFront();
-            new FadeInLeft(pnSignIn).play();
+            int result = UserService.addUser(fullName, phone, age, username, password, role);
+            if(result == 1062) {
+                MyAlert.showErrorDialog("Số điện thoại hoặc Tài khoản có thể đã bị trùng.");
+            } else if(result != 1) {
+                MyAlert.showErrorDialog("Tạo tài khoản thất bại.");
+            } else {
+                MyAlert.showSuccessDialog("Tạo tài khoản thành công");
+                reset();
+                pnSignIn.toFront();
+                new FadeInLeft(pnSignIn).play();
+            }
         }
     }
     

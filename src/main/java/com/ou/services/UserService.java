@@ -117,8 +117,8 @@ public class UserService {
             
             return stm.executeUpdate(); 
         } catch (SQLException e) {
-            System.out.println("ERROR CODE: " + e.getErrorCode());
-            return -1;
+            System.out.println(e.getErrorCode());
+            return e.getErrorCode();
         }
     }
 }
