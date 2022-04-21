@@ -30,7 +30,7 @@ public class Util {
     
     public static boolean checkUsername(TextField name) {
         if(!(name.getText().toCharArray().length >= 8 && name.getText().toCharArray().length <= 15)) {
-            MyAlert.showErrorDialog("Tài khoản không hợp lệ. Độ dài từ 8-15 kí tự");
+            MyAlert.showErrorDialog("Tài khoản không hợp lệ. Độ dài tài khoản phải từ 8-15 kí tự");
             name.setText("");
             return false;
         }
@@ -39,7 +39,7 @@ public class Util {
     
     public static boolean checkPass(TextField pass) {
         if(!(pass.getText().toCharArray().length >= 8 && pass.getText().toCharArray().length <= 15)) {
-            MyAlert.showErrorDialog("Mật khẩu không hợp lệ. Độ dài từ 8-15 kí tự");
+            MyAlert.showErrorDialog("Mật khẩu không hợp lệ. Độ dài mật khẩu phải từ 8-15 kí tự");
             pass.setText("");
             return false;
         }
